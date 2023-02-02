@@ -62,25 +62,32 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         activeShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       ),
-      back: const Text(
+      back:  Text(
         "Back",
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: TextStyle(color: widget.titleColor, fontWeight: FontWeight.bold),
       ),
-      skip: const Text(
+      skip:  Text(
         "Skip",
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: TextStyle(color: widget.titleColor, fontWeight: FontWeight.bold),
       ),
 
       /// TODO routes
-      onSkip: () {},
-      next: const Text(
+      onSkip: () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SignIn(),
+            ));
+
+      },
+      next:  Text(
         "Next",
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        style: TextStyle(color: widget.titleColor, fontWeight: FontWeight.bold),
       ),
-      done: const Text(
+      done:  Text(
         "Finish",
         style: TextStyle(
-          color: Colors.black,
+          color: widget.titleColor,fontWeight: FontWeight.bold
         ),
       ),
 

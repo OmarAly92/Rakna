@@ -175,15 +175,15 @@ class SignUp extends StatelessWidget {
                                       builder: (context) => const SignIn()));
                             },
                             child: Row(
-                              children: [
-                                const Text(
+                              children: const [
+                                Text(
                                   'Already have an account?',
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 Text(
                                   ' SIGN IN',
                                   style: TextStyle(
-                                    color: color,
+                                    color: Color(0xff144272),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

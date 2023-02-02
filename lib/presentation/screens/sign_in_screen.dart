@@ -130,9 +130,9 @@ class _SignInState extends State<SignIn> {
                           padding: const EdgeInsets.only(left: 250, top: 14),
                           child: TextButton(
                             onPressed: () {},
-                            child: const Text(
+                            child:  const Text(
                               'Forgot Password?',
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: Color(0xff144272)),
                             ),
                           ),
                         ),
@@ -159,15 +159,15 @@ class _SignInState extends State<SignIn> {
                                       builder: (context) => const SignUp()));
                             },
                             child: Row(
-                              children: [
-                                const Text(
+                              children: const [
+                                Text(
                                   'Don\'t have an account?',
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 Text(
                                   ' SIGN UP',
                                   style: TextStyle(
-                                    color: color,
+                                    color: Color(0xff144272),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
