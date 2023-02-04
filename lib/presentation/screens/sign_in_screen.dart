@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rakna/presentation/components/LogButton_Widget.dart';
+import 'package:rakna/presentation/screens/home_screen.dart';
 import 'package:rakna/presentation/screens/sign_up_screen.dart';
+
+import 'navigation_bar.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -145,7 +148,9 @@ class _SignInState extends State<SignIn> {
                             radius: 15,
                             width: 350,
                             high: 60,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(),));
+                            },
                           ),
                         ),
                         Padding(

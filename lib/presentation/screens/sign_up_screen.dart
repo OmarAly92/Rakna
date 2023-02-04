@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
 import '../components/LogButton_Widget.dart';
+import 'home_screen.dart';
+import 'navigation_bar.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -161,7 +163,9 @@ class SignUp extends StatelessWidget {
                             radius: 15,
                             width: 350,
                             high: 60,
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(),));
+                            },
                           ),
                         ),
                         Padding(

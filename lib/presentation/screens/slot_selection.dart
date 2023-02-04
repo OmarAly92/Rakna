@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../team2/Payment2.dart';
+import '../../team2/Submit_Screen.dart';
 import '../components/LogButton_Widget.dart';
 import '../components/slot-place.dart';
 
@@ -14,7 +16,7 @@ class _SlotSelectionState extends State<SlotSelection> {
   // 0xff07193e
   int length = 7;
   bool click = false;
-  Color color = const Color.fromRGBO(2, 48, 32, .92);
+  Color color = Color(0xff144272);
 
   @override
   Widget build(BuildContext context) {
@@ -75,35 +77,6 @@ class _SlotSelectionState extends State<SlotSelection> {
                     ),
                   ),
                 ),
-                // Stack(
-                //   children: [
-                //     Container(
-                //       height: 60,
-                //       width: 240,
-                //       decoration: BoxDecoration(color:  Color(0xff1f2248),
-                //       borderRadius: BorderRadius.circular(6)),
-                //     ),
-                //     Positioned(
-                //       bottom: 7,
-                //       left: 7,
-                //       child: Container(
-                //           height: 45,
-                //           width: 225,
-                //           decoration: BoxDecoration(
-                //               color: Colors.blue.shade900,
-                //               borderRadius: BorderRadius.circular(5)),
-                //           child: const Center(
-                //               child: Text(
-                //                 'Cars',
-                //                 style: TextStyle(
-                //                     color: Colors.white,
-                //                     fontWeight: FontWeight.w500,
-                //                     fontSize: 20),
-                //               ))),
-                //     ),
-                //
-                //   ],
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -147,7 +120,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 0),
                   child: SizedBox(
                     height: 520,
                     child: ListView(
@@ -171,7 +144,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                         thickness: .4,
                                         endIndent: 10,
                                         indent: 10,
-                                      )),
+                                      ),),
                                   Text(
                                     'Entry',
                                     style: TextStyle(
@@ -217,7 +190,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                       child: Text(
                                         'C1',
                                         style: TextStyle(
-                                            color: Colors.green.shade700,
+                                            color: Color(0xff144272),
                                             fontSize: 15,
                                             fontWeight: FontWeight.w500),
                                       ),
@@ -225,7 +198,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                     Text(
                                       'C2',
                                       style: TextStyle(
-                                          color: Colors.green.shade700,
+                                          color: Color(0xff144272),
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -286,7 +259,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                     '→',
                                     style: TextStyle(
                                       fontSize: 32,
-                                      color: Colors.grey.shade600,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ],
@@ -300,14 +273,16 @@ class _SlotSelectionState extends State<SlotSelection> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      bottom: 10, left: 5, right: 5, top: 0),
+                      bottom: 10, left: 5, right: 5, top: 30),
                   child: Column(
                     children: [
                       LogButton(
                         text: 'Book',
-                        backgroundColor: Colors.green.shade400,
+                        backgroundColor: Color(0xff144272),
                         textColor: Colors.white,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookTime(),));
+                        },
                         radius: 5,
                         width: 355,
                         high: 53,

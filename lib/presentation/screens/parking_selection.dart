@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rakna/presentation/screens/parking_details.dart';
+import 'package:rakna/presentation/screens/parking_detail2.dart';
 
 class ParkingSelection extends StatefulWidget {
   const ParkingSelection({Key? key}) : super(key: key);
@@ -28,10 +28,10 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                   ),
                 ),
               ),
-              for(int i = 0;i<6;i++)
+              for(int i = 0;i<3;i++)
               InkWell(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(),));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25, left: 15, right: 15),
@@ -86,7 +86,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                     'E£20',
                                     style: TextStyle(
                                         fontSize: 19,
-                                        color: Colors.green.shade800,
+                                        color:  Color(0xff144272),
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
@@ -102,14 +102,14 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                     decoration: BoxDecoration(
                                       // color: Colors.white60,
                                       border: Border.all(
-                                          color: Colors.green.shade800, width: 2),
+                                          color:  Color(0xff144272), width: 2),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Center(
                                       child: Text(
                                         'Book Now',
                                         style: TextStyle(
-                                            color: Colors.green.shade800,
+                                            color:  Color(0xff144272),
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),

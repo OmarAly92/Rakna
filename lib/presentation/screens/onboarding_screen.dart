@@ -22,7 +22,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       pages: [
         PageViewModel(
           title: "Find Parking Places Around You Easily",
-          body: "body body body body body body ",
+          body: "Don't waste your time finding available parking spot . Locate them with just one tap ",
           decoration: PageDecoration(
               titleTextStyle:
                    TextStyle(fontWeight: FontWeight.bold, fontSize: 31,color:widget.titleColor),
@@ -32,8 +32,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               fit: BoxFit.cover, width: double.infinity, height: 400),
         ),
         PageViewModel(
-          title: "Book and Pay Parking Quickly & Safely",
-          body: "body body body body body body ",
+          title: "Suitable parking for you",
+          body: "Use the app to find nearest parking for you ",
           decoration: PageDecoration(
               titleTextStyle:
                    TextStyle(fontWeight: FontWeight.bold, fontSize: 31,color:widget.titleColor),
@@ -43,17 +43,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               fit: BoxFit.cover, width: double.infinity, height: 400),
         ),
         PageViewModel(
-          title: "title title title title title",
-          body: "body body body body body body ",
+          title: "Book and Pay Parking Quickly & Safely",
+          body: "Payment for your parking have never been easier we offer a wide range of payment",
           decoration: PageDecoration(
               titleTextStyle:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              TextStyle(fontWeight: FontWeight.bold, fontSize: 31,color:widget.titleColor),
               bodyTextStyle: TextStyle(
                   color: Colors.grey.shade600, fontSize: 15, height: 1.5)),
-          image: Image.asset('assets/images/logo-white.png',
+          image: Image.asset('assets/images/E-Wallet-pana.png',
               fit: BoxFit.cover, width: double.infinity, height: 400),
         ),
       ],
+      //assets/images/E-Wallet-pana.png
       dotsDecorator: DotsDecorator(
         color: Colors.grey,
         activeColor: Colors.indigo,

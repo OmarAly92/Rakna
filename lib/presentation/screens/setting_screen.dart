@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
 class SettingScreen extends StatefulWidget {
   SettingScreen({Key? key}) : super(key: key);
@@ -236,22 +237,27 @@ class _SettingScreenState extends State<SettingScreen> {
                         height: 40,
                         child: InkWell(
                           onTap: () {},
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                color: Colors.red,
-                                size: 28,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'Logout',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 17.5,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn(),));
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.logout,
+                                  color: Colors.red,
+                                  size: 28,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 17.5,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
