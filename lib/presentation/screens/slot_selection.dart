@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../team2/Payment2.dart';
+import 'add_payment.dart';
 import '../../team2/Submit_Screen.dart';
 import '../components/LogButton_Widget.dart';
 import '../components/slot-place.dart';

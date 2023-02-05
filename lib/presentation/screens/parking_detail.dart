@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rakna/presentation/screens/slot_selection.dart';
+import '../../utility/color.dart';
 
-class ParkingDetail1 extends StatelessWidget {
-  ParkingDetail1({super.key});
+class ParkingDetail1 extends StatefulWidget {
+  const ParkingDetail1({Key? key}) : super(key: key);
 
-  bool a = true;
+  @override
+  State<ParkingDetail1> createState() => _ParkingDetail1State();
+}
+
+class _ParkingDetail1State extends State<ParkingDetail1> {
+  late bool bookMark = true;
 
   @override
   Widget build(BuildContext context) {
-   var height = MediaQuery.of(context).size.height;
-   var  width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(
         children: [
@@ -53,8 +59,9 @@ class ParkingDetail1 extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40)),
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
                   boxShadow: [
                     BoxShadow(
                         color: Colors.black.withOpacity(.2),
@@ -65,42 +72,41 @@ class ParkingDetail1 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding:
+                        const EdgeInsets.only(top: 15, left: 15, right: 15),
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
                             'Abbas El-Akkad Parking',
-                            style: GoogleFonts.ptSans(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                         InkWell(
                             onTap: () {
-                              a = !a;
+                              setState(() {
+                                bookMark = !bookMark;
+                              });
                             },
                             child: Icon(
-                              a == true
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              size: 40,
-                              color: Colors.red,
+                              bookMark == true
+                                  ? Icons.bookmark_add_outlined
+                                  : Icons.bookmark_added,
+                              color: kPrimaryColor,
+                              size: 35,
                             )),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15,right: 15,bottom: 15),
-                    child: Text('Parking Location',
-                      style: GoogleFonts.ptSans(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),),
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                    child: Text(
+                      'Parking Location',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ),
+
                   // Padding(
                   //   padding:
                   //       const EdgeInsets.only(top: 20, left: 30, right: 30),
@@ -117,7 +123,7 @@ class ParkingDetail1 extends StatelessWidget {
                   //       Text(
                   //         '/ 1kg',
                   //         style: GoogleFonts.ptSans(fontSize: 20),
-                  //       )
+                  //       ),
                   //     ],
                   //   ),
                   // ),
@@ -140,7 +146,9 @@ class ParkingDetail1 extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  SizedBox(height: height* .3,),
+                  SizedBox(
+                    height: height * .3,
+                  ),
                   Expanded(
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +169,6 @@ class ParkingDetail1 extends StatelessWidget {
                       //     ),
                       //   ),
                       // ),
-
                       // SizedBox(
                       //   height: 49,
                       //   width: 100,
@@ -188,7 +195,8 @@ class ParkingDetail1 extends StatelessWidget {
                       //   ),
                       // ),
                     ],
-                  )),
+                  ),
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.symmetric(
@@ -228,7 +236,11 @@ class ParkingDetail1 extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: InkWell(
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => SlotSelection(),));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SlotSelection(),
+                                  ));
                             },
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
@@ -241,8 +253,9 @@ class ParkingDetail1 extends StatelessWidget {
                               child: Text(
                                 'Book Now',
                                 style: GoogleFonts.ptSans(
-                                    fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white
-                                ),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ),
                           ),

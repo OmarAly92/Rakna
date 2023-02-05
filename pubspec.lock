@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  awesome_card:
+    dependency: "direct main"
+    description:
+      name: awesome_card
+      sha256: "6455e99492b70c089b1b9d5a0da64e07f5bdd9cb51e5daaca5a1df340f2253d1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.7"
   boolean_selector:
     dependency: transitive
     description:
@@ -49,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  charcode:
+    dependency: transitive
+    description:
+      name: charcode
+      sha256: fb98c0f6d12c920a02ee2d998da788bca066ca5f148492b7085ee23372b12306
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.1"
   clock:
     dependency: transitive
     description:
@@ -65,6 +81,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      sha256: "3fa83bc417e26f1d55814443a603747d48e3cdf55b2f4fea27dea8e9224dcefd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   crypto:
     dependency: transitive
     description:
@@ -158,6 +182,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.1"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      sha256: "676ae0d285e7c066b0400da7863aec1d14417b2f3858514b0e161d233c8495e2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -187,6 +219,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  im_stepper:
+    dependency: "direct main"
+    description:
+      name: im_stepper
+      sha256: "12512f7af107c7904af3138d2317e35189d7522c7bb883ffd13aef114828d1fc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.3"
   intl:
     dependency: transitive
     description:
@@ -259,6 +299,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      sha256: b3dd74e2210b2b71be3d3098b956dbab853ee43a86918b4bc20c9b9bd49f03f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.1+1"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      sha256: "4e613c811d25f1533c0d05eb2755e21410247b8a13ac7f6cd23c0cecb2ff683d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4"
   path_provider:
     dependency: transitive
     description:
@@ -315,6 +371,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      sha256: cec41f67181fbd5322aa68b355621d1a4eea827426b8eeb613f6cbe195ff7b4a
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.2"
+  petitparser:
+    dependency: transitive
+    description:
+      name: petitparser
+      sha256: fe07f9345bf03ff0c881d1f5494e20cc40206780ca5dea86aab8037cb49af5f2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   platform:
     dependency: transitive
     description:
@@ -368,6 +440,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smooth_star_rating:
+    dependency: "direct main"
+    description:
+      name: smooth_star_rating
+      sha256: "32e1b4bf14b702018e6ee32fabc6768be46a686136bfb248d980c4bd6fca72af"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   source_span:
     dependency: transitive
     description:
@@ -488,6 +568,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0+3"
+  xml:
+    dependency: transitive
+    description:
+      name: xml
+      sha256: "4c4262c7dcf7b66fa8743cdfd37ccac03d6d50d3de4084b1a528de3107540752"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.5.1"
 sdks:
-  dart: ">=2.18.4 <4.0.0"
+  dart: ">=2.18.4 <3.0.0"
   flutter: ">=3.3.0"

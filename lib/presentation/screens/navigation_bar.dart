@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rakna/presentation/screens/setting_screen.dart';
 
 import 'home_screen.dart';
+import 'old1H.dart';
 
 
 class NavigationBarScreen extends StatefulWidget {
@@ -17,9 +19,9 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
+    FeaturedScreen(),
     Text(
-      'Favorite',
+      'Bookmark',
       style: optionStyle,
     ),
      SettingScreen()
@@ -38,14 +40,14 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items:  <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorite',
+            icon: Icon(CupertinoIcons.bookmark_fill),
+            label: 'Bookmark',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

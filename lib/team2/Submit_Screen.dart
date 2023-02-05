@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../presentation/components/LogButton_Widget.dart';
-import 'Payment2.dart';
+import '../presentation/screens/add_payment.dart';
 
 class BookTime extends StatefulWidget {
   const BookTime({Key? key}) : super(key: key);
