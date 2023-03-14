@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utility/category.dart';
 import '../../utility/color.dart';
 import '../components/appbar.dart';
@@ -23,39 +24,38 @@ class _ParkingSelectionState extends State<ParkingSelection> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MiniAppBarCustom(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Nearby Parking",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      for (int i = 0; i < 5; i++)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 12, bottom: 12),
-                          child: CategoryCard(
-                            category: Category(
-                                parkingName: 'Parking Name',
-                                parkingLocation: 'Parking Location',
-                                parkImage: 'assets/images/park1.jpg',
-                                parkPrice: '10/Hours'),
-                                widthBookmark: width * .160,
-                                widthPrice: width * .280,
-                          ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MiniAppBarCustom(),
+              Padding(
+                padding:  EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Nearby Parking",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    SizedBox(height:10.h),
+                    for (int i = 0; i < 5; i++)
+                      Padding(
+                        padding:  EdgeInsets.only(top: 10.h, bottom: 10.h),
+                        child: CategoryCard(
+                          category: Category(
+                              parkingName: 'Parking Name',
+                              parkingLocation: 'Parking Location',
+                              parkImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
+                              parkPrice: '10/Hours'),
+                              widthBookmark: 18.w,
+                              widthPrice: 65.w,
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -70,30 +70,32 @@ class MiniAppBarCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      height: 100,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
+    return SafeArea(
+      child: Container(
+        padding:  EdgeInsets.only(top: 18.h, left: 18.h, right: 18.h),
+        height: 80.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.r),
+            bottomRight: Radius.circular(20.r),
+          ),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: [0.1, 0.7],
+            colors: [
+              kPrimaryLight,
+              kPrimaryColor,
+              // Colors.blue.shade500,
+              // Colors.blue.shade900,
+              // Color(0xff886ff2),
+              // Color(0xff144272)
+            ],
+          ),
         ),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          stops: [0.1, 0.7],
-          colors: [
-            kPrimaryLight,
-            kPrimaryColor,
-            // Colors.blue.shade500,
-            // Colors.blue.shade900,
-            // Color(0xff886ff2),
-            // Color(0xff144272)
-          ],
-        ),
+        child: SearchTextField(),
       ),
-      child: SearchTextField(),
     );
   }
 }

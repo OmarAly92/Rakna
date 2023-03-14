@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utility/category.dart';
 import '../../utility/color.dart';
@@ -6,10 +7,12 @@ import '../../utility/size.dart';
 import '../screens/parking_detail.dart';
 
 class CategoryCard extends StatefulWidget {
-  CategoryCard({
-    Key? key,
-    required this.category,required this.widthBookmark,required this.widthPrice
-  }) : super(key: key);
+  CategoryCard(
+      {Key? key,
+      required this.category,
+      required this.widthBookmark,
+      required this.widthPrice})
+      : super(key: key);
   final Category category;
   late bool bookmark = true;
   double widthBookmark;
@@ -26,7 +29,11 @@ class _CategoryCardState extends State<CategoryCard> {
     late double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(),));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ParkingDetail1(),
+            ));
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -41,63 +48,74 @@ class _CategoryCardState extends State<CategoryCard> {
             ), //BoxShadow
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Wrap(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
+              // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      widget.category.parkImage,
-                      height: kCategoryCardImageSize,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          widget.category.parkImage,
+                          height: kCategoryCardImageSize,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 3, bottom: 0, left: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
+                    Padding(
+                      padding:  EdgeInsets.only(top: 3.h, bottom: 0, left: 10.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(widget.category.parkingName),
-                          SizedBox(
-                            width: widget.widthBookmark,//TODO add custom
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(widget.category.parkingName),
+                              SizedBox(
+                                width: widget.widthBookmark, //TODO add custom
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    widget.bookmark = !widget.bookmark;
+                                  });
+                                },
+                                child: Icon(
+                                  widget.bookmark == true
+                                      ? Icons.bookmark_add_outlined
+                                      : Icons.bookmark_added,
+                                  color: kPrimaryColor,
+                                ),
+                              ),
+                            ],
                           ),
-                          InkWell(
-                              onTap: () {
-                                setState(() {
-                                  widget.bookmark = !widget.bookmark;
-                                });
-                              },
-                              child: Icon(
-                                widget.bookmark == true
-                                    ? Icons.bookmark_add_outlined
-                                    : Icons.bookmark_added,
-                                color: kPrimaryColor,
-                              ))
+                          Text(
+                            widget.category.parkingLocation.toString(),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          SizedBox(
+                            height: 45.h,
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: widget.widthPrice,
+                              ),
+                              Text(
+                                'E£10/Hours',
+                                style: TextStyle(color: kPrimaryColor),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                      Text(
-                        "${widget.category.parkingLocation.toString()}",
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      SizedBox(
-                        height: height * .07,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: widget.widthPrice),//TODO add custom
-                        child: Text(
-                          'E£10/Hours',
-                          style: TextStyle(color: kPrimaryColor),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

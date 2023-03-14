@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
+import '../../utility/color.dart';
 import '../components/LogButton_Widget.dart';
 import 'old1H.dart';
 import 'navigation_bar.dart';
@@ -18,7 +20,7 @@ class SignUp extends StatelessWidget {
     double height, width;
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    Color color = const Color(0xff04345C);
+    Color color =  Colors.blue.shade800;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -27,7 +29,7 @@ class SignUp extends StatelessWidget {
             Column(
               children: [
                 Container(
-                  height: height * .15,
+                  height: 105.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: color,
@@ -36,30 +38,30 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 40, left: 14),
+                    padding:  EdgeInsets.only(top: 35.h, left: 12.w),
                     child: Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(right: 10, top: 1),
+                          padding:  EdgeInsets.only(top: 1.h,right: 5.w),
                           child: InkWell(
                             onTap: () {},
                             child: InkWell(
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: const Icon(
+                              child:  Icon(
                                 CupertinoIcons.arrow_left_circle_fill,
                                 color: Colors.white,
-                                size: 45,
+                                size: 40.r,
                               ),
                             ),
                           ),
                         ),
-                        const Text(
+                         Text(
                           'Create Account',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w500),
                         ),
                       ],
@@ -72,97 +74,102 @@ class SignUp extends StatelessWidget {
                   ),
                   child: Container(
                     height: height * .9,
-                    decoration: const BoxDecoration(
+                    decoration:  BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(50))),
+                            BorderRadius.only(topLeft: Radius.circular(50.r))),
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                              right: 22.w, left: 22.w, top: 30.h,
+                          ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                               labelText: "Email Address",
                               labelStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black54,
-                                fontSize: 15,
+                                fontSize: 13.sp,
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                            right: 22.w, left: 22.w, top: 30.h,
+                          ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Phone Number",
                                 labelStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black54,
-                                  fontSize: 15,
+                                  fontSize: 13.sp,
                                 ),
                                 border: UnderlineInputBorder()),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                            right: 22.w, left: 22.w, top: 30.h,
+                          ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Age",
                                 labelStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black54,
-                                  fontSize: 15,
+                                  fontSize: 13.sp,
                                 ),
                                 border: UnderlineInputBorder()),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                            right: 22.w, left: 22.w, top: 30.h,
+                          ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 suffixIcon: Icon(Icons.remove_red_eye),
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Password",
                                 labelStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black54,
-                                  fontSize: 15,
+                                  fontSize: 13.sp,
                                 ),
                                 border: UnderlineInputBorder()),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                            right: 22.w, left: 22.w, top: 30.h,
+                          ),
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 suffixIcon: Icon(Icons.remove_red_eye),
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Confirm Password",
                                 labelStyle: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black54,
-                                  fontSize: 15,
+                                  fontSize: 13.sp,
                                 ),
                                 border: UnderlineInputBorder()),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 10, top: 55),
+                          padding:  EdgeInsets.only(bottom: 8.h, top: 50.h),
                           child: LogButton(
                             text: 'Sign up',
-                            backgroundColor: const Color(0xff1C82AD),
+                            backgroundColor: kPrimaryColor,
                             textColor: Colors.white,
-                            radius: 15,
-                            width: 350,
-                            high: 60,
+                            radius: 15.r,
+                            width: 305.w,
+                            high: 50.h,
                             onPressed: () {
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(),));
                             },
@@ -170,7 +177,7 @@ class SignUp extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              left: width * .200, right: width * .200, top: 10),
+                              left: 65.w, right: 65.w, top: 10.h),
                           child: TextButton(
                             onPressed: () {
                               Navigator.pushReplacement(
@@ -179,7 +186,7 @@ class SignUp extends StatelessWidget {
                                       builder: (context) => const SignIn()));
                             },
                             child: Row(
-                              children: const [
+                              children:  [
                                 Text(
                                   'Already have an account?',
                                   style: TextStyle(color: Colors.black),
@@ -187,7 +194,7 @@ class SignUp extends StatelessWidget {
                                 Text(
                                   ' SIGN IN',
                                   style: TextStyle(
-                                    color: Color(0xff144272),
+                                    color: kPrimaryColor,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

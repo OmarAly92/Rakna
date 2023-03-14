@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/components/LogButton_Widget.dart';
 import 'package:rakna/presentation/components/custom_text_form.dart';
 import 'package:rakna/presentation/screens/book_screen.dart';
 
-class Payment2 extends StatelessWidget {
-  const Payment2({super.key});
+import '../../team2/payment_method.dart';
+
+class AddPayment extends StatelessWidget {
+  const AddPayment({super.key});
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -25,20 +29,21 @@ class Payment2 extends StatelessWidget {
                         },
                         icon: Icon(
                           Icons.arrow_back,
-                          size: 30,
-                        )),
+                          size: 30.r,
+                        ),
+                    ),
                     Text(
-                      'Payment',
+                      'Add Payment',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 27.sp,
                         fontWeight: FontWeight.bold,
                       ),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(height: 15),
                 Container(
-                  height: 190,
+                  height: 152.h,
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                   padding: EdgeInsets.all(15),
@@ -81,7 +86,7 @@ class Payment2 extends StatelessWidget {
                         children: [
                           Text('VISA',
                               style: TextStyle(
-                                  fontSize: 24.30,
+                                  fontSize: 21.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white)),
                           Text(
@@ -96,7 +101,7 @@ class Payment2 extends StatelessWidget {
                       Text(
                         '****\t\t****\t\t****\t\t****\t\t 2193',
                         style: TextStyle(
-                            fontSize: 24.30,
+                            fontSize: 21.5.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
@@ -113,13 +118,13 @@ class Payment2 extends StatelessWidget {
                                     Text(
                                       'Card holder',
                                       style: TextStyle(
-                                          fontSize: 12, color: Colors.white),
+                                          fontSize: 10.5.sp, color: Colors.white),
                                     ),
                                     SizedBox(height: 5),
                                     Text(
                                       'Omar',
                                       style: TextStyle(
-                                          fontSize: 12, color: Colors.white),
+                                          fontSize: 10.5.sp, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -131,13 +136,13 @@ class Payment2 extends StatelessWidget {
                                     Text(
                                       'Expires',
                                       style: TextStyle(
-                                          fontSize: 12, color: Colors.white),
+                                          fontSize: 10.5.sp, color: Colors.white),
                                     ),
                                     SizedBox(height: 5),
                                     Text(
                                       '07\t/\t23',
                                       style: TextStyle(
-                                          fontSize: 12, color: Colors.white),
+                                          fontSize: 10.5.sp, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -162,97 +167,42 @@ class Payment2 extends StatelessWidget {
                   ),
                 ),
                 CustomTextField(
-                    hintText: 'Card Holder', leftPadding: 15, rightPadding: 15),
+                    hintText: 'Card Holder', leftPadding: 13.w, rightPadding: 13.w, bottomPadding: 16.h, topPadding: 16.h,
+                ),
                 CustomTextField(
-                    hintText: 'Card number', leftPadding: 15, rightPadding: 15),
+                    hintText: 'Card number', leftPadding: 13.w, rightPadding: 13.w, bottomPadding: 16.h, topPadding: 16.h,
+                ),
                 Row(
                   //todo EXP CVV TextFormField
                   children: [
                     Expanded(
                         child: CustomTextField(
-                            hintText: 'EXP', leftPadding: 15, rightPadding: 5)),
+                            hintText: 'EXP', leftPadding: 13.w, rightPadding: 5, bottomPadding: 16.h, topPadding: 16.h,
+                        ),
+                    ),
                     Expanded(
                         child: CustomTextField(
-                            hintText: 'CVV', leftPadding: 5, rightPadding: 15)),
+                            hintText: 'CVV', leftPadding: 5.w, rightPadding: 13.w, bottomPadding: 16.h, topPadding: 16.h,
+                        ),
+                    ),
                   ],
                 ),
                 SizedBox(
-                  height: height * .14,
+                  height: 100.h,
                 ),
-                LogButton(
-                  text: 'Add',
-                  backgroundColor: Color(0xff067fd0),
-                  textColor: Colors.white,
-                  onPressed: () {},
-                  radius: 5,
-                  width: 355,
-                  high: 53,
+                Center(
+                  child: LogButton(
+                    text: 'Add',
+                    backgroundColor: Color(0xff067fd0),
+                    textColor: Colors.white,
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethod()));
+                    },
+                    radius: 5.r,
+                    width: 295.w,
+                    high: 43.h,
+                  ),
                 ),
-
-                // TextFormField(
-                //   decoration: InputDecoration(
-                //     hintText: 'Enter your name',
-                //     border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(20)),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // TextFormField(
-                //   decoration: InputDecoration(
-                //     hintText: 'Enter your card number',
-                //     border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(20)),
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 30,
-                // ),
-                // Row(
-                //   children: [
-                //     Container(
-                //       width: 150,
-                //       height: 50,
-                //       child: TextFormField(
-                //         decoration: InputDecoration(
-                //             hintText: 'Exp Date',
-                //             border: OutlineInputBorder(
-                //                 borderRadius: BorderRadius.circular(15))),
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 40,
-                //     ),
-                //     Container(
-                //       width: 150,
-                //       height: 50,
-                //       child: TextFormField(
-                //         decoration: InputDecoration(
-                //           hintText: 'PIN number',
-                //           border: OutlineInputBorder(
-                //               borderRadius: BorderRadius.circular(15)),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: height * .240,
-                // ),
-                // Center(
-                //   child: LogButton(
-                //     text: 'Book',
-                //     backgroundColor: Color(0xff144272),
-                //     textColor: Colors.white,
-                //     onPressed: () {
-                //       // Navigator.push(context, MaterialPageRoute(builder: (context) => Payment2(),));
-                //     },
-                //     radius: 5,
-                //     width: 355,
-                //     high: 53,
-                //   ),
-                // ),
               ],
             ),
           ),

@@ -5,26 +5,33 @@ class CustomTextField extends StatelessWidget {
       {Key? key,
       required this.hintText,
       required this.leftPadding,
-      required this.rightPadding})
+      required this.rightPadding,
+      required this.bottomPadding,
+      required this.topPadding,
+
+      })
       : super(key: key);
 
   late double leftPadding;
   late double rightPadding;
+  late double bottomPadding;
+  late double topPadding;
   late String hintText;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        bottom: 20,
-        top: 20,
+        bottom: bottomPadding,
+        top: topPadding,
         left: leftPadding,
         right: rightPadding,
       ),
       child: TextFormField(
+
         decoration: InputDecoration(
             hintText: hintText,
-            fillColor: Colors.grey[290],
+            fillColor: Colors.grey[200],
             filled: true,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),

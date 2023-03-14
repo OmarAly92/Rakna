@@ -26,8 +26,10 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/park1.jpg'),
-                    fit: BoxFit.cover),
-              )),
+                    fit: BoxFit.cover,
+                ),
+              ),
+          ),
           // Positioned(
           //   left: 13,
           //   top: -40 + MediaQuery.of(context).padding.top,
@@ -247,8 +249,8 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 20),
                               decoration: (BoxDecoration(
-                                color: Colors.blue.shade900,
-                                borderRadius: BorderRadius.circular(10),
+                                color: Color(0xff067fd0),
+                                borderRadius: BorderRadius.circular(5),
                               )),
                               child: Text(
                                 'Book Now',

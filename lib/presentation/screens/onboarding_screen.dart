@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
+import 'package:rakna/utility/color.dart';
 
 class OnBoardingScreen extends StatefulWidget {
    OnBoardingScreen({Key? key}) : super(key: key);
-var titleColor = const Color(0xff144272);
+var titleColor = Colors.blue[800];
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
@@ -57,7 +58,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       //assets/images/E-Wallet-pana.png
       dotsDecorator: DotsDecorator(
         color: Colors.grey,
-        activeColor: Colors.indigo,
+        activeColor: kPrimaryColor,
         size: const Size(10, 10),
         activeSize: const Size(22, 10),
         activeShape:

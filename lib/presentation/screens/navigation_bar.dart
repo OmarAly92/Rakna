@@ -19,7 +19,7 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  List<Widget> _widgetOptions = <Widget>[
-    FeaturedScreen(),
+    HomeScreen(),
     Text(
       'Bookmark',
       style: optionStyle,

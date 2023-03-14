@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LogButton extends StatelessWidget {
   const LogButton({
@@ -34,7 +35,7 @@ class LogButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: TextStyle(color: textColor, fontSize: 18),
+          style: TextStyle(color: textColor, fontSize: 16.sp),
         ),
       ),
     );

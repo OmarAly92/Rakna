@@ -1,25 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:rakna/presentation/screens/slot_selection.dart';
 
 class SlotPlace extends StatefulWidget {
-  const SlotPlace(
+   SlotPlace(
       {Key? key,
       required this.name1,
       required this.textName,
       required this.name2,
-      required this.color})
+        required this.color1,
+        required this.color2,
+        required this.onTap,
+        required this.tap,
+      })
       : super(key: key);
   final String name1;
   final String name2;
   final String textName;
-  final Color color;
+  final Color color1;
+  final Color color2;
+  final GestureTapCallback onTap;
+  final bool tap;
 
   @override
   State<SlotPlace> createState() => _SlotPlaceState();
 }
 
 class _SlotPlaceState extends State<SlotPlace> {
-  late bool inkWell1 = false;
-  late bool inkWell2 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +36,8 @@ class _SlotPlaceState extends State<SlotPlace> {
           child: InkWell(
             child: Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.indigo.shade800),
-                  color: inkWell1 == true?Colors.yellow.shade900:widget.color,
+                  border: Border.all(color: Colors.blue.shade600),
+                  color: widget.tap == true?widget.color2:widget.color1,
                   borderRadius: BorderRadius.circular(5)),
               width: 84,
               height: 36,
@@ -42,10 +48,7 @@ class _SlotPlaceState extends State<SlotPlace> {
                 ),
               ),
             ),
-            onTap: () {
-              inkWell1 = !inkWell1;
-              setState(() {});
-            },
+            onTap: widget.onTap
           ),
         ),
         Padding(
@@ -60,8 +63,8 @@ class _SlotPlaceState extends State<SlotPlace> {
           child: InkWell(
             child: Container(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.indigo.shade800),
-                  color: inkWell2 == true?Colors.yellow.shade900: widget.color,
+                  border: Border.all(color: Colors.blue.shade600),
+                  color: widget.tap == true?widget.color2: widget.color1,
                   borderRadius: BorderRadius.circular(5)),
               width: 84,
               height: 36,
@@ -72,13 +75,19 @@ class _SlotPlaceState extends State<SlotPlace> {
                 ),
               ),
             ),
-            onTap: () {
-              inkWell2 = !inkWell2;
-              setState(() {});
-            },
+            onTap: widget.onTap
           ),
         ),
       ],
     );
   }
 }
+
+//onTap 1
+
+
+
+
+
+
+//onTap 2

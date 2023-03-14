@@ -1,27 +1,30 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_selection.dart';
 
 import '../../utility/category.dart';
 import '../../utility/color.dart';
+import '../../utility/dummy_parking_data.dart';
 import '../components/appbar.dart';
 import '../components/category_card.dart';
 
-class FeaturedScreen extends StatefulWidget {
-  const FeaturedScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _FeaturedScreenState createState() => _FeaturedScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _FeaturedScreenState extends State<FeaturedScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: Column(
-          children:  [
+          children: [
             AppBarCustom(),
             Body(),
           ],
@@ -40,68 +43,118 @@ class Body extends StatelessWidget {
     late double width = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Explore nearby parking",
-                style: Theme.of(context).textTheme.bodyLarge,
+        Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Explore nearby parking",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ParkingSelection(),
+                          ));
+                    },
+                    child: Text(
+                      "See All",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: kPrimaryColor),
+                    ),
+                  )
+                ],
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingSelection(),));
-                },
-                child: Text(
-                  "See All",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: kPrimaryColor),
-                ),
-              )
-            ],
-          ),
-        ),
-        SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 15),
-                child: SizedBox(
-                  width: 300,
-                  child: CategoryCard(
-                    category: Category(
-                        parkingName: 'Parking name',
-                        parkingLocation: 'Parking location',
-                        parkImage: 'assets/images/park1.jpg',
-                        parkPrice: '10/Hours'), widthBookmark: width * .053, widthPrice: width * .17,
+            ),
+            SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                  2,
+                      (index) => Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    child: SizedBox(
+                      // width: 300,
+                      child: CategoryCard(
+                        category: Category(
+                          parkingName: Dummy().dummy[index].parkName,
+                          parkingLocation: Dummy().dummy[index].parkLocation,
+                          parkImage: Dummy().dummy[index].parkImage,
+                          parkPrice: '10/Hours',
+                        ),
+                        widthBookmark: 60.w,
+                        widthPrice: 75.w,
+                      ),
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding:  EdgeInsets.symmetric(horizontal: 10),
-                child: SizedBox(
-                    width: 300,
-                    child: CategoryCard(
-                      category: Category(
-                          parkingName: 'Parking name',
-                          parkingLocation: 'Parking location',
-                          parkImage: 'assets/images/park1.jpg',
-                          parkPrice: '10/Hours'), widthBookmark: width * .053, widthPrice: width * .17,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Previous parking",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => ParkingSelection()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ParkingSelection(),
+                          ));
+                    },
+                    child: Text(
+                      "See All",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: kPrimaryColor),
                     ),
+                  ),
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                  2,
+                  (index) => Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w),
+                    child: SizedBox(
+                      // width: 300,
+                      child: CategoryCard(
+                        category: Category(
+                          parkingName: Dummy().dummy[index].parkName,
+                          parkingLocation: Dummy().dummy[index].parkLocation,
+                          parkImage: Dummy().dummy[index].parkImage,
+                          parkPrice: '10/Hours',
+                        ),
+                        widthBookmark: 60.w,
+                        widthPrice: 75.w,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ],
-          ),
-        )
+            ),
+          ],
+        ),
       ],
     );
   }
 }
-
-
-

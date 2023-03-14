@@ -53,7 +53,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               width: 35,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Color(0xff1C82AD),
+                                color: Color(0xff067fd0),
                               ),
                               child: Icon(
                                 Icons.edit,

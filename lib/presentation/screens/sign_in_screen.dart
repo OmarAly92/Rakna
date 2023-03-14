@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/components/LogButton_Widget.dart';
 import 'package:rakna/presentation/screens/old1H.dart';
 import 'package:rakna/presentation/screens/sign_up_screen.dart';
 
+import '../../utility/color.dart';
 import 'navigation_bar.dart';
 
 class SignIn extends StatefulWidget {
@@ -15,7 +17,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   late double height, width;
   Color color = const Color.fromRGBO(2, 32, 42, .82);
-
+  // Color colors = Colors.blue.shade900.withOpacity(.82);
   @override
   Widget build(BuildContext context) {
     bool eye = true;
@@ -52,11 +54,11 @@ class _SignInState extends State<SignIn> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(
-                          top: height * .24,
+                          top: 170.h
                         ),
                         child: Container(
-                          height: 120,
-                          width: 120,
+                          height: 95.h,
+                          width: 105.w,
                           decoration: BoxDecoration(
                               color: Colors.yellow.shade700,
                               borderRadius:
@@ -69,12 +71,12 @@ class _SignInState extends State<SignIn> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            top: 15, left: width * .224, right: width * .224),
-                        child: const Text(
+                            top: 10.h, left: 75.w, right: 75.w),
+                        child:  Text(
                           'Welcome Back!',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 30,
+                              fontSize: 25.8.sp,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -90,25 +92,25 @@ class _SignInState extends State<SignIn> {
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(50))),
+                            BorderRadius.only(topLeft: Radius.circular(50),),),
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                              right: 22.w, left: 22.w, top: 35.h),
                           child: TextFormField(
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                               labelText: "Email Address",
                               labelStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 15,
+                                fontSize: 13.sp,
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              right: 25, left: 25, top: 40),
+                          padding:  EdgeInsets.only(
+                              right: 22.w, left: 22.w, top: 35.h),
                           child: TextFormField(
                             obscureText: true,
                             decoration: InputDecoration(
@@ -124,30 +126,31 @@ class _SignInState extends State<SignIn> {
                               labelText: "Password",
                               labelStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
-                                fontSize: 15,
+                                fontSize: 13.sp,
                               ),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 250, top: 14),
+                          padding:  EdgeInsets.only(left: 230.w, top: 10.h),
                           child: TextButton(
                             onPressed: () {},
-                            child:  const Text(
+                            child:   Text(
                               'Forgot Password?',
-                              style: TextStyle(color: Color(0xff144272)),
+                              style: TextStyle(color: kPrimaryColor,
+                              fontSize: 12.5.sp),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
                           child: LogButton(
                             text: 'Sign in',
-                            backgroundColor: Color(0xff1C82AD),
+                            backgroundColor: kPrimaryColor,
                             textColor: Colors.white,
-                            radius: 15,
-                            width: 350,
-                            high: 60,
+                            radius: 15.r,
+                            width: 305.w,
+                            high: 50.h,
                             onPressed: () {
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(),));
                             },
@@ -155,7 +158,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              left: width * .213, right: width * .213, top: 14),
+                              left: 72.w, right: 72.w, top: 10.h),
                           child: TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -164,16 +167,17 @@ class _SignInState extends State<SignIn> {
                                       builder: (context) => const SignUp()));
                             },
                             child: Row(
-                              children: const [
+                              children:  [
                                 Text(
                                   'Don\'t have an account?',
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.black,fontSize: 12.5.sp),
                                 ),
                                 Text(
                                   ' SIGN UP',
                                   style: TextStyle(
-                                    color: Color(0xff144272),
+                                    color: kPrimaryColor,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 12.5.sp
                                   ),
                                 ),
                               ],

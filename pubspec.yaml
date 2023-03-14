@@ -43,12 +43,15 @@ dependencies:
   shimmer: ^2.0.0
   cached_network_image: ^3.2.2
   google_fonts: ^3.0.1
-
+  flutter_ringtone_player: ^3.2.0
   flutter_svg: ^0.19.1
   smooth_star_rating: ^1.1.1
   percent_indicator: ^4.2.2
   awesome_card: ^1.1.0
   im_stepper: ^0.1.2+10
+  equatable: ^2.0.5
+  dio: ^4.0.6
+  flutter_screenutil: ^5.6.1
 
 
 
