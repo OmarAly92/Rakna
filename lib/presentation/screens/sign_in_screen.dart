@@ -4,7 +4,7 @@ import 'package:rakna/presentation/components/LogButton_Widget.dart';
 import 'package:rakna/presentation/screens/old1H.dart';
 import 'package:rakna/presentation/screens/sign_up_screen.dart';
 
-import '../../utility/color.dart';
+import '../../core/utility/color.dart';
 import 'navigation_bar.dart';
 
 class SignIn extends StatefulWidget {
@@ -164,7 +164,7 @@ class _SignInState extends State<SignIn> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SignUp()));
+                                      builder: (context) =>  SignUp()));
                             },
                             child: Row(
                               children:  [

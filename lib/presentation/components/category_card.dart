@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utility/category.dart';
-import '../../utility/color.dart';
-import '../../utility/size.dart';
+import '../../core/utility/category.dart';
+import '../../core/utility/color.dart';
+import '../../core/utility/size.dart';
 import '../screens/parking_detail.dart';
 
 class CategoryCard extends StatefulWidget {
@@ -15,8 +15,8 @@ class CategoryCard extends StatefulWidget {
       : super(key: key);
   final Category category;
   late bool bookmark = true;
-  double widthBookmark;
-  double widthPrice;
+  final double widthBookmark;
+  final double widthPrice;
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -30,10 +30,11 @@ class _CategoryCardState extends State<CategoryCard> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ParkingDetail1(),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => widget.category.nextScreen,///todo page detail
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(10),
@@ -68,7 +69,7 @@ class _CategoryCardState extends State<CategoryCard> {
                       ),
                     ),
                     Padding(
-                      padding:  EdgeInsets.only(top: 3.h, bottom: 0, left: 10.h),
+                      padding: EdgeInsets.only(top: 3.h, bottom: 0, left: 10.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -107,7 +108,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                 width: widget.widthPrice,
                               ),
                               Text(
-                                'E£10/Hours',
+                                widget.category.parkPrice,
                                 style: TextStyle(color: kPrimaryColor),
                               ),
                             ],

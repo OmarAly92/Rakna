@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rakna/data/data_source/remote_data_source.dart';
+import 'package:rakna/data/repository/parking_repository.dart';
+import 'package:rakna/domain/repository/base_parking_repository.dart';
 import 'package:rakna/presentation/screens/book_screen.dart';
 import 'package:rakna/presentation/screens/dashboard.dart';
 import 'package:rakna/presentation/screens/hom.dart';
@@ -18,10 +21,14 @@ import 'package:rakna/presentation/screens/splash_screen.dart';
 import 'package:rakna/presentation/screens/summary_screen.dart';
 import 'package:rakna/team2/payment_method.dart';
 import 'package:rakna/presentation/screens/add_payment.dart';
-import 'package:rakna/team2/reservation_parking_place.dart';
+import 'package:rakna/presentation/screens/reservation_parking_place.dart';
 
-void main() {
+import 'core/services/services_locator.dart';
+import 'domain/usecase/get_parking_usecase.dart';
+
+void main()async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  ServicesLocator().init();
   runApp(const MyApp());
 }
 
@@ -61,7 +68,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: HomeScreen(),
+            home: ReservationParkingPlace(parkId: 1),
           );
         });
   }

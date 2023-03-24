@@ -1,5 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:rakna/domain/repository/base_parking_repository.dart';
 
+import '../../core/local_error/exceptions.dart';
+import '../entities/movies_entities.dart';
 import '../entities/parking.dart';
 
 class GetParkingUseCase {
@@ -7,8 +10,7 @@ class GetParkingUseCase {
 
   GetParkingUseCase(this.baseParkingRepository);
 
-  Future<List<Parking>> call()async{
+  Future<Either<LocalException, List<Parking>>> call() async {
     return await baseParkingRepository.getParking();
   }
-
 }

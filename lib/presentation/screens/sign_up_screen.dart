@@ -3,24 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
-import '../../utility/color.dart';
+import '../../core/utility/color.dart';
+import '../../data/data_source/remote_data_source.dart';
 import '../components/LogButton_Widget.dart';
 import 'old1H.dart';
 import 'navigation_bar.dart';
 
 class SignUp extends StatelessWidget {
-  const SignUp({Key? key}) : super(key: key);
+  SignUp({Key? key}) : super(key: key);
 
-  // final _formKey = GlobalKey<FormState>();
-  // final TextEditingController _controllerEmail = TextEditingController();
-  // final TextEditingController _controllerPassword = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double height, width;
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    Color color =  Colors.blue.shade800;
+    Color color = Colors.blue.shade800;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -38,18 +43,18 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.only(top: 35.h, left: 12.w),
+                    padding: EdgeInsets.only(top: 35.h, left: 12.w),
                     child: Row(
                       children: [
                         Padding(
-                          padding:  EdgeInsets.only(top: 1.h,right: 5.w),
+                          padding: EdgeInsets.only(top: 1.h, right: 5.w),
                           child: InkWell(
                             onTap: () {},
                             child: InkWell(
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child:  Icon(
+                              child: Icon(
                                 CupertinoIcons.arrow_left_circle_fill,
                                 color: Colors.white,
                                 size: 40.r,
@@ -57,7 +62,7 @@ class SignUp extends StatelessWidget {
                             ),
                           ),
                         ),
-                         Text(
+                        Text(
                           'Create Account',
                           style: TextStyle(
                               color: Colors.white,
@@ -74,18 +79,39 @@ class SignUp extends StatelessWidget {
                   ),
                   child: Container(
                     height: height * .9,
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(50.r))),
                     child: Column(
                       children: [
                         Padding(
-                          padding:  EdgeInsets.only(
-                              right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
-                            decoration:  InputDecoration(
+                            controller: userNameController,
+                            decoration: InputDecoration(
+                              labelText: "Name",
+                              labelStyle: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black54,
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
+                          ),
+                          child: TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
                               labelText: "Email Address",
                               labelStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
@@ -96,11 +122,14 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
-                            decoration:  InputDecoration(
+                            controller: phoneNumberController,
+                            decoration: InputDecoration(
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Phone Number",
                                 labelStyle: TextStyle(
@@ -112,11 +141,14 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
-                            decoration:  InputDecoration(
+                            controller: ageController,
+                            decoration: InputDecoration(
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Age",
                                 labelStyle: TextStyle(
@@ -128,11 +160,14 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
-                            decoration:  InputDecoration(
+                            controller: passwordController,
+                            decoration: InputDecoration(
                                 suffixIcon: Icon(Icons.remove_red_eye),
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Password",
@@ -145,11 +180,14 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
-                            decoration:  InputDecoration(
+                            controller: confirmPasswordController,
+                            decoration: InputDecoration(
                                 suffixIcon: Icon(Icons.remove_red_eye),
                                 // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: "Confirm Password",
@@ -162,7 +200,7 @@ class SignUp extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(bottom: 8.h, top: 50.h),
+                          padding: EdgeInsets.only(bottom: 8.h, top: 50.h),
                           child: LogButton(
                             text: 'Sign up',
                             backgroundColor: kPrimaryColor,
@@ -171,7 +209,19 @@ class SignUp extends StatelessWidget {
                             width: 305.w,
                             high: 50.h,
                             onPressed: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(),));
+                              ParkingRemoteDataSource().postDio(
+                                userName: userNameController.text,
+                                age: int.parse(ageController.text),
+                                email: emailController.text,
+                                password: passwordController.text,
+                                confirmPassword: confirmPasswordController.text,
+                                phoneNumber: phoneNumberController.text,
+                              );
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => NavigationBarScreen(),
+                                  ));
                             },
                           ),
                         ),
@@ -186,7 +236,7 @@ class SignUp extends StatelessWidget {
                                       builder: (context) => const SignIn()));
                             },
                             child: Row(
-                              children:  [
+                              children: [
                                 Text(
                                   'Already have an account?',
                                   style: TextStyle(color: Colors.black),

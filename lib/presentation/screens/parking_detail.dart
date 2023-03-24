@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rakna/presentation/screens/slot_selection.dart';
-import '../../utility/color.dart';
+import '../../core/utility/color.dart';
 
 class ParkingDetail1 extends StatefulWidget {
-  const ParkingDetail1({Key? key}) : super(key: key);
+   ParkingDetail1({
+    Key? key,
+    required this.parkName,
+    required this.parkLocation,
+    required this.parkPrice,
+    required this.parkImage,
+  }) : super(key: key);
+  String parkName;
+  String parkLocation;
+  String parkPrice;
+  String parkImage;
 
   @override
   State<ParkingDetail1> createState() => _ParkingDetail1State();
@@ -21,14 +31,14 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
       body: Stack(
         children: [
           Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * .6,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/images/park1.jpg'),
-                    fit: BoxFit.cover,
-                ),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .6,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(widget.parkImage),
+                fit: BoxFit.cover,
               ),
+            ),
           ),
           // Positioned(
           //   left: 13,
@@ -80,7 +90,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Abbas El-Akkad Parking',
+                            widget.parkName,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
@@ -96,7 +106,8 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                                   : Icons.bookmark_added,
                               color: kPrimaryColor,
                               size: 35,
-                            )),
+                            ),
+                        ),
                       ],
                     ),
                   ),
@@ -104,7 +115,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                     padding:
                         const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                     child: Text(
-                      'Parking Location',
+                      widget.parkLocation,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
@@ -152,52 +163,52 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                     height: height * .3,
                   ),
                   Expanded(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Container(
-                      //   height: 49,
-                      //   width: 49,
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.blue.shade900,
-                      //       // Color.fromRGBO(228, 228, 228, 1),
-                      //       borderRadius: BorderRadius.circular(10),
-                      //   ),
-                      //   child: Center(
-                      //     child: Text(
-                      //       '-',
-                      //       style: GoogleFonts.ptSans(
-                      //           fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   height: 49,
-                      //   width: 100,
-                      //   child: Center(
-                      //     child: Text(
-                      //       '1',
-                      //       style: GoogleFonts.ptSans(
-                      //           fontSize: 20, fontWeight: FontWeight.bold),
-                      //     ),
-                      //   ),
-                      // ),
-                      // Container(
-                      //   height: 49,
-                      //   width: 49,
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.blue.shade900,
-                      //       borderRadius: BorderRadius.circular(10)),
-                      //   child: Center(
-                      //     child: Text(
-                      //       '+',
-                      //       style: GoogleFonts.ptSans(
-                      //           fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
-                  ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Container(
+                        //   height: 49,
+                        //   width: 49,
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.blue.shade900,
+                        //       // Color.fromRGBO(228, 228, 228, 1),
+                        //       borderRadius: BorderRadius.circular(10),
+                        //   ),
+                        //   child: Center(
+                        //     child: Text(
+                        //       '-',
+                        //       style: GoogleFonts.ptSans(
+                        //           fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
+                        //     ),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 49,
+                        //   width: 100,
+                        //   child: Center(
+                        //     child: Text(
+                        //       '1',
+                        //       style: GoogleFonts.ptSans(
+                        //           fontSize: 20, fontWeight: FontWeight.bold),
+                        //     ),
+                        //   ),
+                        // ),
+                        // Container(
+                        //   height: 49,
+                        //   width: 49,
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.blue.shade900,
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child: Center(
+                        //     child: Text(
+                        //       '+',
+                        //       style: GoogleFonts.ptSans(
+                        //           fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
+                        //     ),
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
@@ -226,7 +237,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                               style: GoogleFonts.ptSans(
                                   fontSize: 14, color: Colors.black),
                             ),
-                            Text('10 E£',
+                            Text('${widget.parkPrice} E£',
                                 style: GoogleFonts.ptSans(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,

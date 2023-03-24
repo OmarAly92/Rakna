@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utility/color.dart';
+import '../../core/utility/color.dart';
 
 
 class SearchTextField extends StatelessWidget {

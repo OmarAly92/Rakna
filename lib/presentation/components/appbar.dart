@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utility/color.dart';
+import '../../core/utility/color.dart';
 import 'circle_button.dart';
 import 'search_testfield.dart';
 

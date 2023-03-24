@@ -4,11 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/components/custom_text_form.dart';
 import 'package:rakna/team2/payment_method.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../presentation/components/LogButton_Widget.dart';
-import '../presentation/screens/add_payment.dart';
+import '../components/LogButton_Widget.dart';
+import 'add_payment.dart';
 
 class ReservationParkingPlace extends StatefulWidget {
-  const ReservationParkingPlace({Key? key}) : super(key: key);
+  ReservationParkingPlace({Key? key, required this.parkId}) : super(key: key);
+  final int parkId;
+  int hour = 1;
 
   @override
   State<ReservationParkingPlace> createState() =>
@@ -24,20 +26,26 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
     });
   }
 
+  DateTime addHours() {
+    var hour = Duration(hours: widget.hour);
+
+    var date = DateTime.parse(_date1.text);
+    final DateTime endHours = date.add(hour);
+    return endHours;
+  }
+
   final TextEditingController _date1 = TextEditingController();
 
   // final TextEditingController _date2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    int hours = 1;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 20, left: 20, right: 20,top: 10),
+            padding:
+                const EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -75,12 +83,12 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                         color: Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(10.r)),
                     child: Padding(
-                      padding:  EdgeInsets.only(
+                      padding: EdgeInsets.only(
                           left: 13.w, right: 13.w, top: 13.w, bottom: 13.w),
                       child: TableCalendar(
                         locale: 'en_US',
                         rowHeight: 40.r,
-                        headerStyle:  HeaderStyle(
+                        headerStyle: HeaderStyle(
                             formatButtonVisible: false,
                             rightChevronVisible: false,
                             leftChevronVisible: false,
@@ -93,8 +101,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                 borderRadius: BorderRadius.circular(20.r))),
                         headerVisible: true,
                         availableGestures: AvailableGestures.all,
-                        selectedDayPredicate: (day) =>
-                            isSameDay(day, today),
+                        selectedDayPredicate: (day) => isSameDay(day, today),
                         focusedDay: today,
                         firstDay: DateTime.utc(2023, 1, 1),
                         lastDay: DateTime.utc(2030, 3, 14),
@@ -140,15 +147,13 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                 suffixIcon: InkWell(
                                   borderRadius: BorderRadius.circular(10.r),
                                   onTap: () async {
-                                    TimeOfDay? pickTime =
-                                        await showTimePicker(
-                                            context: context,
-                                            initialTime: TimeOfDay.now());
+                                    TimeOfDay? pickTime = await showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now());
                                     if (pickTime != null) {
                                       setState(() {
-                                        _date1.text = pickTime
-                                            .format(context)
-                                            .toString();
+                                        _date1.text =
+                                            pickTime.format(context).toString();
                                       });
                                     }
                                   },
@@ -187,7 +192,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               borderRadius: BorderRadius.circular(10.r),
                             ),
                             child: Padding(
-                              padding:  EdgeInsets.all(7.0.r),
+                              padding: EdgeInsets.all(7.0.r),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -195,25 +200,23 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                   InkWell(
                                       onTap: () {
                                         setState(() {
-                                          hours -= 1;
-                                          print(
-                                              '$hours  sadfasdasdsadsadsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                                          widget.hour == 1
+                                              ? widget.hour = 1
+                                              : widget.hour--;
                                         });
                                       },
                                       child: Icon(CupertinoIcons.minus)),
                                   Text(
-                                    hours.toString(),
+                                    '${widget.hour}',
                                     style: TextStyle(fontSize: 19),
                                   ),
-                                  InkWell(
-                                      onTap: () {
+                                  IconButton(
+                                      onPressed: () {
                                         setState(() {
-                                          hours += 1;
-                                          print(
-                                              '$hours  sadfasdasdsadsadsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                                          widget.hour++;
                                         });
                                       },
-                                      child: Icon(CupertinoIcons.add)),
+                                      icon: Icon(CupertinoIcons.add)),
                                 ],
                               ),
                             ),
@@ -255,27 +258,25 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                     borderRadius: BorderRadius.circular(10.r),
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.only(
+                    padding: EdgeInsets.only(
                         left: 13.w, right: 13.w, top: 22.w, bottom: 18.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding:  EdgeInsets.all(7.0.r),
+                          padding: EdgeInsets.all(7.0.r),
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Duration'),
-                              Text('3 hours'),
+                              Text('${widget.hour}'),
                             ],
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.all(7.0.r),
+                          padding: EdgeInsets.all(7.0.r),
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Date'),
                               Text('${today.toString().split(' ')[0]}'),
@@ -283,22 +284,20 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.all(7.0.r),
+                          padding: EdgeInsets.all(7.0.r),
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Hours'),
-                              Text('12:00 PM - 15:00 PM'),
+                              Text('${_date1.text} - 15:00 PM'),
                             ],
                           ),
                         ),
                         Divider(color: Colors.grey, thickness: .6),
                         Padding(
-                          padding:  EdgeInsets.all(7.0.r),
+                          padding: EdgeInsets.all(7.0.r),
                           child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Amount'),
                               Text('E£30.00'),
