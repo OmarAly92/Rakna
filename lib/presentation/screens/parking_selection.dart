@@ -11,7 +11,8 @@ import '../components/appbar.dart';
 import '../components/circle_button.dart';
 import '../components/search_testfield.dart';
 import '../components/category_card.dart';
-import '../controller/get_parking_data_bloc.dart';
+import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
+import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
 
 class ParkingSelection extends StatefulWidget {
   const ParkingSelection({Key? key}) : super(key: key);

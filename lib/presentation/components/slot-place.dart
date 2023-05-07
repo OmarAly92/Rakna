@@ -11,14 +11,19 @@ class SlotPlace extends StatefulWidget {
     required this.onTap,
     required this.onSelectedIndex,
     required this.index,
+    required this.isAvailable,
+    required this.notAvailableColor,
   }) : super(key: key);
   final String name1;
   final String textName;
   final Color color1;
   final Color color2;
+  final Color notAvailableColor;
   final GestureTapCallback onTap;
   final int onSelectedIndex;
   final int index;
+  final bool isAvailable;
+
 
   @override
   State<SlotPlace> createState() => _SlotPlaceState();
@@ -33,10 +38,10 @@ class _SlotPlaceState extends State<SlotPlace> {
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
               onTap: widget.onTap,
-              child: Container(
+              child: widget.isAvailable == true ?Container(
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.blue.shade600),
-                    color: widget.onSelectedIndex == widget.index ? widget.color2 : widget.color1,
+                    color: widget.onSelectedIndex == widget.index? widget.color2 : widget.color1,
                     borderRadius: BorderRadius.circular(5)),
                 width: 84,
                 height: 36,
@@ -46,7 +51,20 @@ class _SlotPlaceState extends State<SlotPlace> {
                     style: TextStyle(color: Colors.white.withOpacity(.85)),
                   ),
                 ),
-              )),
+              ): Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue.shade600),
+                    color: widget.notAvailableColor,
+                    borderRadius: BorderRadius.circular(5)),
+                width: 84,
+                height: 36,
+                child: Center(
+                  child: Text(
+                    widget.name1,
+                    style: TextStyle(color: Colors.white.withOpacity(.85)),
+                  ),
+                ),
+              ),  ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

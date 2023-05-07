@@ -1,6 +1,7 @@
-part of 'get_parking_data_bloc.dart';
+import 'package:equatable/equatable.dart';
 
-
+import '../../../core/utility/enums.dart';
+import '../../../domain/entities/movies_entities.dart';
 
 class ParkingState extends Equatable {
   final List<Parking> parking;

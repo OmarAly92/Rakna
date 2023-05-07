@@ -209,7 +209,7 @@ class SignUp extends StatelessWidget {
                             width: 305.w,
                             high: 50.h,
                             onPressed: () {
-                              ParkingRemoteDataSource().postDio(
+                              ParkingRemoteDataSource().postSignUp(
                                 userName: userNameController.text,
                                 age: int.parse(ageController.text),
                                 email: emailController.text,

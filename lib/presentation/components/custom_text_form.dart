@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
       required this.rightPadding,
       required this.bottomPadding,
       required this.topPadding,
+       required this.controller
 
       })
       : super(key: key);
@@ -17,6 +18,7 @@ class CustomTextField extends StatelessWidget {
   late double bottomPadding;
   late double topPadding;
   late String hintText;
+  late TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class CustomTextField extends StatelessWidget {
         right: rightPadding,
       ),
       child: TextFormField(
+        controller: controller,
 
         decoration: InputDecoration(
             hintText: hintText,

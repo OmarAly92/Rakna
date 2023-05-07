@@ -7,7 +7,8 @@ import 'package:rakna/presentation/screens/book_screen.dart';
 import '../../team2/payment_method.dart';
 
 class AddPayment extends StatelessWidget {
-  const AddPayment({super.key});
+   AddPayment({super.key});
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -166,22 +167,22 @@ class AddPayment extends StatelessWidget {
                     ],
                   ),
                 ),
-                CustomTextField(
+                CustomTextField(controller: controller,///todo make controller for every one
                     hintText: 'Card Holder', leftPadding: 13.w, rightPadding: 13.w, bottomPadding: 16.h, topPadding: 16.h,
                 ),
-                CustomTextField(
+                CustomTextField(controller: controller,
                     hintText: 'Card number', leftPadding: 13.w, rightPadding: 13.w, bottomPadding: 16.h, topPadding: 16.h,
                 ),
                 Row(
                   //todo EXP CVV TextFormField
                   children: [
                     Expanded(
-                        child: CustomTextField(
+                        child: CustomTextField(controller: controller,
                             hintText: 'EXP', leftPadding: 13.w, rightPadding: 5, bottomPadding: 16.h, topPadding: 16.h,
                         ),
                     ),
                     Expanded(
-                        child: CustomTextField(
+                        child: CustomTextField(controller: controller,
                             hintText: 'CVV', leftPadding: 5.w, rightPadding: 13.w, bottomPadding: 16.h, topPadding: 16.h,
                         ),
                     ),

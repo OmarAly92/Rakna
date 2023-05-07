@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:rakna/core/local_error/exceptions.dart';
 import 'package:rakna/domain/entities/parking.dart';
+import 'package:rakna/domain/entities/parking_slot_entities.dart';
 import 'package:rakna/domain/repository/base_parking_repository.dart';
 
 import '../../domain/entities/movies_entities.dart';
@@ -21,11 +22,21 @@ class ParkingRepository extends BaseParkingRepository {
           statusMessage: 'Error imp repository', success: false));
     }
   }
+  @override
+  Future<Either<LocalException, List<ParkingSlot>>> getParkingSlot() async{
+    final result = await baseRemoteDataSource.getParkingSlot();
+    try {
+      return Right(result);
+    } on LocalException catch (e) {
+      return left(LocalException(
+          statusMessage: 'Error imp repository', success: false));
+    }
+  }
 
   @override
   void postDio(String userName, int age, String email, String password,
       String confirmPassword, String phoneNumber) {
-    baseRemoteDataSource.postDio(
+    baseRemoteDataSource.postSignUp(
         userName: userName,
         age: age,
         email: email,
@@ -33,4 +44,6 @@ class ParkingRepository extends BaseParkingRepository {
         confirmPassword: confirmPassword,
         phoneNumber: phoneNumber);
   }
+
+
 }

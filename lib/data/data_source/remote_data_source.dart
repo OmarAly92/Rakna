@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:rakna/data/model/parking_model.dart';
+import 'package:rakna/data/model/parking_slot_model.dart';
 
 import '../../core/local_error/exceptions.dart';
 import '../model/movies_model.dart';
@@ -7,7 +8,9 @@ import '../model/movies_model.dart';
 abstract class BaseRemoteDataSource {
   Future<List<ParkingModel>> getParking();
 
-  void postDio({
+  Future<List<ParkingSlotModel>> getParkingSlot();
+
+  void postSignUp({
     required String userName,
     required int age,
     required String email,
@@ -32,7 +35,19 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void postDio({
+  Future<List<ParkingSlotModel>> getParkingSlot() async {
+    final Response response = await Dio().get(''); //todo put api url here
+    print('${response.statusCode}');
+    if (response.statusCode == 200) {
+      return List<ParkingSlotModel>.from(
+          (response.data as List).map((e) => ParkingModel.fromJson(e)));
+    } else {
+      throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+    }
+  }
+
+  @override
+  void postSignUp({
     required String userName,
     required int age,
     required String email,

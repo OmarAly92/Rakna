@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/components/custom_text_form.dart';
 import 'package:rakna/team2/payment_method.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:time/time.dart';
 import '../components/LogButton_Widget.dart';
 import 'add_payment.dart';
 
@@ -18,7 +19,14 @@ class ReservationParkingPlace extends StatefulWidget {
 }
 
 class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
-  DateTime today = DateTime.now();
+   TextEditingController controller = TextEditingController();
+
+  int startHourHours = 0;
+  int startHourMinutes = 0;
+  String startHour = '';
+  String endHour = '';
+  late DateTime today =
+      DateTime.utc(2023, 1, 1, startHourHours, startHourMinutes);
 
   void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
@@ -26,15 +34,21 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
     });
   }
 
-  DateTime addHours() {
-    var hour = Duration(hours: widget.hour);
-
-    var date = DateTime.parse(_date1.text);
-    final DateTime endHours = date.add(hour);
-    return endHours;
+  String dateTimeFormat(
+      {required int inDays,
+      required int inHours,
+      required inMinutes,
+      required int inSeconds}) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final String twoDigitMinutes = twoDigits(inMinutes.remainder(60));
+    final String twoDigitSeconds = twoDigits(inSeconds.remainder(60));
+    final String twoDigitDays = twoDigits(inDays.remainder(24));
+    final hour = twoDigits(inHours);
+    return "${DateTime.now().year}-${(DateTime.now().month).toString().padLeft(2, '0')}-$twoDigitDays ${hour == '00' ? '' : hour + ':'}$twoDigitMinutes:$twoDigitSeconds";
   }
 
   final TextEditingController _date1 = TextEditingController();
+  Duration g = Duration();
 
   // final TextEditingController _date2 = TextEditingController();
 
@@ -154,10 +168,55 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                       setState(() {
                                         _date1.text =
                                             pickTime.format(context).toString();
+                                        var x = pickTime.period;
+                                        startHourHours = pickTime.hour;
+                                        startHourMinutes = pickTime.minute;
+                                        print("$startHourHours hours");
+                                        print('$startHourMinutes minutes');
+                                        print(x.name);
+                                        // 1900-01-01 00:00
+                                        // String sDuration = "${duration.inHours}:${duration.inMinutes.remainder(60)}:${(duration.inSeconds.remainder(60))}";
+
+                                        g = today
+                                                .add((Duration(
+                                                    hours: startHourHours,
+                                                    minutes: startHourMinutes)))
+                                                .hour
+                                                .minutes +
+                                            (today.add(Duration(
+                                                    hours: startHourHours,
+                                                    minutes: startHourMinutes)))
+                                                .minute
+                                                .seconds +
+                                            Duration(minutes: widget.hour);
+                                        print('$g');
+                                        print('1900-01-01 00:00');
+                                        print((dateTimeFormat(
+                                                inDays: 1,
+                                                inHours: startHourHours,
+                                                inMinutes: startHourMinutes,
+                                                inSeconds: 2)
+                                            .substring(11)
+                                            .substring(0, 5)));
+                                        startHour = dateTimeFormat(
+                                                inDays: 1,
+                                                inHours: startHourHours,
+                                                inMinutes: startHourMinutes,
+                                                inSeconds: 2)
+                                            .substring(11)
+                                            .substring(0, 5);
+                                        endHour = dateTimeFormat(
+                                                inDays: 1,
+                                                inHours: startHourHours +
+                                                    widget.hour,
+                                                inMinutes: startHourMinutes,
+                                                inSeconds: 2)
+                                            .substring(11)
+                                            .substring(0, 5);
                                       });
                                     }
                                   },
-                                  child: Icon(Icons.access_time_rounded),
+                                  child: const Icon(Icons.access_time_rounded),
                                 ),
                               ),
                             ),
@@ -237,7 +296,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(10.r),
                   ),
-                  child: CustomTextField(
+                  child: CustomTextField(controller:controller ,///todo check this later
                     hintText: 'Coupon',
                     leftPadding: 0,
                     rightPadding: 0,
@@ -268,7 +327,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Duration'),
+                              const Text('Duration'),
                               Text('${widget.hour}'),
                             ],
                           ),
@@ -289,7 +348,8 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Hours'),
-                              Text('${_date1.text} - 15:00 PM'),
+                              Text(
+                                  '${dateTimeFormat(inDays: 1, inHours: startHourHours, inMinutes: startHourMinutes, inSeconds: 2).substring(11).substring(0, 5)}  - ${dateTimeFormat(inDays: 1, inHours: startHourHours + widget.hour, inMinutes: startHourMinutes, inSeconds: 2).substring(11).substring(0, 5)}')
                             ],
                           ),
                         ),
@@ -311,6 +371,10 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                             backgroundColor: Color(0xff067fd0),
                             textColor: Colors.white,
                             onPressed: () {
+                              print(
+                                  '${dateTimeFormat(inDays: 1, inHours: startHourHours, inMinutes: startHourMinutes, inSeconds: 0)} Start Hour');
+                              print(
+                                  '${dateTimeFormat(inDays: 1, inHours: startHourHours + widget.hour, inMinutes: startHourMinutes, inSeconds: 0)} End Hour');
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

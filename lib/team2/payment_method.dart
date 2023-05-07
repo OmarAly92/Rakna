@@ -51,14 +51,14 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       ),
                     ],
                   ),
-                  IconButton(
-                      onPressed: () {
-                        ///TODO open camera to detect Credit Card
-                      },
-                      icon: Icon(
-                        CupertinoIcons.viewfinder,
-                        size: 29.r,
-                      ))
+                  // IconButton(
+                  //     onPressed: () {
+                  //       ///TODO open camera to detect Credit Card
+                  //     },
+                  //     icon: Icon(
+                  //       CupertinoIcons.viewfinder,
+                  //       size: 29.r,
+                  //     ))
                 ],
               ),
               SizedBox(
@@ -101,7 +101,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
-                        Text('Paypal'),
+                        const Text('Paypal'),
                         Icon(selected == 0? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
                       ],
                     ),
@@ -136,7 +136,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
-                        Text('Paypal'),
+                        const Text('Paypal'),
                         Icon(selected == 1? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
                       ],
                     ),
@@ -170,8 +170,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
-                        Text('Paypal'),
+                        Icon(CupertinoIcons.money_pound_circle,color: Colors.blue.shade900,size: 60),
+                        Text('Pay Cash'),
                         Icon(selected == 2? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
                       ],
                     ),

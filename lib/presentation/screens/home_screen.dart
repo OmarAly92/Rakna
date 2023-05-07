@@ -13,7 +13,8 @@ import '../../core/utility/category.dart';
 import '../../core/utility/color.dart';
 import '../components/appbar.dart';
 import '../components/category_card.dart';
-import '../controller/get_parking_data_bloc.dart';
+import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
+import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

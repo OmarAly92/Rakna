@@ -2,14 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rakna/domain/usecase/get_parking_usecase.dart';
 
-import '../../core/services/services_locator.dart';
-import '../../core/utility/enums.dart';
-import '../../domain/entities/movies_entities.dart';
-import '../../domain/entities/parking.dart';
+import '../../../core/services/services_locator.dart';
+import '../../../core/utility/enums.dart';
+import '../../../domain/entities/movies_entities.dart';
+import '../../../domain/entities/parking.dart';
+import 'get_parking_data_state.dart';
 
 part 'get_parking_data_event.dart';
 
-part 'get_parking_data_state.dart';
 
 class ParkingBloc extends Bloc<GetParkingDataEvent, ParkingState> {
   final GetParkingUseCase getParkingUseCase;

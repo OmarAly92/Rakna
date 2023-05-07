@@ -5,8 +5,10 @@ import 'package:rakna/data/repository/parking_repository.dart';
 import 'package:rakna/domain/repository/base_parking_repository.dart';
 import 'package:rakna/presentation/screens/book_screen.dart';
 import 'package:rakna/presentation/screens/dashboard.dart';
+import 'package:rakna/presentation/screens/google_map.dart';
 import 'package:rakna/presentation/screens/hom.dart';
 import 'package:rakna/presentation/screens/home_screen.dart';
+import 'package:rakna/presentation/screens/map2.dart';
 import 'package:rakna/presentation/screens/old1H.dart';
 import 'package:rakna/presentation/screens/navigation_bar.dart';
 import 'package:rakna/presentation/screens/onboarding_screen.dart';
@@ -25,6 +27,7 @@ import 'package:rakna/presentation/screens/reservation_parking_place.dart';
 
 import 'core/services/services_locator.dart';
 import 'domain/usecase/get_parking_usecase.dart';
+import 'garage_owner/Garage_owner.dart';
 
 void main()async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -68,7 +71,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: ReservationParkingPlace(parkId: 1),
+            home: TestScreenForMap(),
           );
         });
   }
