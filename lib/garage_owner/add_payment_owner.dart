@@ -4,16 +4,14 @@ import 'package:rakna/presentation/components/LogButton_Widget.dart';
 import 'package:rakna/presentation/components/custom_text_form.dart';
 import 'package:rakna/presentation/screens/book_screen_OLD.dart';
 
-import 'payment_method.dart';
+import 'payment_method_owner.dart';
 
-class AddPayment extends StatelessWidget {
-   AddPayment({super.key});
+class AddPaymentOwner extends StatelessWidget {
+   AddPaymentOwner({super.key});
   TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -197,7 +195,7 @@ class AddPayment extends StatelessWidget {
                     backgroundColor: Color(0xff067fd0),
                     textColor: Colors.white,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethod()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethodOwner()));
                     },
                     radius: 5.r,
                     width: 295.w,

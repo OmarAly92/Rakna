@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
-class SettingScreen extends StatefulWidget {
-  SettingScreen({Key? key}) : super(key: key);
+class SettingScreenGarageOwner extends StatefulWidget {
+  SettingScreenGarageOwner({Key? key}) : super(key: key);
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
+  State<SettingScreenGarageOwner> createState() => _SettingScreenGarageOwnerState();
   double bottom = 20;
+  Color a = Color(0xff212C42);
+
 }
 
-class _SettingScreenState extends State<SettingScreen> {
+class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +56,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               width: 33.w,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.r),
-                                color: Color(0xff067fd0),
+                                color: Colors.blue,
                               ),
                               child: Icon(
                                 Icons.edit,
@@ -66,12 +68,17 @@ class _SettingScreenState extends State<SettingScreen> {
                       ],
                     ),
                     SizedBox(height: 5.w),
-                    Text(
+                     Text(
                       'User name',
                       style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 19.sp),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 19.sp
+                              ,color: widget.a
+                          ),
                     ),
-                    Text('user@gmail.com',style: TextStyle(fontSize: 13.sp),)
+                     Text('user@gmail.com',style: TextStyle(fontSize: 13.sp
+
+                         ,color: widget.a
+                     ),)
                   ],
                 ),
               ),
@@ -100,7 +107,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 'Edit Profile',
                                 style: TextStyle(
                                     fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500
+                                ,color: widget.a
+                                ),
                               ),
                             ],
                           ),
@@ -125,7 +134,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 'Payment',
                                 style: TextStyle(
                                     fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500
+                                    ,color: widget.a
+                                ),
                               ),
                             ],
                           ),
@@ -150,7 +161,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 'Notification',
                                 style: TextStyle(
                                     fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500
+                                    ,color: widget.a
+                                ),
                               ),
                             ],
                           ),
@@ -175,7 +188,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 'Security',
                                 style: TextStyle(
                                     fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500
+                                    ,color: widget.a
+                                ),
                               ),
                             ],
                           ),
@@ -200,7 +215,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 'Help',
                                 style: TextStyle(
                                     fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500
+                                    ,color: widget.a
+                                ),
                               ),
                             ],
                           ),
@@ -225,7 +242,9 @@ class _SettingScreenState extends State<SettingScreen> {
                                 'Dark Theme',
                                 style: TextStyle(
                                     fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500
+                                    ,color: widget.a
+                                ),
                               ),
                             ],
                           ),

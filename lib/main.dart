@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
 import 'package:rakna/data/repository/parking_repository.dart';
 import 'package:rakna/domain/repository/base_parking_repository.dart';
-import 'package:rakna/presentation/screens/book_screen.dart';
-import 'package:rakna/presentation/screens/dashboard.dart';
+import 'package:rakna/presentation/screens/book_screen_OLD.dart';
+import 'package:rakna/presentation/screens/dashboard_OLD.dart';
 import 'package:rakna/presentation/screens/google_map.dart';
-import 'package:rakna/presentation/screens/hom.dart';
 import 'package:rakna/presentation/screens/home_screen.dart';
 import 'package:rakna/presentation/screens/map2.dart';
 import 'package:rakna/presentation/screens/old1H.dart';
@@ -21,13 +20,16 @@ import 'package:rakna/presentation/screens/sign_up_screen.dart';
 import 'package:rakna/presentation/screens/slot_selection.dart';
 import 'package:rakna/presentation/screens/splash_screen.dart';
 import 'package:rakna/presentation/screens/summary_screen.dart';
-import 'package:rakna/team2/payment_method.dart';
+import 'package:rakna/presentation/screens/payment_method.dart';
 import 'package:rakna/presentation/screens/add_payment.dart';
 import 'package:rakna/presentation/screens/reservation_parking_place.dart';
-
 import 'core/services/services_locator.dart';
 import 'domain/usecase/get_parking_usecase.dart';
-import 'garage_owner/Garage_owner.dart';
+import 'garage_owner/finance.dart';
+import 'garage_owner/garage_owner_home_screen.dart';
+
+import 'garage_owner/home_page.dart';
+import 'garage_owner/navigation_bar_garage_owner.dart';
 
 void main()async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             theme: ThemeData(
+              useMaterial3: true,
               primarySwatch: Colors.blue,
               fontFamily: 'Poppins',
               textTheme:  TextTheme(
@@ -71,8 +74,14 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: TestScreenForMap(),
+            home: NavigationBarGarageOwner(),
           );
         });
   }
 }
+
+
+const a = Color(0xff212C42);
+const b = Color(0xff9CA2FF);
+const c = Color(0xffEDEFFE);
+const d = Color(0xffF1F2F7);

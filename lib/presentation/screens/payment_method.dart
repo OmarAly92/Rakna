@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_timer.dart';
 
-import '../presentation/components/LogButton_Widget.dart';
-import '../presentation/screens/add_payment.dart';
+import '../components/LogButton_Widget.dart';
+import 'add_payment.dart';
 
 class PaymentMethod extends StatefulWidget {
   const PaymentMethod({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/components/custom_text_form.dart';
-import 'package:rakna/team2/payment_method.dart';
+import 'package:rakna/presentation/screens/payment_method.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time/time.dart';
 import '../components/LogButton_Widget.dart';
