@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../core/utility/enums.dart';
-import '../../../domain/entities/movies_entities.dart';
+import '../../../domain/entities/parking.dart';
 
 class ParkingState extends Equatable {
   final List<Parking> parking;

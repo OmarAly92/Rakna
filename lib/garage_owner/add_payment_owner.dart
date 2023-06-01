@@ -191,7 +191,7 @@ class AddPaymentOwner extends StatelessWidget {
                 ),
                 Center(
                   child: LogButton(
-                    text: 'Add',
+                    widget: Text('Add',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                     backgroundColor: Color(0xff067fd0),
                     textColor: Colors.white,
                     onPressed: () {
@@ -199,7 +199,7 @@ class AddPaymentOwner extends StatelessWidget {
                     },
                     radius: 5.r,
                     width: 295.w,
-                    high: 43.h,
+                    height: 43.h,
                   ),
                 ),
               ],

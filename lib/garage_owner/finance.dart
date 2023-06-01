@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/garage_owner/payment_method_owner.dart';
@@ -23,7 +22,7 @@ class _HomeState extends State<Home> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: SizedBox(height: 340, child: _head()),
+            child: SizedBox(height: 340, child: head()),
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -31,7 +30,6 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
@@ -50,10 +48,17 @@ class _HomeState extends State<Home> {
                     children: [
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethodOwner(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PaymentMethodOwner(),
+                              ));
                         },
-                        child: buildActivityButton(Icons.credit_card_rounded, "My Card",
-                            Colors.blue.withOpacity(0.2), Color(0XFF01579B)),
+                        child: buildActivityButton(
+                            Icons.credit_card_rounded,
+                            "My Card",
+                            Colors.blue.withOpacity(0.2),
+                            Color(0XFF01579B)),
                       ),
                       buildActivityButton(
                           Icons.transfer_within_a_station,
@@ -83,10 +88,12 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 10,
                   ),
-                  buildCategoryCard(Icons.local_parking, "Park Name 1", 2000, 25),
-                  buildCategoryCard(Icons.local_parking, "Park Name 2", 2000, 25),
-                  buildCategoryCard(Icons.local_parking, "Park Name 3", 2000, 25),
-
+                  buildCategoryCard(
+                      Icons.local_parking, "Park Name 1", 2000, 25),
+                  buildCategoryCard(
+                      Icons.local_parking, "Park Name 2", 2000, 25),
+                  buildCategoryCard(
+                      Icons.local_parking, "Park Name 3", 2000, 25),
                 ],
               ),
             ),
@@ -96,7 +103,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _head() {
+  Widget head() {
     return Stack(
       children: [
         Column(
@@ -109,8 +116,8 @@ class _HomeState extends State<Home> {
 
                 /// todo color
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
                 ),
               ),
               child: Stack(
@@ -329,7 +336,9 @@ class _HomeState extends State<Home> {
     );
   }
 }
-GestureDetector buildActivityButton(IconData icon, String title, Color backgroundColor, Color iconColor) {
+
+GestureDetector buildActivityButton(
+    IconData icon, String title, Color backgroundColor, Color iconColor) {
   return GestureDetector(
     child: Container(
       margin: EdgeInsets.all(10),
@@ -350,14 +359,16 @@ GestureDetector buildActivityButton(IconData icon, String title, Color backgroun
           Text(
             title,
             style:
-            TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
+                TextStyle(color: Colors.black54, fontWeight: FontWeight.bold),
           )
         ],
       ),
     ),
   );
 }
-Container buildCategoryCard(IconData icon, String title, int amount, int percentage) {
+
+Container buildCategoryCard(
+    IconData icon, String title, int amount, int percentage) {
   return Container(
     padding: EdgeInsets.all(15),
     decoration: BoxDecoration(
@@ -426,8 +437,7 @@ Container buildCategoryCard(IconData icon, String title, int amount, int percent
               height: 5,
               width: 90,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  color: Colors.blue),
+                  borderRadius: BorderRadius.circular(2), color: Colors.blue),
             ),
           ],
         )

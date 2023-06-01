@@ -59,7 +59,7 @@ class _TestScreenForMapState extends State<TestScreenForMap> {
             height: 200.h,
           ),
           LogButton(
-              text: 'Next',
+              widget: Text('Next',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
               backgroundColor: Colors.blue,
               textColor: Colors.white,
               onPressed: () {
@@ -74,7 +74,7 @@ class _TestScreenForMapState extends State<TestScreenForMap> {
               },
               radius: 20,
               width: 100,
-              high: 50)
+              height: 50)
         ],
       ),
     );

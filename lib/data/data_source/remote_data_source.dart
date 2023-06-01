@@ -1,14 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:rakna/data/model/parking_model.dart';
 import 'package:rakna/data/model/parking_slot_model.dart';
+import 'package:rakna/data/model/user_data_model.dart';
 
 import '../../core/local_error/exceptions.dart';
-import '../model/movies_model.dart';
 
 abstract class BaseRemoteDataSource {
   Future<List<ParkingModel>> getParking();
 
   Future<List<ParkingSlotModel>> getParkingSlot();
+
+  Future<List<UserDataModel>> checkUserData();
 
   void postSignUp({
     required String userName,
@@ -18,17 +20,28 @@ abstract class BaseRemoteDataSource {
     required String confirmPassword,
     required String phoneNumber,
   });
+  void postReservationData({
+    required String parkingSlotName,
+    required String startHour,
+    required String endHour,
+    required bool isAvailable,
+    required String randomNumber,
+  });
 }
 
 class ParkingRemoteDataSource extends BaseRemoteDataSource {
+
+  late final String reqStatus;
+
+
   @override
   Future<List<ParkingModel>> getParking() async {
-    final Response response = await Dio().get(
-        'https://api.themoviedb.org/3/movie/now_playing?api_key=03c1b496b0bd8b48501e5eec0af2b127&language=en-US&page=1');
+    final Response response =
+        await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
     print('${response.statusCode}');
     if (response.statusCode == 200) {
-      return List<ParkingModel>.from((response.data['results'] as List)
-          .map((e) => ParkingModel.fromJson(e)));
+      return List<ParkingModel>.from(
+          (response.data as List).map((e) => ParkingModel.fromJson(e)));
     } else {
       throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
     }
@@ -36,16 +49,16 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
   @override
   Future<List<ParkingSlotModel>> getParkingSlot() async {
-    final Response response = await Dio().get(''); //todo put api url here
+    final Response response = await Dio().get(
+        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       return List<ParkingSlotModel>.from(
-          (response.data as List).map((e) => ParkingModel.fromJson(e)));
+          (response.data as List).map((e) => ParkingSlotModel.fromJson(e)));
     } else {
       throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
     }
   }
-
   @override
   void postSignUp({
     required String userName,
@@ -57,7 +70,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }) async {
     try {
       Response response = await Dio().post(
-        'https://reqres.in/api/login',
+        'http://raknaapi-001-site1.ctempurl.com/Register',
         data: {
           "userName": userName,
           "age": age,
@@ -67,10 +80,50 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
           'phoneNumber': phoneNumber,
         },
       );
+      reqStatus = response.statusCode.toString();
 
       if (response.statusCode == 200) {
         print(response.data);
-        print('Login successfully');
+        print('Sign up successfully');
+      } else {
+        print('failed');
+        throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+      }
+    } catch (e) {
+      print('$e error catch :( ');
+    }
+  }
+
+  @override
+  Future<List<UserDataModel>> checkUserData() async {
+    final Response response = await Dio().get(
+        'http://raknaapi-001-site1.ctempurl.com/Register'); //todo put api url here
+    print('${response.statusCode}');
+    if (response.statusCode == 200) {
+      return List<UserDataModel>.from(
+          (response.data as List).map((e) => UserDataModel.fromJson(e)));
+    } else {
+      throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+    }
+  }
+
+  @override
+  void postReservationData({required String parkingSlotName, required String startHour, required String endHour, required bool isAvailable, required String randomNumber})async {
+    try {
+      Response response = await Dio().post(
+        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot',
+        data: {
+          "parkingSlotName": parkingSlotName,
+          "startHour": startHour,
+          'endHour': endHour,
+          'isAvailable': isAvailable,
+          'randomNumber': randomNumber,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print(response.data);
+        print('Sign up successfully');
       } else {
         print('failed');
         throw LocalException(statusMessage: 'Api error RDS: 1', success: false);

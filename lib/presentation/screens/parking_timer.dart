@@ -271,7 +271,9 @@ class _ParkingTimerState extends State<ParkingTimer>
               SizedBox(height: 18.h),
               Center(
                 child: LogButton(
-                  text: 'Extend Parking Time',
+                  widget:
+
+                  Text('Extend Parking Time',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
@@ -279,7 +281,7 @@ class _ParkingTimerState extends State<ParkingTimer>
                   },
                   radius: 5.r,
                   width: 295.w,
-                  high: 43.h,
+                  height: 43.h,
                 ),
               ),
             ],

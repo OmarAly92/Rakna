@@ -4,7 +4,6 @@ import 'package:rakna/domain/usecase/get_parking_usecase.dart';
 
 import '../../../core/services/services_locator.dart';
 import '../../../core/utility/enums.dart';
-import '../../../domain/entities/movies_entities.dart';
 import '../../../domain/entities/parking.dart';
 import 'get_parking_data_state.dart';
 

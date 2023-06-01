@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/components/LogButton_Widget.dart';
 
 class Success extends StatefulWidget {
@@ -25,13 +26,13 @@ class _SuccessState extends State<Success> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: LogButton(
-                  text: 'OK',
+                  widget: Text('OK',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {},
                   radius: 10.0,
                   width: 300.0,
-                  high: 40.0),
+                  height: 40.0),
             )
           ],
         ),

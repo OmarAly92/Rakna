@@ -13,7 +13,8 @@ class ParkingSlotState extends Equatable {
   });
 
   @override
-  List<Object> get props => [requestState, message];
+  @override
+  List<Object> get props => [parkingSlot, requestState, message]; ///todo test
 }
 
 

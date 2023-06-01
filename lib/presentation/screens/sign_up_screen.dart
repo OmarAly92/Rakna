@@ -89,7 +89,7 @@ class SignUp extends StatelessWidget {
                           padding: EdgeInsets.only(
                             right: 22.w,
                             left: 22.w,
-                            top: 30.h,
+                            top: 20.h,
                           ),
                           child: TextFormField(
                             controller: userNameController,
@@ -107,7 +107,7 @@ class SignUp extends StatelessWidget {
                           padding: EdgeInsets.only(
                             right: 22.w,
                             left: 22.w,
-                            top: 30.h,
+                            top: 20.h,
                           ),
                           child: TextFormField(
                             controller: emailController,
@@ -125,7 +125,7 @@ class SignUp extends StatelessWidget {
                           padding: EdgeInsets.only(
                             right: 22.w,
                             left: 22.w,
-                            top: 30.h,
+                            top: 20.h,
                           ),
                           child: TextFormField(
                             controller: phoneNumberController,
@@ -144,7 +144,7 @@ class SignUp extends StatelessWidget {
                           padding: EdgeInsets.only(
                             right: 22.w,
                             left: 22.w,
-                            top: 30.h,
+                            top: 20.h,
                           ),
                           child: TextFormField(
                             controller: ageController,
@@ -163,7 +163,7 @@ class SignUp extends StatelessWidget {
                           padding: EdgeInsets.only(
                             right: 22.w,
                             left: 22.w,
-                            top: 30.h,
+                            top: 20.h,
                           ),
                           child: TextFormField(
                             controller: passwordController,
@@ -183,7 +183,7 @@ class SignUp extends StatelessWidget {
                           padding: EdgeInsets.only(
                             right: 22.w,
                             left: 22.w,
-                            top: 30.h,
+                            top: 20.h,
                           ),
                           child: TextFormField(
                             controller: confirmPasswordController,
@@ -202,14 +202,15 @@ class SignUp extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(bottom: 8.h, top: 50.h),
                           child: LogButton(
-                            text: 'Sign up',
+                            widget: Text('Sign Up',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                             backgroundColor: kPrimaryColor,
                             textColor: Colors.white,
                             radius: 15.r,
                             width: 305.w,
-                            high: 50.h,
+                            height: 50.h,
                             onPressed: () {
-                              ParkingRemoteDataSource().postSignUp(
+                             BaseRemoteDataSource parkingRemoteDataSource = ParkingRemoteDataSource();
+                             parkingRemoteDataSource.postSignUp(
                                 userName: userNameController.text,
                                 age: int.parse(ageController.text),
                                 email: emailController.text,
@@ -217,11 +218,19 @@ class SignUp extends StatelessWidget {
                                 confirmPassword: confirmPasswordController.text,
                                 phoneNumber: phoneNumberController.text,
                               );
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => NavigationBarScreen(),
-                                  ));
+                             if(ParkingRemoteDataSource().reqStatus == 200 && ParkingRemoteDataSource().reqStatus == 201) {
+                               print(ParkingRemoteDataSource().reqStatus);
+
+
+                               Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NavigationBarScreen(),
+                                    ));
+                              }else{
+                               print(ParkingRemoteDataSource().reqStatus);
+                             }
                             },
                           ),
                         ),
@@ -233,7 +242,7 @@ class SignUp extends StatelessWidget {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const SignIn()));
+                                      builder: (context) =>  SignIn()));
                             },
                             child: Row(
                               children: [

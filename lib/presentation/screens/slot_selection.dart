@@ -72,7 +72,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: List.generate(
-                            4,
+                            3,
                             (index) => Padding(
                               padding: const EdgeInsets.only(
                                   left: 3.5, right: 3.5, bottom: 15),
@@ -164,7 +164,9 @@ class _SlotSelectionState extends State<SlotSelection> {
                                 child: CircularProgressIndicator(),
                               );
                             case RequestState.loaded:
-                              return Padding(
+                              return
+
+                                Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
@@ -244,19 +246,17 @@ class _SlotSelectionState extends State<SlotSelection> {
                                       //   ),
                                       // ),
                                       SizedBox(
-                                        height: 425,
+                                        height: 340.h,
                                         child: Wrap(
                                           direction: Axis.vertical,
                                           children: List.generate(
-                                            100,
+                                          state.parkingSlot.length,
                                             (index) => Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 SlotPlace(
-                                                  name1: state
-                                                      .parkingSlot[index]
-                                                      .slotName,
+                                                  name1: state.parkingSlot[index].parkingSlotName,
                                                   textName: '⏐',
                                                   onSelectedIndex:
                                                       onSelectedIndex,
@@ -265,11 +265,13 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                   onTap: () {
                                                     onSelectedIndex = index;
                                                     setState(() {});
+
                                                   },
                                                   index: index,
-                                                  isAvailable: state
-                                                      .parkingSlot[index]
-                                                      .available,
+                                                  isAvailable:
+                                                  true
+                                                  // state.parkingSlot[index].isAvailable
+                                                  ,
                                                   notAvailableColor:
                                                       Colors.blueGrey.shade600,
                                                 ),
@@ -330,7 +332,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                         child: Column(
                           children: [
                             LogButton(
-                              text: 'Book',
+                              widget: Text('Book',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                               backgroundColor: mainColor,
                               textColor: Colors.white,
                               onPressed: () {
@@ -346,7 +348,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                               },
                               radius: 5.r,
                               width: 300.w,
-                              high: 48.w,
+                              height: 48.w,
                             ),
                           ],
                         ),

@@ -135,12 +135,12 @@ class _ParkdetailsState extends State<Parkdetails> {
                         Padding(
                           padding:  EdgeInsets.only(bottom: 8.h, top: 50.h),
                           child: LogButton(
-                            text: 'Add Park',
+                            widget: Text('Add Park',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                             backgroundColor: kPrimaryColor,
                             textColor: Colors.white,
                             radius: 15.r,
                             width: 305.w,
-                            high: 50.h,
+                            height: 50.h,
                             onPressed: () {
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(),));
                             },

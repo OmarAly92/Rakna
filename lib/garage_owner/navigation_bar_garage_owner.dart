@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rakna/garage_owner/setting_screen_owner.dart';
 
@@ -18,7 +17,7 @@ class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     Home(),
-    GarageOwnerHomeScreen(),
+    MyCustomUI(),
     SettingScreenGarageOwner(),
   ];
 

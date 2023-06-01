@@ -3,20 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_timer.dart';
 
+import '../../data/data_source/remote_data_source.dart';
 import '../components/LogButton_Widget.dart';
 import 'add_payment.dart';
 
 class PaymentMethod extends StatefulWidget {
-  const PaymentMethod({Key? key}) : super(key: key);
+  PaymentMethod(
+      {Key? key,
+      required this.startDateFormat,
+      required this.endDateFormat,
+      required this.coupon,
+      required this.priceAmount})
+      : super(key: key);
+
+  String startDateFormat;
+  String endDateFormat;
+  String coupon;
+  double priceAmount;
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
 }
 
 class _PaymentMethodState extends State<PaymentMethod> {
+  late int selected = 200;
 
-
-  late int selected = 200 ;
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -24,7 +35,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.all(18.0.r),
+          padding: EdgeInsets.all(18.0.r),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -93,16 +104,23 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected == 0? Colors.blue:Colors.transparent,width: 1.8)
-                  ),
-                  child:Padding(
+                      border: Border.all(
+                          color:
+                              selected == 0 ? Colors.blue : Colors.transparent,
+                          width: 1.8)),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
+                        Icon(Icons.paypal,
+                            color: Colors.blue.shade900, size: 60),
                         const Text('Paypal'),
-                        Icon(selected == 0? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
+                        Icon(
+                            selected == 0
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            color: Colors.blue.shade700),
                       ],
                     ),
                   ),
@@ -126,18 +144,25 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     right: 0,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: selected == 1? Colors.blue:Colors.transparent,width: 1.8)
-                  ),
-                  child:Padding(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          color:
+                              selected == 1 ? Colors.blue : Colors.transparent,
+                          width: 1.8)),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
+                        Icon(Icons.paypal,
+                            color: Colors.blue.shade900, size: 60),
                         const Text('Paypal'),
-                        Icon(selected == 1? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
+                        Icon(
+                            selected == 1
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            color: Colors.blue.shade700),
                       ],
                     ),
                   ),
@@ -163,16 +188,23 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected == 2? Colors.blue:Colors.transparent,width: 1.8)
-                  ),
-                  child:Padding(
+                      border: Border.all(
+                          color:
+                              selected == 2 ? Colors.blue : Colors.transparent,
+                          width: 1.8)),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(CupertinoIcons.money_pound_circle,color: Colors.blue.shade900,size: 60),
+                        Icon(CupertinoIcons.money_pound_circle,
+                            color: Colors.blue.shade900, size: 60),
                         Text('Pay Cash'),
-                        Icon(selected == 2? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
+                        Icon(
+                            selected == 2
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            color: Colors.blue.shade700),
                       ],
                     ),
                   ),
@@ -181,7 +213,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPayment()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddPayment()));
                 },
                 child: Container(
                   height: 44.h,
@@ -196,28 +229,39 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(25.r),
                   ),
-                  child:Padding(
-                    padding:  EdgeInsets.all(14.0.r),
+                  child: Padding(
+                    padding: EdgeInsets.all(14.0.r),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.add_circle_outline,color: Colors.blue.shade900,size: 20.r),
+                        Icon(Icons.add_circle_outline,
+                            color: Colors.blue.shade900, size: 20.r),
                         SizedBox(width: 4.w),
-                        Text('Add New Card',style: TextStyle(color: Colors.blue.shade900)),
+                        Text('Add New Card',
+                            style: TextStyle(color: Colors.blue.shade900)),
                       ],
                     ),
                   ),
-
                 ),
               ),
               SizedBox(height: 135.h),
               Center(
                 child: LogButton(
-                  text: 'Book',
+                  widget: Text('Book',
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
-                    //TODO Navigator
+                    BaseRemoteDataSource remoteDataSource =
+                        ParkingRemoteDataSource();
+                    remoteDataSource.postReservationData(
+                        parkingSlotName: '',
+                        startHour: widget.startDateFormat,
+                        endHour: widget.endDateFormat,
+                        isAvailable: false,
+                        randomNumber: '4521');
+
+                    ///TODO Navigator
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -227,10 +271,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   },
                   radius: 5.r,
                   width: 295.w,
-                  high: 43.h,
+                  height: 43.h,
                 ),
               ),
-
             ],
           ),
         ),
@@ -238,5 +281,3 @@ class _PaymentMethodState extends State<PaymentMethod> {
     );
   }
 }
-
-

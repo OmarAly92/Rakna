@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_timer.dart';
 
 import '../components/LogButton_Widget.dart';
@@ -238,7 +239,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
             SizedBox(height: 35),
             Center(
               child: LogButton(
-                text: 'Extend Parking Time',
+                widget: Text('Extend Parking Time',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                 backgroundColor: Color(0xff067fd0),
                 textColor: Colors.white,
                 onPressed: () {
@@ -247,11 +248,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 },
                 radius: 5,
                 width: width * .82,
-                high: 53,
+                height: 53,
               ),
             ),
-
-
           ],
         ),
       ),

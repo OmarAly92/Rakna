@@ -4,24 +4,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class LogButton extends StatelessWidget {
   const LogButton({
     Key? key,
-    required this.text,
+    required this.widget,
     required this.backgroundColor,
     required this.textColor,
     required this.onPressed,
-    required this.radius, required this.width, required this.high,
+    required this.radius, required this.width, required this.height,
   }) : super(key: key);
   final VoidCallback onPressed;
-  final String text;
+  final Widget widget;
   final Color textColor;
   final Color backgroundColor;
   final double radius;
   final double width;
-  final double high;
+  final double height;
+
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: high,
+      height: height,
       width: width,
       child: ElevatedButton(
         onPressed: onPressed,
@@ -33,11 +34,12 @@ class LogButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(color: textColor, fontSize: 16.sp),
-        ),
+        child: widget
+
+
       ),
     );
   }
 }
+
+// Text style: TextStyle(color: textColor, fontSize: 16.sp),

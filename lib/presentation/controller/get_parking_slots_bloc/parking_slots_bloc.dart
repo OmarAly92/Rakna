@@ -19,6 +19,8 @@ class ParkingSlotBloc extends Bloc<ParkingSlotEvent, ParkingSlotState> {
     on<ParkingSlotEvent>((event, emit) async {
 
       final result = await getParkingSlotUseCase.call();
+      print(result);
+
       emit(
         const ParkingSlotState(requestState: RequestState.loaded),
       );

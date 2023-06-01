@@ -76,7 +76,7 @@ class _payment1State extends State<payment1> {
           ),
           Center(
             child: LogButton(
-              text: 'Add',
+              widget: Text('Add',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
               backgroundColor: Color(0xff067fd0),
               textColor: Colors.white,
               onPressed: () {
@@ -85,7 +85,7 @@ class _payment1State extends State<payment1> {
               },
               radius: 5.r,
               width: 295.w,
-              high: 43.h,
+              height: 43.h,
             ),
           ),
         ],

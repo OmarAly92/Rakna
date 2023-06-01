@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:rakna/domain/repository/base_parking_repository.dart';
 
 import '../../core/local_error/exceptions.dart';
-import '../entities/movies_entities.dart';
 import '../entities/parking.dart';
 
 class GetParkingUseCase {

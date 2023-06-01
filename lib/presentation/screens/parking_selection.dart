@@ -63,15 +63,15 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                       EdgeInsets.only(top: 10.h, bottom: 10.h),
                                   child: CategoryCard(
                                     category: Category(
-                                        parkingName: item[i].title,
-                                        parkingLocation: item[i].releaseDate,
+                                        parkingName: item[i].parkName,
+                                        parkingLocation: item[i].parkLocation,
                                         parkImage:
                                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
-                                        parkPrice: '${item[i].voteAverage}',
+                                        parkPrice: '${item[i].parkPrice}',
                                         nextScreen: ParkingDetail1(
-                                          parkName: item[i].title,
-                                          parkLocation: item[i].releaseDate,
-                                          parkPrice: '${item[i].voteAverage}',
+                                          parkName: item[i].parkName,
+                                          parkLocation: item[i].parkLocation,
+                                          parkPrice: '${item[i].parkPrice}',
                                           parkImage:
                                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
                                         )),

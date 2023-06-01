@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../components/LogButton_Widget.dart';
 
@@ -124,13 +125,13 @@ class _BookState extends State<Book> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 100,horizontal: 20),
             child: LogButton(
-              text: 'Book',
+              widget: Text('book',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
               backgroundColor: Color(0xff4b78ff).withOpacity(.87),
               textColor: Colors.white,
               onPressed: () {},
               radius: 5,
               width: 355,
-              high: 53,
+              height: 53,
             ),
           ),
         ],

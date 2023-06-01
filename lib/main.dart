@@ -31,7 +31,7 @@ import 'garage_owner/garage_owner_home_screen.dart';
 import 'garage_owner/home_page.dart';
 import 'garage_owner/navigation_bar_garage_owner.dart';
 
-void main()async {
+void main() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   ServicesLocator().init();
   runApp(const MyApp());
@@ -49,10 +49,11 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             theme: ThemeData(
-              useMaterial3: true,
+              // useMaterial3: true,
               primarySwatch: Colors.blue,
+              primaryColorLight: Colors.blue,
               fontFamily: 'Poppins',
-              textTheme:  TextTheme(
+              textTheme: TextTheme(
                 titleLarge: TextStyle(
                   fontSize: 17.5.sp,
                   color: Colors.white,
@@ -74,14 +75,13 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: NavigationBarGarageOwner(),
+            home: SignIn(),
           );
         });
   }
 }
 
-
-const a = Color(0xff212C42);
-const b = Color(0xff9CA2FF);
-const c = Color(0xffEDEFFE);
-const d = Color(0xffF1F2F7);
+// const a = Color(0xff212C42);
+// const b = Color(0xff9CA2FF);
+// const c = Color(0xffEDEFFE);
+// const d = Color(0xffF1F2F7);

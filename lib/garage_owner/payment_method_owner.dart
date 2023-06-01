@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_timer.dart';
 
-
 import '../presentation/components/LogButton_Widget.dart';
 import 'add_payment_owner.dart';
 
@@ -15,9 +14,8 @@ class PaymentMethodOwner extends StatefulWidget {
 }
 
 class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
+  late int selected = 200;
 
-
-  late int selected = 200 ;
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -25,7 +23,7 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.all(18.0.r),
+          padding: EdgeInsets.all(18.0.r),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -94,16 +92,23 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected == 0? Colors.blue:Colors.transparent,width: 1.8)
-                  ),
-                  child:Padding(
+                      border: Border.all(
+                          color:
+                              selected == 0 ? Colors.blue : Colors.transparent,
+                          width: 1.8)),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
+                        Icon(Icons.paypal,
+                            color: Colors.blue.shade900, size: 60),
                         const Text('Paypal'),
-                        Icon(selected == 0? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
+                        Icon(
+                            selected == 0
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            color: Colors.blue.shade700),
                       ],
                     ),
                   ),
@@ -127,18 +132,25 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
                     right: 0,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: selected == 1? Colors.blue:Colors.transparent,width: 1.8)
-                  ),
-                  child:Padding(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                          color:
+                              selected == 1 ? Colors.blue : Colors.transparent,
+                          width: 1.8)),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.paypal,color: Colors.blue.shade900,size: 60),
+                        Icon(Icons.paypal,
+                            color: Colors.blue.shade900, size: 60),
                         const Text('Paypal'),
-                        Icon(selected == 1? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
+                        Icon(
+                            selected == 1
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            color: Colors.blue.shade700),
                       ],
                     ),
                   ),
@@ -164,16 +176,23 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected == 2? Colors.blue:Colors.transparent,width: 1.8)
-                  ),
-                  child:Padding(
+                      border: Border.all(
+                          color:
+                              selected == 2 ? Colors.blue : Colors.transparent,
+                          width: 1.8)),
+                  child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(CupertinoIcons.money_pound_circle,color: Colors.blue.shade900,size: 60),
+                        Icon(CupertinoIcons.money_pound_circle,
+                            color: Colors.blue.shade900, size: 60),
                         Text('Pay Cash'),
-                        Icon(selected == 2? Icons.circle: Icons.circle_outlined,color: Colors.blue.shade700),
+                        Icon(
+                            selected == 2
+                                ? Icons.circle
+                                : Icons.circle_outlined,
+                            color: Colors.blue.shade700),
                       ],
                     ),
                   ),
@@ -182,7 +201,10 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
 
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddPaymentOwner()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddPaymentOwner()));
                 },
                 child: Container(
                   height: 44.h,
@@ -197,24 +219,26 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(25.r),
                   ),
-                  child:Padding(
-                    padding:  EdgeInsets.all(14.0.r),
+                  child: Padding(
+                    padding: EdgeInsets.all(14.0.r),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.add_circle_outline,color: Colors.blue.shade900,size: 20.r),
+                        Icon(Icons.add_circle_outline,
+                            color: Colors.blue.shade900, size: 20.r),
                         SizedBox(width: 4.w),
-                        Text('Add New Card',style: TextStyle(color: Colors.blue.shade900)),
+                        Text('Add New Card',
+                            style: TextStyle(color: Colors.blue.shade900)),
                       ],
                     ),
                   ),
-
                 ),
               ),
               SizedBox(height: 135.h),
               Center(
                 child: LogButton(
-                  text: 'Select',
+                  widget: Text('Select',
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
@@ -228,10 +252,9 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
                   },
                   radius: 5.r,
                   width: 295.w,
-                  high: 43.h,
+                  height: 43.h,
                 ),
               ),
-
             ],
           ),
         ),
@@ -239,5 +262,3 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
     );
   }
 }
-
-

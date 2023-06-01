@@ -193,15 +193,15 @@ class AddPayment extends StatelessWidget {
                 ),
                 Center(
                   child: LogButton(
-                    text: 'Add',
+                    widget: Text('add',style: TextStyle(color: Colors.white, fontSize: 16.sp),),
                     backgroundColor: Color(0xff067fd0),
                     textColor: Colors.white,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentMethod()));
+                      Navigator.pop(context);
                     },
                     radius: 5.r,
                     width: 295.w,
-                    high: 43.h,
+                    height: 43.h,
                   ),
                 ),
               ],
