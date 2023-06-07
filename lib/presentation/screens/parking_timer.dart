@@ -3,10 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../data/data_source/remote_data_source.dart';
 import '../components/LogButton_Widget.dart';
 
 class ParkingTimer extends StatefulWidget {
-  const ParkingTimer({Key? key}) : super(key: key);
+  const ParkingTimer(
+      {Key? key,
+      required this.slotId,
+      required this.hourSelected,
+      required this.parkSlotName})
+      : super(key: key);
+  final int hourSelected;
+  final int slotId;
+  final String parkSlotName;
 
   @override
   State<ParkingTimer> createState() => _ParkingTimerState();
@@ -33,14 +42,32 @@ class _ParkingTimerState extends State<ParkingTimer>
     }
   }
 
+  void isAvailable() {
+    if (countText == '00:00:00') {
+      ParkingRemoteDataSource().putReservationData(
+        id: widget.slotId,
+        parkingSlotName: widget.parkSlotName,
+        startHour: '2023-06-07T15:44:00',
+        endHour: '2023-06-07T15:44:00',
+        isAvailable: true,
+        randomNumber: '0000',
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     controller = AnimationController(
-        vsync: this, duration: Duration(seconds: 0, minutes: 0, hours: 1));
+        vsync: this,
+        duration: Duration(seconds: 50, minutes: 0, hours: 0
+        // widget.hourSelected
+
+        ));
     controller.reverse(from: controller.value == 0 ? 1.0 : controller.value);
     controller.addListener(() {
       notify();
+      isAvailable();
       if (controller.isAnimating) {
         setState(() {
           progress = controller.value;
@@ -71,7 +98,7 @@ class _ParkingTimerState extends State<ParkingTimer>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:  EdgeInsets.all(8.0.r),
+                padding: EdgeInsets.all(8.0.r),
                 child: Row(
                   children: [
                     InkWell(
@@ -82,8 +109,8 @@ class _ParkingTimerState extends State<ParkingTimer>
                     SizedBox(width: width * .01),
                     Text(
                       'Parking Timer',
-                      style: TextStyle(fontSize: 27.sp,
-                      fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 27.sp, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -133,45 +160,6 @@ class _ParkingTimerState extends State<ParkingTimer>
                   ],
                 ),
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //     children: [
-              //       IconButton(
-              //           onPressed: () {
-              //             if (controller.isAnimating) {
-              //               controller.stop();
-              //               setState(() {
-              //                 isPlaying = false;
-              //               });
-              //             } else {
-              //               setState(() {
-              //                 isPlaying = true;
-              //               });
-              //             }
-              //           },
-              //           icon: Icon(
-              //             isPlaying == true ? Icons.pause : Icons.play_arrow,
-              //             size: 35,
-              //           ),
-              //       ),
-              //       IconButton(
-              //         onPressed: () {
-              //           controller.reset();
-              //           setState(() {
-              //             isPlaying = false;
-              //           });
-              //         },
-              //         icon: Icon(
-              //           Icons.stop,
-              //           size: 35,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               Container(
                 // height: 315,
                 // width:350,
@@ -186,39 +174,42 @@ class _ParkingTimerState extends State<ParkingTimer>
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Padding(
-                  padding:  EdgeInsets.only(
-                      left: 12.w, right: 12.w, top: 17.h, bottom: 17.h,),
+                  padding: EdgeInsets.only(
+                    left: 12.w,
+                    right: 12.w,
+                    top: 17.h,
+                    bottom: 17.h,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding:  EdgeInsets.all(7.0.r),
+                        padding: EdgeInsets.all(7.0.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Parking Area'),
+                            Text('Your Entry Code'),
+                            Text('1224'), //TODO connect Api
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(7.0.r),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Parking Name'),
                             Text('Nasr City Parking'), //TODO connect Api
                           ],
                         ),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(7.0.r),
+                        padding: EdgeInsets.all(7.0.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('Location'),
                             Text('Nasr City, Fair Square'), //TODO connect Api
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.all(7.0.r),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Vehicle'),
-                            Text('Toyota Land Cru (Car plate)'),
-                            //TODO connect Api
                           ],
                         ),
                       ),
@@ -233,7 +224,7 @@ class _ParkingTimerState extends State<ParkingTimer>
                         ),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(7.0.r),
+                        padding: EdgeInsets.all(7.0.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -244,7 +235,7 @@ class _ParkingTimerState extends State<ParkingTimer>
                         ),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(7.0.r),
+                        padding: EdgeInsets.all(7.0.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -254,7 +245,7 @@ class _ParkingTimerState extends State<ParkingTimer>
                         ),
                       ),
                       Padding(
-                        padding:  EdgeInsets.all(7.0.r),
+                        padding: EdgeInsets.all(7.0.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -267,13 +258,11 @@ class _ParkingTimerState extends State<ParkingTimer>
                   ),
                 ),
               ),
-
               SizedBox(height: 18.h),
               Center(
                 child: LogButton(
-                  widget:
-
-                  Text('Extend Parking Time',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+                  widget: Text('Extend Parking Time',
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
@@ -284,6 +273,9 @@ class _ParkingTimerState extends State<ParkingTimer>
                   height: 43.h,
                 ),
               ),
+              SizedBox(
+                height: 18.h,
+              )
             ],
           ),
         ),

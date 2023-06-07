@@ -75,12 +75,12 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: SignIn(),
+            home: SlotSelection(),
           );
         });
   }
 }
-
+//
 // const a = Color(0xff212C42);
 // const b = Color(0xff9CA2FF);
 // const c = Color(0xffEDEFFE);

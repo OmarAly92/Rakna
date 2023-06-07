@@ -36,9 +36,9 @@ class _SlotPlaceState extends State<SlotPlace> {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: InkWell(
+          child: widget.isAvailable == true ? InkWell(
               onTap: widget.onTap,
-              child: widget.isAvailable == true ?Container(
+              child: Container(
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.blue.shade600),
                     color: widget.onSelectedIndex == widget.index? widget.color2 : widget.color1,
@@ -51,20 +51,21 @@ class _SlotPlaceState extends State<SlotPlace> {
                     style: TextStyle(color: Colors.white.withOpacity(.85)),
                   ),
                 ),
-              ): Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue.shade600),
-                    color: widget.notAvailableColor,
-                    borderRadius: BorderRadius.circular(5)),
-                width: 84,
-                height: 36,
-                child: Center(
-                  child: Text(
-                    widget.name1,
-                    style: TextStyle(color: Colors.white.withOpacity(.85)),
-                  ),
-                ),
-              ),  ),
+              )
+        )  : Container(
+            decoration: BoxDecoration(
+              // border: Border.all(color: Colors.blue.shade600),
+                color: widget.notAvailableColor,
+                borderRadius: BorderRadius.circular(5)),
+            width: 84,
+            height: 36,
+            child: Center(
+              child: Text(
+                widget.name1,
+                style: TextStyle(color: Colors.white.withOpacity(.85)),
+              ),
+            ),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -73,30 +74,8 @@ class _SlotPlaceState extends State<SlotPlace> {
             style: const TextStyle(fontSize: 30, color: Colors.black),
           ),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: InkWell(
-        //       onTap: widget.onTap,
-        //       child: Container(
-        //         width: 84,
-        //         height: 36,
-        //         decoration: BoxDecoration(
-        //             border: Border.all(color: Colors.blue.shade600),
-        //             color: widget.onSelectedIndex ==widget.index+5.5 ? widget.color2 : widget.color1,
-        //             borderRadius: BorderRadius.circular(5)),
-        //         child: Center(
-        //           child: Text(
-        //             widget.name2,
-        //             style: TextStyle(color: Colors.white.withOpacity(.85)),
-        //           ),
-        //         ),
-        //       )),
-        // ),
       ],
     );
   }
 }
 
-//onTap 1
-
-//onTap 2

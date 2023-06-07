@@ -25,8 +25,10 @@ class _SlotSelectionState extends State<SlotSelection> {
   Color primaryColor = Color(0xff007fff);
   Color mainColor = Colors.blue.shade900;
   Color selectedColor = Color(0xff203354);
-  late bool tap1 = false;
-  late bool tap2 = false;
+  // late bool tap1 = false;
+  // late bool tap2 = false;
+  late int slotId;
+  late String parkingSlotName;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +148,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                 height: 18.w,
                                 width: 18.w,
                                 decoration: BoxDecoration(
-                                    color: Colors.blueGrey.shade600,
+                                    color: Colors.blue.shade200,
                                     borderRadius: BorderRadius.circular(2.r)),
                               ),
                             ),
@@ -164,99 +166,26 @@ class _SlotSelectionState extends State<SlotSelection> {
                                 child: CircularProgressIndicator(),
                               );
                             case RequestState.loaded:
-                              return
-
-                                Padding(
+                              return Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Column(
                                     children: [
-                                      // Row(
-                                      //   children: [
-                                      //     const SizedBox(
-                                      //       height: 20,
-                                      //       width: 100,
-                                      //       child: Divider(
-                                      //         color: Colors.black,
-                                      //         thickness: .4,
-                                      //         endIndent: 10,
-                                      //         indent: 10,
-                                      //       ),
-                                      //     ),
-                                      //     Text(
-                                      //       'Entry',
-                                      //       style: TextStyle(
-                                      //           color: Colors.grey.shade600,
-                                      //           fontSize: 15,
-                                      //           fontWeight: FontWeight.w500),
-                                      //     ),
-                                      //     const SizedBox(
-                                      //       height: 20,
-                                      //       width: 190,
-                                      //       child: Divider(
-                                      //         color: Colors.black,
-                                      //         thickness: .4,
-                                      //         endIndent: 10,
-                                      //         indent: 10,
-                                      //       ),
-                                      //     ),
-                                      //     Text(
-                                      //       'Entry',
-                                      //       style: TextStyle(
-                                      //           color: Colors.grey.shade600,
-                                      //           fontSize: 15,
-                                      //           fontWeight: FontWeight.w500),
-                                      //     ),
-                                      //     const SizedBox(
-                                      //       height: 20,
-                                      //       width: 100,
-                                      //       child: Divider(
-                                      //         color: Colors.black,
-                                      //         thickness: .4,
-                                      //         endIndent: 10,
-                                      //         indent: 10,
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(top: 5),
-                                      //   child: Row(
-                                      //     children: [
-                                      //       Padding(
-                                      //         padding:
-                                      //             const EdgeInsets.only(right: 213),
-                                      //         child: Text(
-                                      //           'C1',
-                                      //           style: TextStyle(
-                                      //               color: Color(0xff144272),
-                                      //               fontSize: 15,
-                                      //               fontWeight: FontWeight.w500),
-                                      //         ),
-                                      //       ),
-                                      //       Text(
-                                      //         'C2',
-                                      //         style: TextStyle(
-                                      //             color: Color(0xff144272),
-                                      //             fontSize: 15,
-                                      //             fontWeight: FontWeight.w500),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
                                       SizedBox(
                                         height: 340.h,
                                         child: Wrap(
                                           direction: Axis.vertical,
                                           children: List.generate(
-                                          state.parkingSlot.length,
+                                            state.parkingSlot.length,
                                             (index) => Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 SlotPlace(
-                                                  name1: state.parkingSlot[index].parkingSlotName,
+                                                  name1: state
+                                                      .parkingSlot[index]
+                                                      .parkingSlotName,
                                                   textName: '⏐',
                                                   onSelectedIndex:
                                                       onSelectedIndex,
@@ -265,57 +194,25 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                   onTap: () {
                                                     onSelectedIndex = index;
                                                     setState(() {});
-
+                                                    slotId = state
+                                                        .parkingSlot[index]
+                                                        .slotId;
+                                                    parkingSlotName = state
+                                                        .parkingSlot[index]
+                                                        .parkingSlotName;
                                                   },
                                                   index: index,
-                                                  isAvailable:
-                                                  true
+                                                  isAvailable: state.parkingSlot[index].isAvailable
                                                   // state.parkingSlot[index].isAvailable
                                                   ,
                                                   notAvailableColor:
-                                                      Colors.blueGrey.shade600,
+                                                      Colors.blue.shade200,
                                                 ),
                                               ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                      // Row(
-                                      //   children: [
-                                      //     const Padding(
-                                      //       padding:
-                                      //           EdgeInsets.only(top: 11, left: 35),
-                                      //       child: Text('Exit',
-                                      //           style: TextStyle(
-                                      //             color: Colors.black,
-                                      //           )),
-                                      //     ),
-                                      //     const Padding(
-                                      //       padding: EdgeInsets.only(right: 170),
-                                      //       child: Text(
-                                      //         '→',
-                                      //         style: TextStyle(
-                                      //           fontSize: 32,
-                                      //           color: Colors.black,
-                                      //         ),
-                                      //       ),
-                                      //     ),
-                                      //     const Padding(
-                                      //       padding: EdgeInsets.only(top: 11),
-                                      //       child: Text('Exit',
-                                      //           style: TextStyle(
-                                      //             color: Colors.black,
-                                      //           )),
-                                      //     ),
-                                      //     Text(
-                                      //       '→',
-                                      //       style: TextStyle(
-                                      //         fontSize: 32,
-                                      //         color: Colors.black,
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
                                     ],
                                   ),
                                 ),
@@ -332,16 +229,21 @@ class _SlotSelectionState extends State<SlotSelection> {
                         child: Column(
                           children: [
                             LogButton(
-                              widget: Text('Book',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+                              widget: Text('Book',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16.sp)),
                               backgroundColor: mainColor,
                               textColor: Colors.white,
                               onPressed: () {
+                                print(slotId);
+                                print(parkingSlotName);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         ReservationParkingPlace(
-                                      parkId: onSelectedIndex,
+                                      slotId: slotId,
+                                      parkSlotName: parkingSlotName,
                                     ),
                                   ),
                                 );

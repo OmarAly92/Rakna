@@ -13,13 +13,19 @@ class PaymentMethod extends StatefulWidget {
       required this.startDateFormat,
       required this.endDateFormat,
       required this.coupon,
-      required this.priceAmount})
+      required this.priceAmount,
+      required this.parkSlotName,
+      required this.slotId,
+      required this.hourSelected})
       : super(key: key);
 
-  String startDateFormat;
-  String endDateFormat;
-  String coupon;
-  double priceAmount;
+  final String startDateFormat;
+  final String endDateFormat;
+  final String coupon;
+  final double priceAmount;
+  final String parkSlotName;
+  final int slotId;
+  final int hourSelected;
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -30,8 +36,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -252,20 +256,20 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
-                    BaseRemoteDataSource remoteDataSource =
-                        ParkingRemoteDataSource();
-                    remoteDataSource.postReservationData(
-                        parkingSlotName: '',
+
+                    print( '${widget.parkSlotName}\n${widget.startDateFormat} \n${widget.endDateFormat}');
+                    ParkingRemoteDataSource().putReservationData(
+                        id: widget.slotId,
+                        parkingSlotName: widget.parkSlotName,
                         startHour: widget.startDateFormat,
                         endHour: widget.endDateFormat,
                         isAvailable: false,
-                        randomNumber: '4521');
+                        randomNumber: '4521', );
 
-                    ///TODO Navigator
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ParkingTimer(),
+                        builder: (context) => ParkingTimer(slotId: widget.slotId, hourSelected: widget.hourSelected, parkSlotName:widget.parkSlotName,),
                       ),
                     );
                   },

@@ -209,17 +209,18 @@ class SignUp extends StatelessWidget {
                             width: 305.w,
                             height: 50.h,
                             onPressed: () {
+
+                              int x =  int.parse(ageController.text);
                              BaseRemoteDataSource parkingRemoteDataSource = ParkingRemoteDataSource();
                              parkingRemoteDataSource.postSignUp(
                                 userName: userNameController.text,
-                                age: int.parse(ageController.text),
+                                age: x,
                                 email: emailController.text,
                                 password: passwordController.text,
                                 confirmPassword: confirmPasswordController.text,
                                 phoneNumber: phoneNumberController.text,
                               );
-                             if(ParkingRemoteDataSource().reqStatus == 200 && ParkingRemoteDataSource().reqStatus == 201) {
-                               print(ParkingRemoteDataSource().reqStatus);
+
 
 
                                Navigator.pushReplacement(
@@ -228,9 +229,7 @@ class SignUp extends StatelessWidget {
                                       builder: (context) =>
                                           NavigationBarScreen(),
                                     ));
-                              }else{
-                               print(ParkingRemoteDataSource().reqStatus);
-                             }
+
                             },
                           ),
                         ),
