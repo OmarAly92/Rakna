@@ -73,7 +73,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                           parkLocation: item[i].parkLocation,
                                           parkPrice: '${item[i].parkPrice}',
                                           parkImage:
-                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
+                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[i].parkId,
                                         )),
                                     widthBookmark: 18.w,
                                     widthPrice: 65.w,

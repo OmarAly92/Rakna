@@ -52,11 +52,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ParkingSelection(),
-                                    ));
+                                ///todo fix this screen
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => ParkingSelection(),
+                                //     ));
                               },
                               child: Text(
                                 "See All",
@@ -81,13 +82,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             TextButton(
-                              onPressed: () {
-                                // Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => ParkingSelection()));
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ParkingSelection(),
-                                    ));
+                              onPressed: () {                                ///todo fix this screen
+
+                                // // Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => ParkingSelection()));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //       builder: (context) => ParkingSelection(),
+                                //     ));
                               },
                               child: Text(
                                 "See All",
@@ -124,7 +126,15 @@ class PreviousParking extends StatelessWidget {
       builder: (context, state) {
         switch (state.requestState) {
           case RequestState.loading:
-            return const Center(child: CircularProgressIndicator());
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 55.5),
+
+                  child: CircularProgressIndicator(),
+                ),
+              ],
+            );
           case RequestState.loaded:
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
@@ -150,7 +160,7 @@ class PreviousParking extends StatelessWidget {
                               parkPrice:
                                   '${state.parking[index].parkPrice}/Hours',
                               parkImage:
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU'),
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[index].parkId,),
                         ),
                         widthBookmark: 60.w,
                         widthPrice: 75.w,
@@ -179,10 +189,16 @@ class NearbyParking extends StatelessWidget {
       builder: (context, state) {
         switch (state.requestState) {
           case RequestState.loading:
-            return const Center(
-                child: CircularProgressIndicator(
-              color: Colors.blue,
-            ));
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 55.5),
+                  child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
+            );
           case RequestState.loaded:
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
@@ -208,7 +224,7 @@ class NearbyParking extends StatelessWidget {
                               parkPrice:
                                   '${state.parking[index].parkPrice}/Hours',
                               parkImage:
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU'),
+                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[index].parkId,),
                         ),
                         widthBookmark: 60.w,
                         widthPrice: 75.w,

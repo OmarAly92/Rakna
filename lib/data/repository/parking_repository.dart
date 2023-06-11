@@ -23,8 +23,8 @@ class ParkingRepository extends BaseParkingRepository {
     }
   }
   @override
-  Future<Either<LocalException, List<ParkingSlot>>> getParkingSlot() async{
-    final result = await baseRemoteDataSource.getParkingSlot();
+  Future<Either<LocalException, List<ParkingSlot>>> getParkingSlot(int parkId) async{
+    final result = await baseRemoteDataSource.getParkingSlot(parkId);
     try {
       return Right(result);
     } on LocalException catch (e) {

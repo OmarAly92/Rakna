@@ -9,7 +9,7 @@ class GetParkingSlotUseCase {
 
   GetParkingSlotUseCase( this.baseParkingRepository);
 
-  Future<Either<LocalException, List<ParkingSlot>>> call() async {
-    return baseParkingRepository.getParkingSlot();
+  Future<Either<LocalException, List<ParkingSlot>>> call({required int parkId}) async {
+    return baseParkingRepository.getParkingSlot(parkId);
   }
 }

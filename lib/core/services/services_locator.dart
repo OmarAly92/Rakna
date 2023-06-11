@@ -17,7 +17,7 @@ class ServicesLocator {
     ///BLOC
     sl.registerFactory(() => ParkingBloc(sl()));
 
-    sl.registerFactory(() => ParkingSlotBloc(sl()));
+    // sl.registerFactory(() => ParkingSlotBloc(sl() ,));
 
     sl.registerFactory(() => SignInUserBloc(signInUserUseCase: sl()));
 

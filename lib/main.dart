@@ -19,6 +19,7 @@ import 'package:rakna/presentation/screens/sign_in_screen.dart';
 import 'package:rakna/presentation/screens/sign_up_screen.dart';
 import 'package:rakna/presentation/screens/slot_selection.dart';
 import 'package:rakna/presentation/screens/splash_screen.dart';
+import 'package:rakna/presentation/screens/start_screen.dart';
 import 'package:rakna/presentation/screens/summary_screen.dart';
 import 'package:rakna/presentation/screens/payment_method.dart';
 import 'package:rakna/presentation/screens/add_payment.dart';
@@ -75,12 +76,11 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: SlotSelection(),
+            home: SplashScreen(),
           );
         });
   }
 }
-//
 // const a = Color(0xff212C42);
 // const b = Color(0xff9CA2FF);
 // const c = Color(0xffEDEFFE);

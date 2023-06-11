@@ -40,7 +40,7 @@ class _SlotPlaceState extends State<SlotPlace> {
               onTap: widget.onTap,
               child: Container(
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue.shade600),
+                    // border: Border.all(color: Colors.blue.shade600),
                     color: widget.onSelectedIndex == widget.index? widget.color2 : widget.color1,
                     borderRadius: BorderRadius.circular(5)),
                 width: 84,

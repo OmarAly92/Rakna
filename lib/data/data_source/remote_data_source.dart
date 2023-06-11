@@ -11,7 +11,7 @@ import '../../core/local_error/exceptions.dart';
 abstract class BaseRemoteDataSource {
   Future<List<ParkingModel>> getParking();
 
-  Future<List<ParkingSlotModel>> getParkingSlot();
+  Future<List<ParkingSlotModel>> getParkingSlot(int parkId);
 
   Future<List<UserDataModel>> checkUserData();
 
@@ -31,6 +31,8 @@ abstract class BaseRemoteDataSource {
     required String endHour,
     required bool isAvailable,
     required String randomNumber,
+    required int parkForeignKey,
+
   });
 }
 
@@ -40,6 +42,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     final Response response =
         await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
     print('${response.statusCode}');
+    print('${response.data}');
     if (response.statusCode == 200) {
       return List<ParkingModel>.from(
           (response.data as List).map((e) => ParkingModel.fromJson(e)));
@@ -49,9 +52,9 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  Future<List<ParkingSlotModel>> getParkingSlot() async {
+  Future<List<ParkingSlotModel>> getParkingSlot(int parkId) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot'); //todo put api url here
+        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkId'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       return List<ParkingSlotModel>.from(
@@ -88,12 +91,12 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       'phoneNumber': phoneNumber,
       'password': password,
       'email': email,
-      "age": 22,
+      "age": age.toString(),
       'confirmPassword': confirmPassword,
     });
 
     try {
-      var response = await http.post(
+      http.Response response = await http.post(
           Uri.parse('http://raknaapi-001-site1.ctempurl.com/Register'),
           body: body,
           headers: {
@@ -101,12 +104,13 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
             "content-type": "application/json"
           }).then((dynamic res) {
         print(res.toString());
+        return res;
       });
 
       print(response.statusCode);
       print(response.body);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
         print('Sign up successfully');
       } else {
@@ -125,13 +129,17 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       required String startHour,
       required String endHour,
       required bool isAvailable,
-      required String randomNumber}) async {
+      required String randomNumber,
+        required int parkForeignKey,
+}) async {
     var body = {
+      'id':id,
       "parkingSlotName": parkingSlotName,
       "startHour": startHour,
       'endHour': endHour,
       'isAvailable': isAvailable,
       'randomNumber': randomNumber,
+      'parkForiegnKey': parkForeignKey,
     };
 
     try {

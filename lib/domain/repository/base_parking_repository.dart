@@ -8,7 +8,7 @@ import '../entities/parking.dart';
 abstract class BaseParkingRepository {
   Future<Either<LocalException, List<Parking>>> getParking();
 
-  Future<Either<LocalException, List<ParkingSlot>>> getParkingSlot();
+  Future<Either<LocalException, List<ParkingSlot>>> getParkingSlot(int parkId);
 
   Future<Either<LocalException, List<UserData>>> checkUserData();
 

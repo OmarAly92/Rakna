@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rakna/domain/usecase/get_parking_slot_usecase.dart';
 import 'package:rakna/presentation/controller/get_parking_slots_bloc/parking_slots_bloc.dart';
 
 import '../../core/services/services_locator.dart';
 import '../../core/utility/enums.dart';
-import 'add_payment.dart';
 import 'reservation_parking_place.dart';
 import '../components/LogButton_Widget.dart';
 import '../components/slot-place.dart';
 
 class SlotSelection extends StatefulWidget {
-  const SlotSelection({Key? key}) : super(key: key);
+   SlotSelection({Key? key,required this.parkId}) : super(key: key);
+  int parkId;
 
   @override
   State<SlotSelection> createState() => _SlotSelectionState();
 }
 
 class _SlotSelectionState extends State<SlotSelection> {
-  // 0xff07193e
-  int length = 5;
+
   int onSelectedIndex = -1;
-  bool click = false;
+  // bool click = false;
   Color primaryColor = Color(0xff007fff);
-  Color mainColor = Colors.blue.shade900;
-  Color selectedColor = Color(0xff203354);
-  // late bool tap1 = false;
-  // late bool tap2 = false;
+  Color mainColor = Colors.blue;
+  Color selectedColor = Colors.orange.shade700;
+  Color bookedColor = Colors.blue.shade100;
   late int slotId;
   late String parkingSlotName;
 
@@ -34,7 +33,7 @@ class _SlotSelectionState extends State<SlotSelection> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<ParkingSlotBloc>()..add(GetParkingSlotDataEvent()),
+          ParkingSlotBloc(GetParkingSlotUseCase(sl()),widget.parkId)..add(GetParkingSlotDataEvent()),
       child: Scaffold(
         body: SafeArea(
           child: Padding(
@@ -148,7 +147,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                 height: 18.w,
                                 width: 18.w,
                                 decoration: BoxDecoration(
-                                    color: Colors.blue.shade200,
+                                    color: bookedColor,
                                     borderRadius: BorderRadius.circular(2.r)),
                               ),
                             ),
@@ -161,11 +160,25 @@ class _SlotSelectionState extends State<SlotSelection> {
                       BlocBuilder<ParkingSlotBloc, ParkingSlotState>(
                         builder: (context, state) {
                           switch (state.requestState) {
+
                             case RequestState.loading:
+
                               return Center(
-                                child: CircularProgressIndicator(),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 188.5),
+                                      child: CircularProgressIndicator(),
+                                    ),
+
+                                  ],
+                                ),
                               );
                             case RequestState.loaded:
+
+
                               return Padding(
                                 padding: const EdgeInsets.only(top: 0),
                                 child: SingleChildScrollView(
@@ -177,15 +190,17 @@ class _SlotSelectionState extends State<SlotSelection> {
                                         child: Wrap(
                                           direction: Axis.vertical,
                                           children: List.generate(
-                                            state.parkingSlot.length,
+                                            // 30,
+                                            state.parkingSlot.length, ///todo uncomment this
+
                                             (index) => Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 SlotPlace(
-                                                  name1: state
-                                                      .parkingSlot[index]
-                                                      .parkingSlotName,
+                                                  name1:
+                                                  // 'c200',
+                                                  state.parkingSlot[index].parkingSlotName,
                                                   textName: '⏐',
                                                   onSelectedIndex:
                                                       onSelectedIndex,
@@ -202,11 +217,12 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                         .parkingSlotName;
                                                   },
                                                   index: index,
-                                                  isAvailable: state.parkingSlot[index].isAvailable
-                                                  // state.parkingSlot[index].isAvailable
+                                                  isAvailable:
+                                                  // false
+                                                  state.parkingSlot[index].isAvailable
                                                   ,
                                                   notAvailableColor:
-                                                      Colors.blue.shade200,
+                                                  bookedColor,
                                                 ),
                                               ],
                                             ),

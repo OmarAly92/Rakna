@@ -118,7 +118,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(Icons.paypal,
-                            color: Colors.blue.shade900, size: 60),
+                            color: Colors.blue.shade700, size: 60),
                         const Text('Paypal'),
                         Icon(
                             selected == 0
@@ -160,7 +160,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(Icons.paypal,
-                            color: Colors.blue.shade900, size: 60),
+                            color: Colors.blue.shade700, size: 60),
                         const Text('Paypal'),
                         Icon(
                             selected == 1
@@ -202,7 +202,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Icon(CupertinoIcons.money_pound_circle,
-                            color: Colors.blue.shade900, size: 60),
+                            color: Colors.blue.shade700, size: 60),
                         Text('Pay Cash'),
                         Icon(
                             selected == 2
@@ -239,10 +239,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add_circle_outline,
-                            color: Colors.blue.shade900, size: 20.r),
+                            color: Colors.blue.shade700, size: 20.r),
                         SizedBox(width: 4.w),
                         Text('Add New Card',
-                            style: TextStyle(color: Colors.blue.shade900)),
+                            style: TextStyle(color: Colors.blue.shade700)),
                       ],
                     ),
                   ),
@@ -264,7 +264,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         startHour: widget.startDateFormat,
                         endHour: widget.endDateFormat,
                         isAvailable: false,
-                        randomNumber: '4521', );
+                        randomNumber: '4521', parkForeignKey: 1,
+                      );
 
                     Navigator.push(
                       context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
+import 'package:rakna/presentation/screens/start_screen.dart';
 
 import '../../core/utility/color.dart';
 
@@ -99,7 +100,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SignIn(),
+              builder: (context) => GetStarted(),
             ));
       },
 

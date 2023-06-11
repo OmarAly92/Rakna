@@ -50,7 +50,7 @@ class _ParkingTimerState extends State<ParkingTimer>
         startHour: '2023-06-07T15:44:00',
         endHour: '2023-06-07T15:44:00',
         isAvailable: true,
-        randomNumber: '0000',
+        randomNumber: '0000', parkForeignKey: 1,
       );
     }
   }

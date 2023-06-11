@@ -6,7 +6,8 @@ import '../../core/utility/color.dart';
 class ParkingDetail1 extends StatefulWidget {
    ParkingDetail1({
     Key? key,
-    required this.parkName,
+     required this.parkId,
+     required this.parkName,
     required this.parkLocation,
     required this.parkPrice,
     required this.parkImage,
@@ -15,6 +16,7 @@ class ParkingDetail1 extends StatefulWidget {
   String parkLocation;
   String parkPrice;
   String parkImage;
+  int parkId;
 
   @override
   State<ParkingDetail1> createState() => _ParkingDetail1State();
@@ -252,7 +254,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SlotSelection(),
+                                    builder: (context) => SlotSelection(parkId: widget.parkId,),
                                   ));
                             },
                             borderRadius: BorderRadius.circular(10),

@@ -1,7 +1,7 @@
 import 'package:rakna/domain/entities/parking.dart';
 
 class ParkingModel extends Parking {
-  ParkingModel({
+  const ParkingModel({
     required super.parkName,
     required super.parkLocation,
     required super.parkImage,
@@ -9,6 +9,8 @@ class ParkingModel extends Parking {
     required super.parkingRating,
     required super.parkSection,
     required super.reservationPlace,
+    required super.parkingSlotList,
+    required super.parkId,
   });
 
   factory ParkingModel.fromJson(Map<String, dynamic> json) => ParkingModel(
@@ -19,5 +21,7 @@ class ParkingModel extends Parking {
         parkingRating: json['parkingRating'],
         parkSection: json['parkSection'],
         reservationPlace: json['reservationPlace'],
+        parkingSlotList: json['parkingSlot'],
+        parkId: json['parkId'],
       );
 }

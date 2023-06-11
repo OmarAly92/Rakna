@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:equatable/equatable.dart';
 
 class Parking extends Equatable {
+  final int parkId;
   final String parkName;
   final String parkLocation;
   final String parkImage;
@@ -10,8 +11,10 @@ class Parking extends Equatable {
   final num parkingRating;
   final int parkSection;
   final int reservationPlace;
+  final List parkingSlotList;
 
   const Parking({
+    required this.parkId,
     required this.parkName,
     required this.parkLocation,
     required this.parkImage,
@@ -19,16 +22,20 @@ class Parking extends Equatable {
     required this.reservationPlace,
     required this.parkingRating,
     required this.parkSection,
+    required this.parkingSlotList,
   });
 
   @override
-  List<Object> get props => [
+  List<Object> get props =>
+      [
+        parkId,
         parkName,
         parkLocation,
         parkImage,
         parkPrice,
         parkingRating,
-        reservationPlace,
         parkSection,
+        reservationPlace,
+        parkingSlotList,
       ];
 }

@@ -325,26 +325,26 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      bottom: 0,
-                      top: 14.h,
-                      left: 0,
-                      right: 0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: CustomTextField(
-                      controller: coupon,
-                      hintText: 'Coupon',
-                      leftPadding: 0,
-                      rightPadding: 0,
-                      bottomPadding: 0,
-                      topPadding: 0,
-                    ),
-                  ),
+                  // Container(
+                  //   margin: EdgeInsets.only(
+                  //     bottom: 0,
+                  //     top: 14.h,
+                  //     left: 0,
+                  //     right: 0,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.grey[200],
+                  //     borderRadius: BorderRadius.circular(10.r),
+                  //   ),
+                  //   child: CustomTextField(
+                  //     controller: coupon,
+                  //     hintText: 'Coupon',
+                  //     leftPadding: 0,
+                  //     rightPadding: 0,
+                  //     bottomPadding: 0,
+                  //     topPadding: 0,
+                  //   ),
+                  // ),
 
                   Container(
                     margin: EdgeInsets.only(
@@ -405,7 +405,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 15.h),
+                          SizedBox(height: 40.h),
                           Center(
                             child: LogButton(
                               widget: Text('Next',
@@ -415,10 +415,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               textColor: Colors.white,
                               onPressed: () {
                                 if (!formKey.currentState!.validate()) {
-                                  final snackBar = SnackBar(
-                                      content: Text('Submitting form'));
-                                  _scaffoldkey.currentState!
-                                      .showBottomSheet((context) => snackBar);
+                                  final snackBar = SnackBar(content: Text('Submitting form'));_scaffoldkey.currentState!.showBottomSheet((context) => snackBar);
                                 }
                                 // startDateFormat ='${dateTimeFormat(inDays: 2, inHours: startHourHours, inMinutes: startHourMinutes, inSeconds: 0)}.000'.replaceFirst(' ', 'T');
                                 // endDateFormat = '${dateTimeFormat(inDays: 2, inHours: startHourHours + widget.hour, inMinutes: startHourMinutes, inSeconds: 0)}.000'.replaceFirst(' ', 'T');

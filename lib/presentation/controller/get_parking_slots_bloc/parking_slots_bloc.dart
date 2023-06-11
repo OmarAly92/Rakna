@@ -13,12 +13,12 @@ part 'parking_slots_state.dart';
 
 class ParkingSlotBloc extends Bloc<ParkingSlotEvent, ParkingSlotState> {
   final GetParkingSlotUseCase getParkingSlotUseCase;
+   int parkId;
 
-  ParkingSlotBloc(this.getParkingSlotUseCase)
+  ParkingSlotBloc(this.getParkingSlotUseCase, this.parkId)
       : super(const ParkingSlotState()) {
     on<ParkingSlotEvent>((event, emit) async {
-
-      final result = await getParkingSlotUseCase.call();
+      final result = await getParkingSlotUseCase.call(parkId: parkId);
       print(result);
 
       emit(
