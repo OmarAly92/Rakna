@@ -11,11 +11,12 @@ import 'package:string_validator/string_validator.dart';
 
 class ReservationParkingPlace extends StatefulWidget {
   ReservationParkingPlace(
-      {Key? key, required this.slotId, required this.parkSlotName})
+      {Key? key, required this.slotId, required this.parkSlotName,required this.parkPrice})
       : super(key: key);
   final int slotId;
   final String parkSlotName;
   int hour = 1;
+  num parkPrice;
 
   @override
   State<ReservationParkingPlace> createState() =>
@@ -25,6 +26,9 @@ class ReservationParkingPlace extends StatefulWidget {
 class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
   TextEditingController controller = TextEditingController();
   TextEditingController coupon = TextEditingController();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
 
   int startHourHours = 0;
   int startHourMinutes = 0;
@@ -110,30 +114,43 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                       child: Padding(
                         padding: EdgeInsets.only(
                             left: 13.w, right: 13.w, top: 13.w, bottom: 13.w),
-                        child: TableCalendar(
-                          locale: 'en_US',
-                          rowHeight: 40.r,
-                          headerStyle: HeaderStyle(
-                              formatButtonVisible: false,
-                              rightChevronVisible: false,
-                              leftChevronVisible: false,
-                              headerMargin: EdgeInsets.only(left: 5.w)),
-                          // daysOfWeekVisible: false,
-                          startingDayOfWeek: StartingDayOfWeek.wednesday,
-                          calendarStyle: CalendarStyle(
-                              selectedDecoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(20.r))),
-                          headerVisible: true,
-                          availableGestures: AvailableGestures.all,
-                          selectedDayPredicate: (day) => isSameDay(day, today),
-                          focusedDay: today,
-                          firstDay: DateTime.utc(2023, 1, 1),
-                          lastDay: DateTime.utc(2030, 3, 14),
-                          onDaySelected: (selectedDay, focusedDay) {
-                            // print(DateTime.now());
+                        child:
+                        TableCalendar(
+                          firstDay: DateTime(2023,1,1),
+                          lastDay: DateTime.utc(2030,1,1),
+                          focusedDay: _focusedDay,
+                          calendarFormat: _calendarFormat,
+                          selectedDayPredicate: (day) {
+                            // Use `selectedDayPredicate` to determine which day is currently selected.
+                            // If this returns true, then `day` will be marked as selected.
+
+                            // Using `isSameDay` is recommended to disregard
+                            // the time-part of compared DateTime objects.
+                            return isSameDay(_selectedDay, day);
                           },
-                        ),
+                          onDaySelected: (selectedDay, focusedDay) {
+                            if (!isSameDay(_selectedDay, selectedDay)) {
+                              // Call `setState()` when updating the selected day
+                              setState(() {
+                                _selectedDay = selectedDay;
+                                _focusedDay = focusedDay;
+                              });
+                            }
+                          },
+                          onFormatChanged: (format) {
+                            if (_calendarFormat != format) {
+                              // Call `setState()` when updating calendar format
+                              setState(() {
+                                _calendarFormat = format;
+                              });
+                            }
+                          },
+                          onPageChanged: (focusedDay) {
+                            // No need to call `setState()` here
+
+                            _focusedDay = focusedDay;
+                          },
+                        )
                       ),
                     ),
                   ),
@@ -401,7 +418,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Amount'),
-                                Text('E£30.00'),
+                                Text('E£${(widget.parkPrice * widget.hour)}'),
                               ],
                             ),
                           ),
@@ -451,7 +468,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                       startDateFormat: startDateFormat!,
                                       endDateFormat: endDateFormat!,
                                       coupon: coupon.text,
-                                      priceAmount: 30,
+                                      priceAmount: (widget.parkPrice.toDouble() * widget.hour),
                                       parkSlotName: widget.parkSlotName,
                                       slotId: widget.slotId, hourSelected: widget.hour,
                                     ),

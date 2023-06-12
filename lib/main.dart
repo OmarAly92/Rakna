@@ -25,6 +25,7 @@ import 'package:rakna/presentation/screens/payment_method.dart';
 import 'package:rakna/presentation/screens/add_payment.dart';
 import 'package:rakna/presentation/screens/reservation_parking_place.dart';
 import 'core/services/services_locator.dart';
+import 'core/utility/navigator_key.dart';
 import 'domain/usecase/get_parking_usecase.dart';
 import 'garage_owner/finance.dart';
 import 'garage_owner/garage_owner_home_screen.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
+            navigatorKey: navigatorKey,
             theme: ThemeData(
               // useMaterial3: true,
               primarySwatch: Colors.blue,
@@ -77,6 +79,8 @@ class MyApp extends StatelessWidget {
             ),
             debugShowCheckedModeBanner: false,
             home: SplashScreen(),
+
+
           );
         });
   }

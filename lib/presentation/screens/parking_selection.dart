@@ -71,7 +71,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                         nextScreen: ParkingDetail1(
                                           parkName: item[i].parkName,
                                           parkLocation: item[i].parkLocation,
-                                          parkPrice: '${item[i].parkPrice}',
+                                          parkPrice: item[i].parkPrice,
                                           parkImage:
                                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[i].parkId,
                                         )),

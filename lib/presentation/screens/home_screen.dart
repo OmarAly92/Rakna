@@ -158,7 +158,7 @@ class PreviousParking extends StatelessWidget {
                               parkName: state.parking[index].parkName,
                               parkLocation: state.parking[index].parkLocation,
                               parkPrice:
-                                  '${state.parking[index].parkPrice}/Hours',
+                                  state.parking[index].parkPrice,
                               parkImage:
                                   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[index].parkId,),
                         ),
@@ -222,7 +222,7 @@ class NearbyParking extends StatelessWidget {
                               parkName: state.parking[index].parkName,
                               parkLocation: state.parking[index].parkLocation,
                               parkPrice:
-                                  '${state.parking[index].parkPrice}/Hours',
+                                  state.parking[index].parkPrice,
                               parkImage:
                                   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[index].parkId,),
                         ),

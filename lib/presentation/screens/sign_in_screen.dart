@@ -14,6 +14,7 @@ import 'package:rakna/presentation/screens/sign_up_screen.dart';
 import '../../core/services/services_locator.dart';
 import '../../core/utility/color.dart';
 import '../controller/sign_in_user_Bloc/sign_in_user_bloc.dart';
+import 'forget_password.dart';
 import 'navigation_bar.dart';
 
 class SignIn extends StatefulWidget {
@@ -178,7 +179,9 @@ class _SignInState extends State<SignIn> {
                                   Padding(
                                     padding: EdgeInsets.only(left: 230.w, top: 10.h),
                                     child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgetPassword(),));
+                                      },
                                       child: Text(
                                         'Forgot Password?',
                                         style: TextStyle(
@@ -192,7 +195,7 @@ class _SignInState extends State<SignIn> {
                                         padding:
                                             EdgeInsets.only(bottom: 8.h, top: 20.h),
                                         child: LogButton(
-                                          widget: Text('Sign Up',
+                                          widget: Text('Sign In',
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 16.sp)),
@@ -202,7 +205,12 @@ class _SignInState extends State<SignIn> {
                                           width: 305.w,
                                           height: 50.h,
                                           onPressed: () {
-
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NavigationBarScreen(),
+                                                ));
                                             if (!formKeyLogin.currentState!.validate()) {
                                               final snackBar = SnackBar(content: Text('Submitting form'));
                                               _scaffoldKey.currentState!.showBottomSheet((context) => snackBar);
@@ -220,12 +228,7 @@ class _SignInState extends State<SignIn> {
                                                 emailController.text.isEmpty == false &&
                                                 passwordController.text.isEmpty ==
                                                     false) {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        NavigationBarScreen(),
-                                                  ));
+
                                               setState(() {});
                                             }
                                             switch (state.requestState) {

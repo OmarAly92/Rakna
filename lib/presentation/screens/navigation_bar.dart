@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rakna/presentation/screens/setting_screen.dart';
 
+import '../../garage_owner/book_mark.dart';
 import 'home_screen.dart';
 
 
@@ -19,11 +20,8 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text(
-      'Bookmark',
-      style: optionStyle,
-    ),
-     SettingScreen()
+    BookMark(),
+    SettingScreen()
   ];
 
   void _onItemTapped(int index) {

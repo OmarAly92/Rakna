@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rakna/presentation/screens/slot_selection.dart';
 import '../../core/utility/color.dart';
@@ -14,7 +15,7 @@ class ParkingDetail1 extends StatefulWidget {
   }) : super(key: key);
   String parkName;
   String parkLocation;
-  String parkPrice;
+  num parkPrice;
   String parkImage;
   int parkId;
 
@@ -29,9 +30,10 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return  Scaffold(
       body: Stack(
         children: [
+
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * .6,
@@ -87,38 +89,112 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsets.only(top: 15, left: 15, right: 15),
+                    const EdgeInsets.only(top: 15, left: 15, right: 15),
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
                             widget.parkName,
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style:TextStyle(fontWeight: FontWeight.bold,fontSize: 35),
+
+
                           ),
                         ),
                         InkWell(
-                            onTap: () {
-                              setState(() {
-                                bookMark = !bookMark;
-                              });
-                            },
-                            child: Icon(
-                              bookMark == true
-                                  ? Icons.bookmark_add_outlined
-                                  : Icons.bookmark_added,
-                              color: kPrimaryColor,
-                              size: 35,
-                            ),
+                          onTap: () {
+                            setState(() {
+                              bookMark = !bookMark;
+                            });
+                          },
+                          child: Icon(
+                            bookMark == true
+                                ? Icons.bookmark_add_outlined
+                                : Icons.bookmark_added,
+                            color: kPrimaryColor,
+                            size: 35,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                    const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                     child: Text(
                       widget.parkLocation,
                       style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                  ),
+                  RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ), Padding(
+                      padding: const EdgeInsets.all(8.0),
+
+                      child: Row(
+                        children: [
+                          Text(
+                            'Open: ',
+                            style: TextStyle(fontSize: 16, color: Colors.green),
+                          ),
+                          Text(
+                            '24/7',
+                            style: TextStyle(fontSize: 16,),
+                          ),
+                        ],
+                      )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+
+                    child: Row(children: [
+                      Icon(
+                        Icons.phone,
+                        size: 24,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 8), // Adjust the spacing between the icon and text
+                      Text(
+                        'Phone: 01234567890',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+
+
+
+
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+
+                    child: Row(children: [
+                      Icon(
+                        Icons.location_on,
+                        size: 24,
+                        color: Colors.blue,
+                      ),
+                      SizedBox(width: 8), // Adjust the spacing between the icon and text
+                      Text(
+                        'Cairo,Madint Nasr',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+
+
+
+
                     ),
                   ),
 
@@ -162,55 +238,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                   //   ),
                   // ),
                   SizedBox(
-                    height: height * .3,
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Container(
-                        //   height: 49,
-                        //   width: 49,
-                        //   decoration: BoxDecoration(
-                        //       color: Colors.blue.shade900,
-                        //       // Color.fromRGBO(228, 228, 228, 1),
-                        //       borderRadius: BorderRadius.circular(10),
-                        //   ),
-                        //   child: Center(
-                        //     child: Text(
-                        //       '-',
-                        //       style: GoogleFonts.ptSans(
-                        //           fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                        //     ),
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 49,
-                        //   width: 100,
-                        //   child: Center(
-                        //     child: Text(
-                        //       '1',
-                        //       style: GoogleFonts.ptSans(
-                        //           fontSize: 20, fontWeight: FontWeight.bold),
-                        //     ),
-                        //   ),
-                        // ),
-                        // Container(
-                        //   height: 49,
-                        //   width: 49,
-                        //   decoration: BoxDecoration(
-                        //       color: Colors.blue.shade900,
-                        //       borderRadius: BorderRadius.circular(10)),
-                        //   child: Center(
-                        //     child: Text(
-                        //       '+',
-                        //       style: GoogleFonts.ptSans(
-                        //           fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                    height: height * .195,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
@@ -232,20 +260,20 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                       children: [
                         Expanded(
                             child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Total',
-                              style: GoogleFonts.ptSans(
-                                  fontSize: 14, color: Colors.black),
-                            ),
-                            Text('${widget.parkPrice} E£',
-                                style: GoogleFonts.ptSans(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black))
-                          ],
-                        )),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Total',
+                                  style: GoogleFonts.ptSans(
+                                      fontSize: 14, color: Colors.black),
+                                ),
+                                Text('${widget.parkPrice} E£',
+                                    style: GoogleFonts.ptSans(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black))
+                              ],
+                            )),
                         Material(
                           color: Colors.blue.shade900,
                           borderRadius: BorderRadius.circular(10),
@@ -254,7 +282,8 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => SlotSelection(parkId: widget.parkId,),
+                                    builder: (context) => SlotSelection(parkId: widget.parkId, parkPrice: widget.parkPrice),
+
                                   ));
                             },
                             borderRadius: BorderRadius.circular(10),

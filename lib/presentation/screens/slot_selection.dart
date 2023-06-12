@@ -11,8 +11,9 @@ import '../components/LogButton_Widget.dart';
 import '../components/slot-place.dart';
 
 class SlotSelection extends StatefulWidget {
-   SlotSelection({Key? key,required this.parkId}) : super(key: key);
-  int parkId;
+   SlotSelection({Key? key,required this.parkId,required this.parkPrice}) : super(key: key);
+   int parkId;
+   num parkPrice;
 
   @override
   State<SlotSelection> createState() => _SlotSelectionState();
@@ -25,7 +26,7 @@ class _SlotSelectionState extends State<SlotSelection> {
   Color primaryColor = Color(0xff007fff);
   Color mainColor = Colors.blue;
   Color selectedColor = Colors.orange.shade700;
-  Color bookedColor = Colors.blue.shade100;
+  Color bookedColor = Color(0xff990000);
   late int slotId;
   late String parkingSlotName;
 
@@ -259,7 +260,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                     builder: (context) =>
                                         ReservationParkingPlace(
                                       slotId: slotId,
-                                      parkSlotName: parkingSlotName,
+                                      parkSlotName: parkingSlotName, parkPrice: widget.parkPrice,
                                     ),
                                   ),
                                 );

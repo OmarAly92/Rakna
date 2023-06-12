@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_timer.dart';
 
+import '../../core/utility/custom_paypal.dart';
 import '../../data/data_source/remote_data_source.dart';
 import '../components/LogButton_Widget.dart';
-import 'add_payment.dart';
 
 class PaymentMethod extends StatefulWidget {
-  PaymentMethod(
+  const PaymentMethod(
       {Key? key,
       required this.startDateFormat,
       required this.endDateFormat,
@@ -66,14 +66,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       ),
                     ],
                   ),
-                  // IconButton(
-                  //     onPressed: () {
-                  //       ///TODO open camera to detect Credit Card
-                  //     },
-                  //     icon: Icon(
-                  //       CupertinoIcons.viewfinder,
-                  //       size: 29.r,
-                  //     ))
                 ],
               ),
               SizedBox(
@@ -89,49 +81,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   ),
                 ),
               ),
-              //Index 0
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selected = 0;
-                  });
-                },
-                child: Container(
-                  height: 80.h,
-                  width: 365.w,
-                  margin: EdgeInsets.only(
-                    bottom: 0,
-                    top: 15.h,
-                    left: 0,
-                    right: 0,
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                          color:
-                              selected == 0 ? Colors.blue : Colors.transparent,
-                          width: 1.8)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.paypal,
-                            color: Colors.blue.shade700, size: 60),
-                        const Text('Paypal'),
-                        Icon(
-                            selected == 0
-                                ? Icons.circle
-                                : Icons.circle_outlined,
-                            color: Colors.blue.shade700),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              //Index 1
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -215,40 +164,40 @@ class _PaymentMethodState extends State<PaymentMethod> {
                 ),
               ),
 
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddPayment()));
-                },
-                child: Container(
-                  height: 44.h,
-                  width: 365.w,
-                  margin: EdgeInsets.only(
-                    bottom: 0,
-                    top: 15.h,
-                    left: 0,
-                    right: 0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(25.r),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(14.0.r),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.add_circle_outline,
-                            color: Colors.blue.shade700, size: 20.r),
-                        SizedBox(width: 4.w),
-                        Text('Add New Card',
-                            style: TextStyle(color: Colors.blue.shade700)),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 135.h),
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(context,
+              //         MaterialPageRoute(builder: (context) => AddPayment()));
+              //   },
+              //   child: Container(
+              //     height: 44.h,
+              //     width: 365.w,
+              //     margin: EdgeInsets.only(
+              //       bottom: 0,
+              //       top: 15.h,
+              //       left: 0,
+              //       right: 0,
+              //     ),
+              //     decoration: BoxDecoration(
+              //       color: Colors.grey[200],
+              //       borderRadius: BorderRadius.circular(25.r),
+              //     ),
+              //     child: Padding(
+              //       padding: EdgeInsets.all(14.0.r),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Icon(Icons.add_circle_outline,
+              //               color: Colors.blue.shade700, size: 20.r),
+              //           SizedBox(width: 4.w),
+              //           Text('Add New Card',
+              //               style: TextStyle(color: Colors.blue.shade700)),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              SizedBox(height: 280.h),
               Center(
                 child: LogButton(
                   widget: Text('Book',
@@ -256,23 +205,99 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
+                    if (selected == 1) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UsePaypal1(
+                                    sandboxMode: true,
+                                    clientId:
+                                        "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
+                                    secretKey:
+                                        "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+                                    returnURL: "https://samplesite.com/return",
+                                    cancelURL: "https://samplesite.com/cancel",
+                                    transactions:  [
+                                      {
+                                        "amount": {
+                                          "total": '${widget.priceAmount}',
+                                          "currency": "USD",
+                                          "details": {
+                                            "subtotal": '${widget.priceAmount}',
+                                            "shipping": '0',
+                                            "shipping_discount": 0
+                                          }
+                                        },
+                                        "description":
+                                            "The payment transaction description.",
+                                        // "payment_options": {
+                                        //   "allowed_payment_method":
+                                        //       "INSTANT_FUNDING_SOURCE"
+                                        // },
+                                        "item_list": {
+                                          "items": [
+                                            {
+                                              "name": "A demo product",
+                                              "quantity": 1,
+                                              "price": '${widget.priceAmount}',
+                                              "currency": "USD"
+                                            }
+                                          ],
 
-                    print( '${widget.parkSlotName}\n${widget.startDateFormat} \n${widget.endDateFormat}');
-                    ParkingRemoteDataSource().putReservationData(
+                                          // shipping address is not required though
+                                          "shipping_address": {
+                                            "recipient_name": "Jane Foster",
+                                            "line1": "Travis County",
+                                            "line2": "",
+                                            "city": "Austin",
+                                            "country_code": "US",
+                                            "postal_code": "73301",
+                                            "phone": "+00000000",
+                                            "state": "Texas"
+                                          },
+                                        }
+                                      }
+                                    ],
+                                    note:
+                                        "Contact us for any questions on your order.",
+                                    onSuccess: (Map params) async {
+                                      // navigatorKey?.currentState?.pushNamed('/');
+
+                                      print("onSuccess: $params");
+                                    },
+                                    onError: (error) {
+                                      print("onError: $error");
+                                    },
+                                    onCancel: (params) {
+                                      print('cancelled: $params');
+                                    },
+                                    slotId: widget.slotId,
+                                    hourSelected: widget.hourSelected,
+                                    parkSlotName: widget.parkSlotName, startDateFormat:widget.startDateFormat, endDateFormat: widget.endDateFormat,
+                                  ),),);
+                    } else if (selected == 2) {
+                      print(
+                          '${widget.parkSlotName}\n${widget.startDateFormat} \n${widget.endDateFormat}');
+                      ParkingRemoteDataSource().putReservationData(
                         id: widget.slotId,
                         parkingSlotName: widget.parkSlotName,
                         startHour: widget.startDateFormat,
                         endHour: widget.endDateFormat,
                         isAvailable: false,
-                        randomNumber: '4521', parkForeignKey: 1,
+                        randomNumber: '4521',
+                        parkForeignKey: 1,
                       );
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ParkingTimer(slotId: widget.slotId, hourSelected: widget.hourSelected, parkSlotName:widget.parkSlotName,),
-                      ),
-                    );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ParkingTimer(
+                            slotId: widget.slotId,
+                            hourSelected: widget.hourSelected,
+                            parkSlotName: widget.parkSlotName,
+                          ),
+                        ),
+                      );
+                    }
                   },
                   radius: 5.r,
                   width: 295.w,

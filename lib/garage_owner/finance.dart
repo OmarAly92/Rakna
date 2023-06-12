@@ -30,48 +30,48 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      "Activity",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentMethodOwner(),
-                              ));
-                        },
-                        child: buildActivityButton(
-                            Icons.credit_card_rounded,
-                            "My Card",
-                            Colors.blue.withOpacity(0.2),
-                            Color(0XFF01579B)),
-                      ),
-                      buildActivityButton(
-                          Icons.transfer_within_a_station,
-                          "Transfer",
-                          Colors.cyanAccent.withOpacity(0.2),
-                          Color(0XFF0097A7)),
-                      buildActivityButton(
-                          Icons.pie_chart,
-                          "Statistics",
-                          Color(0XFFD7CCC8).withOpacity(0.4),
-                          Color(0XFF9499B7)),
-                    ],
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 10),
+                  //   child: Text(
+                  //     "Activity",
+                  //     style: TextStyle(
+                  //         fontSize: 18,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: Colors.grey),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     InkWell(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //               builder: (context) => PaymentMethodOwner(),
+                  //             ));
+                  //       },
+                  //       child: buildActivityButton(
+                  //           Icons.credit_card_rounded,
+                  //           "My Card",
+                  //           Colors.blue.withOpacity(0.2),
+                  //           Color(0XFF01579B)),
+                  //     ),
+                  //     buildActivityButton(
+                  //         Icons.transfer_within_a_station,
+                  //         "Transfer",
+                  //         Colors.cyanAccent.withOpacity(0.2),
+                  //         Color(0XFF0097A7)),
+                  //     buildActivityButton(
+                  //         Icons.pie_chart,
+                  //         "Statistics",
+                  //         Color(0XFFD7CCC8).withOpacity(0.4),
+                  //         Color(0XFF9499B7)),
+                  //   ],
+                  // ),
                   SizedBox(
                     height: 15,
                   ),
