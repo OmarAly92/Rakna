@@ -82,56 +82,56 @@ class _SettingScreenState extends State<SettingScreen> {
                 padding:  EdgeInsets.only(left: 10.w),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
-                      child: InkWell(
-                        onTap: () {},
-                        child: SizedBox(
-                          height: 38.w,
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.person_outline_rounded,
-                                color: Colors.grey,
-                                size: 27.r,
-                              ),
-                              SizedBox(width: 9.w),
-                              Text(
-                                'Edit Profile',
-                                style: TextStyle(
-                                    fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
-                      child: SizedBox(
-                        height: 38.w,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.payment_rounded,
-                                color: Colors.grey,
-                                size: 27.r,
-                              ),
-                              SizedBox(width: 9.w),
-                              Text(
-                                'Payment',
-                                style: TextStyle(
-                                    fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(bottom: widget.bottom),
+                    //   child: InkWell(
+                    //     onTap: () {},
+                    //     child: SizedBox(
+                    //       height: 38.w,
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.person_outline_rounded,
+                    //             color: Colors.grey,
+                    //             size: 27.r,
+                    //           ),
+                    //           SizedBox(width: 9.w),
+                    //           Text(
+                    //             'Edit Profile',
+                    //             style: TextStyle(
+                    //                 fontSize: 16.5.sp,
+                    //                 fontWeight: FontWeight.w500),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(bottom: widget.bottom),
+                    //   child: SizedBox(
+                    //     height: 38.w,
+                    //     child: InkWell(
+                    //       onTap: () {},
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.payment_rounded,
+                    //             color: Colors.grey,
+                    //             size: 27.r,
+                    //           ),
+                    //           SizedBox(width: 9.w),
+                    //           Text(
+                    //             'Payment',
+                    //             style: TextStyle(
+                    //                 fontSize: 16.5.sp,
+                    //                 fontWeight: FontWeight.w500),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.only(bottom: widget.bottom),
                       child: SizedBox(
@@ -157,31 +157,31 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
-                      child: SizedBox(
-                        height: 38.w,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.security,
-                                color: Colors.grey,
-                                size: 27.r,
-                              ),
-                              SizedBox(width: 9.w),
-                              Text(
-                                'Security',
-                                style: TextStyle(
-                                    fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(bottom: widget.bottom),
+                    //   child: SizedBox(
+                    //     height: 38.w,
+                    //     child: InkWell(
+                    //       onTap: () {},
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.security,
+                    //             color: Colors.grey,
+                    //             size: 27.r,
+                    //           ),
+                    //           SizedBox(width: 9.w),
+                    //           Text(
+                    //             'Security',
+                    //             style: TextStyle(
+                    //                 fontSize: 16.5.sp,
+                    //                 fontWeight: FontWeight.w500),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.only(bottom: widget.bottom),
                       child: SizedBox(
@@ -207,31 +207,31 @@ class _SettingScreenState extends State<SettingScreen> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
-                      child: SizedBox(
-                        height: 38.w,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.remove_red_eye_outlined,
-                                color: Colors.grey,
-                                size: 27.r,
-                              ),
-                              SizedBox(width: 9.w),
-                              Text(
-                                'Dark Theme',
-                                style: TextStyle(
-                                    fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(bottom: widget.bottom),
+                    //   child: SizedBox(
+                    //     height: 38.w,
+                    //     child: InkWell(
+                    //       onTap: () {},
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.remove_red_eye_outlined,
+                    //             color: Colors.grey,
+                    //             size: 27.r,
+                    //           ),
+                    //           SizedBox(width: 9.w),
+                    //           Text(
+                    //             'Dark Theme',
+                    //             style: TextStyle(
+                    //                 fontSize: 16.5.sp,
+                    //                 fontWeight: FontWeight.w500),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.only(bottom: widget.bottom),
                       child: SizedBox(

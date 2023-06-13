@@ -25,8 +25,6 @@ class CategoryCard extends StatefulWidget {
 class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
-    late double height = MediaQuery.of(context).size.height;
-    late double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -52,10 +50,11 @@ class _CategoryCardState extends State<CategoryCard> {
         child: Wrap(
           children: [
             Column(
+
               // crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Align(
@@ -74,23 +73,24 @@ class _CategoryCardState extends State<CategoryCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(widget.category.parkingName),
-                              SizedBox(
-                                width: widget.widthBookmark, //TODO add custom
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    widget.bookmark = !widget.bookmark;
-                                  });
-                                },
-                                child: Icon(
-                                  widget.bookmark == true
-                                      ? Icons.bookmark_add_outlined
-                                      : Icons.bookmark_added,
-                                  color: kPrimaryColor,
+
+                              Padding(
+                                padding: const EdgeInsets.only(left: 60),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      widget.bookmark = !widget.bookmark;
+                                    });
+                                  },
+                                  child: Icon(
+                                    widget.bookmark == true
+                                        ? Icons.bookmark_add_outlined
+                                        : Icons.bookmark_added,
+                                    color: kPrimaryColor,
+                                  ),
                                 ),
                               ),
                             ],
@@ -103,6 +103,7 @@ class _CategoryCardState extends State<CategoryCard> {
                             height: 45.h,
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
                                 width: widget.widthPrice,

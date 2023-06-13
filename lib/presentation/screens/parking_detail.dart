@@ -9,9 +9,9 @@ class ParkingDetail1 extends StatefulWidget {
     Key? key,
      required this.parkId,
      required this.parkName,
-    required this.parkLocation,
-    required this.parkPrice,
-    required this.parkImage,
+     required this.parkLocation,
+     required this.parkPrice,
+     required this.parkImage,
   }) : super(key: key);
   String parkName;
   String parkLocation;

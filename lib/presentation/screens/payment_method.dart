@@ -8,16 +8,16 @@ import '../../data/data_source/remote_data_source.dart';
 import '../components/LogButton_Widget.dart';
 
 class PaymentMethod extends StatefulWidget {
-  const PaymentMethod(
-      {Key? key,
-      required this.startDateFormat,
-      required this.endDateFormat,
-      required this.coupon,
-      required this.priceAmount,
-      required this.parkSlotName,
-      required this.slotId,
-      required this.hourSelected})
-      : super(key: key);
+  const PaymentMethod({
+    Key? key,
+    required this.startDateFormat,
+    required this.endDateFormat,
+    required this.coupon,
+    required this.priceAmount,
+    required this.parkSlotName,
+    required this.slotId,
+    required this.hourSelected,
+  }) : super(key: key);
 
   final String startDateFormat;
   final String endDateFormat;
@@ -207,74 +207,77 @@ class _PaymentMethodState extends State<PaymentMethod> {
                   onPressed: () {
                     if (selected == 1) {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UsePaypal1(
-                                    sandboxMode: true,
-                                    clientId:
-                                        "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
-                                    secretKey:
-                                        "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
-                                    returnURL: "https://samplesite.com/return",
-                                    cancelURL: "https://samplesite.com/cancel",
-                                    transactions:  [
-                                      {
-                                        "amount": {
-                                          "total": '${widget.priceAmount}',
-                                          "currency": "USD",
-                                          "details": {
-                                            "subtotal": '${widget.priceAmount}',
-                                            "shipping": '0',
-                                            "shipping_discount": 0
-                                          }
-                                        },
-                                        "description":
-                                            "The payment transaction description.",
-                                        // "payment_options": {
-                                        //   "allowed_payment_method":
-                                        //       "INSTANT_FUNDING_SOURCE"
-                                        // },
-                                        "item_list": {
-                                          "items": [
-                                            {
-                                              "name": "A demo product",
-                                              "quantity": 1,
-                                              "price": '${widget.priceAmount}',
-                                              "currency": "USD"
-                                            }
-                                          ],
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UsePaypal1(
+                            sandboxMode: true,
+                            clientId:
+                                "AW1TdvpSGbIM5iP4HJNI5TyTmwpY9Gv9dYw8_8yW5lYIbCqf326vrkrp0ce9TAqjEGMHiV3OqJM_aRT0",
+                            secretKey:
+                                "EHHtTDjnmTZATYBPiGzZC_AZUfMpMAzj2VZUeqlFUrRJA_C0pQNCxDccB5qoRQSEdcOnnKQhycuOWdP9",
+                            returnURL: "https://samplesite.com/return",
+                            cancelURL: "https://samplesite.com/cancel",
+                            transactions: [
+                              {
+                                "amount": {
+                                  "total": '${widget.priceAmount}',
+                                  "currency": "USD",
+                                  "details": {
+                                    "subtotal": '${widget.priceAmount}',
+                                    "shipping": '0',
+                                    "shipping_discount": 0
+                                  }
+                                },
+                                "description":
+                                    "The payment transaction description.",
+                                // "payment_options": {
+                                //   "allowed_payment_method":
+                                //       "INSTANT_FUNDING_SOURCE"
+                                // },
+                                "item_list": {
+                                  "items": [
+                                    {
+                                      "name": "A demo product",
+                                      "quantity": 1,
+                                      "price": '${widget.priceAmount}',
+                                      "currency": "USD"
+                                    }
+                                  ],
 
-                                          // shipping address is not required though
-                                          "shipping_address": {
-                                            "recipient_name": "Jane Foster",
-                                            "line1": "Travis County",
-                                            "line2": "",
-                                            "city": "Austin",
-                                            "country_code": "US",
-                                            "postal_code": "73301",
-                                            "phone": "+00000000",
-                                            "state": "Texas"
-                                          },
-                                        }
-                                      }
-                                    ],
-                                    note:
-                                        "Contact us for any questions on your order.",
-                                    onSuccess: (Map params) async {
-                                      // navigatorKey?.currentState?.pushNamed('/');
+                                  // shipping address is not required though
+                                  "shipping_address": {
+                                    "recipient_name": "Jane Foster",
+                                    "line1": "Travis County",
+                                    "line2": "",
+                                    "city": "Austin",
+                                    "country_code": "US",
+                                    "postal_code": "73301",
+                                    "phone": "+00000000",
+                                    "state": "Texas"
+                                  },
+                                }
+                              }
+                            ],
+                            note: "Contact us for any questions on your order.",
+                            onSuccess: (Map params) async {
+                              // navigatorKey?.currentState?.pushNamed('/');
 
-                                      print("onSuccess: $params");
-                                    },
-                                    onError: (error) {
-                                      print("onError: $error");
-                                    },
-                                    onCancel: (params) {
-                                      print('cancelled: $params');
-                                    },
-                                    slotId: widget.slotId,
-                                    hourSelected: widget.hourSelected,
-                                    parkSlotName: widget.parkSlotName, startDateFormat:widget.startDateFormat, endDateFormat: widget.endDateFormat,
-                                  ),),);
+                              print("onSuccess: $params");
+                            },
+                            onError: (error) {
+                              print("onError: $error");
+                            },
+                            onCancel: (params) {
+                              print('cancelled: $params');
+                            },
+                            slotId: widget.slotId,
+                            hourSelected: widget.hourSelected,
+                            parkSlotName: widget.parkSlotName,
+                            startDateFormat: widget.startDateFormat,
+                            endDateFormat: widget.endDateFormat,
+                          ),
+                        ),
+                      );
                     } else if (selected == 2) {
                       print(
                           '${widget.parkSlotName}\n${widget.startDateFormat} \n${widget.endDateFormat}');

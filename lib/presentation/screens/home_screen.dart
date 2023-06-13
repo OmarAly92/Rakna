@@ -33,81 +33,83 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocProvider(
         create: (context) => sl<ParkingBloc>()..add(GetParkingDataEvent()),
         child: Scaffold(
-          body: Column(
-            children: [
-              const AppBarCustom(),
-              Column(
-                children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Explore nearby parking",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                ///todo fix this screen
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => ParkingSelection(),
-                                //     ));
-                              },
-                              child: Text(
-                                "See All",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(color: kPrimaryColor),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const AppBarCustom(),
+                Column(
+                  children: [
+                    Column(
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Explore nearby parking",
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
-                            )
-                          ],
+                              TextButton(
+                                onPressed: () {
+                                  ///todo fix this screen
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ParkingSelection(),
+                                      ));
+                                },
+                                child: Text(
+                                  "See All",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(color: kPrimaryColor),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const NearbyParking(),
-                      Padding(
-                        padding:
-                            EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Previous parking",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            TextButton(
-                              onPressed: () {                                ///todo fix this screen
-
-                                // // Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => ParkingSelection()));
-                                // Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //       builder: (context) => ParkingSelection(),
-                                //     ));
-                              },
-                              child: Text(
-                                "See All",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(color: kPrimaryColor),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      PreviousParking(),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                        const NearbyParking(),
+                        // Padding(
+                        //   padding:
+                        //       EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Text(
+                        //         "Previous parking",
+                        //         style: Theme.of(context).textTheme.bodyLarge,
+                        //       ),
+                        //       TextButton(
+                        //         onPressed: () {                                ///todo fix this screen
+                        //
+                        //           // // Navigator.push(context, CupertinoModalPopupRoute(builder: (context) => ParkingSelection()));
+                        //           // Navigator.push(
+                        //           //     context,
+                        //           //     MaterialPageRoute(
+                        //           //       builder: (context) => ParkingSelection(),
+                        //           //     ));
+                        //         },
+                        //         child: Text(
+                        //           "See All",
+                        //           style: Theme.of(context)
+                        //               .textTheme
+                        //               .bodyMedium
+                        //               ?.copyWith(color: kPrimaryColor),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // PreviousParking(),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -153,7 +155,7 @@ class PreviousParking extends StatelessWidget {
                               ' ${state.parking[index].parkLocation}',
                           parkImage:
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
-                          parkPrice: '${state.parking[index].parkPrice}/Hours',
+                          parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
                           nextScreen: ParkingDetail1(
                               parkName: state.parking[index].parkName,
                               parkLocation: state.parking[index].parkLocation,
@@ -217,7 +219,7 @@ class NearbyParking extends StatelessWidget {
                               ' ${state.parking[index].parkLocation}',
                           parkImage:
                               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
-                          parkPrice: '${state.parking[index].parkPrice}/Hours',
+                          parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
                           nextScreen: ParkingDetail1(
                               parkName: state.parking[index].parkName,
                               parkLocation: state.parking[index].parkLocation,

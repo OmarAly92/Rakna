@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/utility/color.dart';
+import '../../team2/notification_screen.dart';
 import 'circle_button.dart';
 import 'search_testfield.dart';
 
@@ -44,9 +45,15 @@ class AppBarCustom extends StatelessWidget {
                 "Hello,\nGood Morning",
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              CircleButton(
-                icon: Icons.notifications,
-                onPressed: () {},
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Notifications()));
+                },
+                child: CircleButton(
+                  icon: Icons.notifications,
+                  onPressed: () {},
+                ),
               ),
             ],
           ),

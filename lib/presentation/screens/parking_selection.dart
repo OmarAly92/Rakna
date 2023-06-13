@@ -41,8 +41,13 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                   builder: (context, state) {
                     switch (state.requestState) {
                       case RequestState.loading:
-                        return Center(
-                          child: CircularProgressIndicator(),
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 300.h,),
+                            Center(child: CircularProgressIndicator()),
+                          ],
                         );
                       case RequestState.loaded:
                         var item = state.parking;
@@ -52,10 +57,6 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Nearby Parking",
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
                               SizedBox(height: 10.h),
                               for (int i = 0; i < 5; i++)
                                 Padding(
@@ -67,7 +68,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                         parkingLocation: item[i].parkLocation,
                                         parkImage:
                                             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
-                                        parkPrice: '${item[i].parkPrice}',
+                                        parkPrice: '${(item[i].parkPrice).toString().replaceFirst('.0', '')}/Hour',
                                         nextScreen: ParkingDetail1(
                                           parkName: item[i].parkName,
                                           parkLocation: item[i].parkLocation,
@@ -105,31 +106,35 @@ class MiniAppBarCustom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        padding: EdgeInsets.only(top: 18.h, left: 18.h, right: 18.h),
-        height: 80.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20.r),
-            bottomRight: Radius.circular(20.r),
-          ),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0.1, 0.7],
-            colors: [
-              kPrimaryLight,
-              kPrimaryColor,
-              // Colors.blue.shade500,
-              // Colors.blue.shade900,
-              // Color(0xff886ff2),
-              // Color(0xff144272)
-            ],
-          ),
+    return Container(
+      padding: EdgeInsets.only(top: 18.h, left: 18.h, right: 18.h),
+      height: 60.h,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(20.r),
+          bottomRight: Radius.circular(20.r),
         ),
-        child: SearchTextField(),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: [0.1, 0.7],
+          colors: [
+            kPrimaryLight,
+            kPrimaryColor,
+            // Colors.blue.shade500,
+            // Colors.blue.shade900,
+            // Color(0xff886ff2),
+            // Color(0xff144272)
+          ],
+        ),
+      ),
+      child: Center(child:Text(
+        "Nearby Parking",
+        style: TextStyle(
+          fontSize: 22,color: Colors.white,fontWeight: FontWeight.w600
+        )
+      ),
       ),
     );
   }
