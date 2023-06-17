@@ -30,8 +30,8 @@ import 'domain/usecase/get_parking_usecase.dart';
 import 'garage_owner/finance.dart';
 import 'garage_owner/garage_owner_home_screen.dart';
 
-import 'garage_owner/home_page.dart';
 import 'garage_owner/navigation_bar_garage_owner.dart';
+import 'garage_owner/sign_in_garage_owner.dart';
 
 void main() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: NavigationBarScreen(),
+            home: SplashScreen(),
 
 
           );

@@ -6,6 +6,7 @@ import '../core/utility/category.dart';
 import '../core/utility/color.dart';
 import '../presentation/components/LogButton_Widget.dart';
 import '../presentation/components/category_card.dart';
+import '../team2/notification_screen.dart';
 import 'category_card_garage_owner.dart';
 
 class Home extends StatefulWidget {
@@ -131,10 +132,16 @@ class _HomeState extends State<Home> {
                         height: 40,
                         width: 40,
                         color: Color.fromRGBO(250, 250, 250, 0.1),
-                        child: Icon(
-                          Icons.notifications_none,
-                          size: 30,
-                          color: Colors.white,
+                        child: InkWell(
+                          onTap: () {
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                          },
+                          child: Icon(
+                            Icons.notifications_none,
+                            size: 30,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

@@ -11,9 +11,10 @@ import '../components/LogButton_Widget.dart';
 
 class ReservationParkingPlace extends StatefulWidget {
   ReservationParkingPlace(
-      {Key? key, required this.slotId, required this.parkSlotName,required this.parkPrice})
+      {Key? key, required this.slotId, required this.parkSlotName,required this.parkPrice,required this.parkForeignKey})
       : super(key: key);
   final int slotId;
+  final int parkForeignKey;
   final String parkSlotName;
   int hour = 1;
   num parkPrice;
@@ -137,6 +138,9 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                             }else {
                               return isSameDay(_selectedDay, day);
                             }
+
+
+                            // return isSameDay(_selectedDay, day);
                             },
                           onDaySelected: (selectedDay, focusedDay) {
                             if (!isSameDay(_selectedDay, selectedDay)) {
@@ -267,6 +271,9 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                                   inSeconds: 2)
                                               .substring(11)
                                               .substring(0, 5);
+
+
+                                          print('object');
                                         });
                                       }
                                       // 1900-01-01 00:00
@@ -411,19 +418,29 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               onPressed: () {
 
                                 if(_selectedDay == DateTime.tryParse(_selectedDay.toString().replaceRange(16, 23, '00.000000'))){
+                                    print('x');
+                                  // startH = today.add((Duration(hours: startHourHours, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
+                                  // endH = today.add((Duration(hours: startHourHours + widget.hour, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
 
-                                  startH = today.add((Duration(hours: startHourHours, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
-                                  endH = today.add((Duration(hours: startHourHours + widget.hour, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
 
-                               finalStartDateFormat= _selectedDay.toString().replaceRange(11, 23, '$startH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');
+                                    startH = today.add((Duration(hours: ((startHourHours))+8, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-35))).minute.seconds;
+                                    endH = today.add((Duration(hours: ((startHourHours + widget.hour))+8, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-35))).minute.seconds;
+
+                                    finalStartDateFormat= _selectedDay.toString().replaceRange(11, 23, '$startH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');
                                finalEndDateFormat= _selectedDay.toString().replaceRange(11, 23, '$endH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');
 
                                 }else{
 
-                                  startH = today.add((Duration(hours: startHourHours, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
-                                  endH = today.add((Duration(hours: startHourHours + widget.hour, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
+                                  startH = today.add((Duration(hours: ((startHourHours)-4)+12, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-18))).minute.seconds;
+                                  endH = today.add((Duration(hours: ((startHourHours + widget.hour)-4)+12, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-18))).minute.seconds;
 
-                                    finalStartDateFormat=_selectedDay.toString().replaceFirst('00:00:00.000Z', startH.toString()).replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst(':00.000', '') ;
+
+                                  print('$startHourHours  testH');
+                                  print('$startH  test');
+                                  print('$endH  test');
+
+
+                                  finalStartDateFormat=_selectedDay.toString().replaceFirst('00:00:00.000Z', startH.toString()).replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst(':00.000', '') ;
                                     finalEndDateFormat= _selectedDay.toString().replaceFirst('00:00:00.000Z', endH.toString()).replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst(':00.000', '');
                                 }
 
@@ -457,7 +474,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                       coupon: coupon.text,
                                       priceAmount: (widget.parkPrice.toDouble() * widget.hour),
                                       parkSlotName: widget.parkSlotName,
-                                      slotId: widget.slotId, hourSelected: widget.hour,
+                                      slotId: widget.slotId, hourSelected: widget.hour, parkForeignKey: widget.parkForeignKey,
                                     ),
                                   ),
                                 );

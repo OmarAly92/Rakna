@@ -42,18 +42,7 @@ class _ParkingTimerState extends State<ParkingTimer>
     }
   }
 
-  void isAvailable() {
-    if (countText == '00:00:00') {
-      ParkingRemoteDataSource().putReservationData(
-        id: widget.slotId,
-        parkingSlotName: widget.parkSlotName,
-        startHour: '2023-06-07T15:44:00',
-        endHour: '2023-06-07T15:44:00',
-        isAvailable: true,
-        randomNumber: '0000', parkForeignKey: 1,
-      );
-    }
-  }
+
 
   @override
   void initState() {
@@ -67,7 +56,6 @@ class _ParkingTimerState extends State<ParkingTimer>
     controller.reverse(from: controller.value == 0 ? 1.0 : controller.value);
     controller.addListener(() {
       notify();
-      isAvailable();
       if (controller.isAnimating) {
         setState(() {
           progress = controller.value;

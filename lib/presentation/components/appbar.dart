@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:rakna/presentation/components/search_bar.dart';
 
 import '../../core/utility/color.dart';
 import '../../team2/notification_screen.dart';
 import 'circle_button.dart';
-import 'search_testfield.dart';
 
-class AppBarCustom extends StatelessWidget {
-  const AppBarCustom({
-    Key? key,
-  }) : super(key: key);
 
+
+
+class AppBarCustom extends StatefulWidget {
+   AppBarCustom({Key? key, required this.image}) : super(key: key);
+String image;
+  @override
+  State<AppBarCustom> createState() => _AppBarCustomState();
+}
+
+class _AppBarCustomState extends State<AppBarCustom> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,32 +43,57 @@ class AppBarCustom extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Hello,\nGood Morning",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Notifications()));
-                },
-                child: CircleButton(
-                  icon: Icons.notifications,
-                  onPressed: () {},
-                ),
-              ),
-            ],
+        Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Hello,\nGood Morning",
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          const SizedBox(
-            height: 20,
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Notifications()));
+            },
+            child: CircleButton(
+              icon: Icons.notifications,
+              onPressed: () {},
+            ),
           ),
-          const SearchTextField()
+        ],
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      TextFormField(onTap: () {
+        showSearch(context: context, delegate: SearchUser(image: widget.image));
+      },
+        style: TextStyle(color: Colors.white),
+        cursorColor: Colors.white,
+
+        decoration: InputDecoration(
+          prefixIcon: const Icon(
+            Icons.search,
+            color: Colors.grey,
+            size: 26,
+          ),
+
+          // helperText: "Search your topic",
+          floatingLabelBehavior: FloatingLabelBehavior.never,
+          labelText: "Search your park",
+          labelStyle: const TextStyle(color: Colors.grey),
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(40),
+          ),
+          isDense: true,
+        ),)
         ],
       ),
     );
   }
 }
+
+

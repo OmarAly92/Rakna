@@ -9,7 +9,6 @@ import '../../core/utility/color.dart';
 import '../../core/utility/enums.dart';
 import '../components/appbar.dart';
 import '../components/circle_button.dart';
-import '../components/search_testfield.dart';
 import '../components/category_card.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
@@ -67,14 +66,14 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                         parkingName: item[i].parkName,
                                         parkingLocation: item[i].parkLocation,
                                         parkImage:
-                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
+                                        item[i].parkImage,
                                         parkPrice: '${(item[i].parkPrice).toString().replaceFirst('.0', '')}/Hour',
                                         nextScreen: ParkingDetail1(
                                           parkName: item[i].parkName,
                                           parkLocation: item[i].parkLocation,
                                           parkPrice: item[i].parkPrice,
                                           parkImage:
-                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[i].parkId,
+                                          item[i].parkImage, parkId: state.parking[i].parkId,
                                         )),
                                     widthBookmark: 18.w,
                                     widthPrice: 65.w,

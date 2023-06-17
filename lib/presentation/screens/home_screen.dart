@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                const AppBarCustom(),
+                 AppBarCustom(image:'https://cdn.wallpapersafari.com/82/10/tC7I1w.jpg',),
                 Column(
                   children: [
                     Column(
@@ -154,7 +154,7 @@ class PreviousParking extends StatelessWidget {
                           parkingLocation:
                               ' ${state.parking[index].parkLocation}',
                           parkImage:
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
+                              state.parking[index].parkImage,
                           parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
                           nextScreen: ParkingDetail1(
                               parkName: state.parking[index].parkName,
@@ -162,7 +162,8 @@ class PreviousParking extends StatelessWidget {
                               parkPrice:
                                   state.parking[index].parkPrice,
                               parkImage:
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[index].parkId,),
+                              state.parking[index].parkImage,
+                             parkId: state.parking[index].parkId,),
                         ),
                         widthBookmark: 60.w,
                         widthPrice: 75.w,
@@ -218,7 +219,7 @@ class NearbyParking extends StatelessWidget {
                           parkingLocation:
                               ' ${state.parking[index].parkLocation}',
                           parkImage:
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
+                              state.parking[index].parkImage,
                           parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
                           nextScreen: ParkingDetail1(
                               parkName: state.parking[index].parkName,
@@ -226,7 +227,7 @@ class NearbyParking extends StatelessWidget {
                               parkPrice:
                                   state.parking[index].parkPrice,
                               parkImage:
-                                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU', parkId: state.parking[index].parkId,),
+                              state.parking[index].parkImage, parkId: state.parking[index].parkId,),
                         ),
                         widthBookmark: 60.w,
                         widthPrice: 75.w,

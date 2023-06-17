@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
+import '../../team2/notification_screen.dart';
+
 class SettingScreen extends StatefulWidget {
   SettingScreen({Key? key}) : super(key: key);
 
@@ -137,7 +139,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => Notifications()));
+
+                          },
                           child: Row(
                             children: [
                               Icon(

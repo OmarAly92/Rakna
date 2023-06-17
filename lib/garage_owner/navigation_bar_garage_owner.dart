@@ -5,21 +5,20 @@ import 'finance.dart';
 import 'garage_owner_home_screen.dart';
 
 class NavigationBarGarageOwner extends StatefulWidget {
-  const NavigationBarGarageOwner({super.key});
+   const NavigationBarGarageOwner({super.key,required this.garageOwnerId,required this.name,required this.email});
+   final int garageOwnerId;
+   final String name;
+   final String email;
 
-  @override
+
+   @override
   State<NavigationBarGarageOwner> createState() => _NavigationBarGarageOwnerState();
 }
 
 class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    Home(),
-    MyCustomUI(),
-    SettingScreenGarageOwner(),
-  ];
+  static  TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+   // List _widgetOptions =
 
   void _onItemTapped(int index) {
     setState(() {
@@ -31,7 +30,11 @@ class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child:  [
+          Home(),
+          MyCustomUI(garageOwnerId: widget.garageOwnerId),
+          SettingScreenGarageOwner(name: widget.name, email: widget.email,),
+        ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[

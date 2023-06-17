@@ -17,6 +17,7 @@ class PaymentMethod extends StatefulWidget {
     required this.parkSlotName,
     required this.slotId,
     required this.hourSelected,
+    required this.parkForeignKey,
   }) : super(key: key);
 
   final String startDateFormat;
@@ -26,6 +27,8 @@ class PaymentMethod extends StatefulWidget {
   final String parkSlotName;
   final int slotId;
   final int hourSelected;
+  final int parkForeignKey;
+
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -288,7 +291,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         endHour: widget.endDateFormat,
                         isAvailable: false,
                         randomNumber: '4521',
-                        parkForeignKey: 1,
+                        parkForeignKey: widget.parkForeignKey,
                       );
                       Navigator.push(
                         context,

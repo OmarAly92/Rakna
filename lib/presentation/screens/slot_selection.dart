@@ -69,46 +69,40 @@ class _SlotSelectionState extends State<SlotSelection> {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: List.generate(
-                            3,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 3.5, right: 3.5, bottom: 15),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 40,
-                                    width: 90,
-                                    margin: EdgeInsets.only(
-                                      bottom: 0,
-                                      top: 0,
-                                      left: 0,
-                                      right: 0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: mainColor,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Section A',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: List.generate(
+                      //       1,
+                      //       (index) => Padding(
+                      //         padding: const EdgeInsets.only(
+                      //             left: 3.5, right: 3.5, bottom: 15),
+                      //         child: Row(
+                      //           children: [
+                      //             Container(
+                      //               height: 50,
+                      //                width: 350,
+                      //                 decoration: BoxDecoration(
+                      //                 color: mainColor,
+                      //                 borderRadius: BorderRadius.circular(5),
+                      //               ),
+                      //               child: Center(
+                      //                 child: Text(
+                      //                   'Section A',
+                      //                   style: TextStyle(color: Colors.white),
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //             SizedBox(
+                      //               width: 5,
+                      //             )
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding: EdgeInsets.only(
                             bottom: 5.h, left: 10.w, right: 10.w, top: 15.h),
@@ -170,7 +164,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                   children: [
 
                                     Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 188.5),
+                                      padding: const EdgeInsets.symmetric(vertical: 195),
                                       child: CircularProgressIndicator(),
                                     ),
 
@@ -239,7 +233,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                           }
                         },
                       ),
-                      SizedBox(height: 60.h),
+                      SizedBox(height: 80.h),
                       Padding(
                         padding: EdgeInsets.only(
                             bottom: 10.h, left: 5.w, right: 5.w),
@@ -260,7 +254,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                     builder: (context) =>
                                         ReservationParkingPlace(
                                       slotId: slotId,
-                                      parkSlotName: parkingSlotName, parkPrice: widget.parkPrice,
+                                      parkSlotName: parkingSlotName, parkPrice: widget.parkPrice, parkForeignKey: widget.parkId,
                                     ),
                                   ),
                                 );

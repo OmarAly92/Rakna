@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
 import '../../garage_owner/navigation_bar_garage_owner.dart';
+import '../../garage_owner/sign_in_garage_owner.dart';
 import '../components/LogButton_Widget.dart';
 
 class GetStarted extends StatelessWidget {
@@ -43,7 +44,7 @@ class GetStarted extends StatelessWidget {
                   ),
                   LogButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => NavigationBarGarageOwner(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignInOwner(),));
                     },
                     widget: Text('Garage Owner'),
                     radius: 20,
