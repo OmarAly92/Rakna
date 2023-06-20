@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rakna/core/utility/size.dart';
 import 'package:rakna/presentation/screens/parking_detail.dart';
 import '../../core/services/services_locator.dart';
 import '../../core/utility/category.dart';
@@ -44,7 +47,9 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(height: 300.h,),
+                            SizedBox(
+                              height: 300.h,
+                            ),
                             Center(child: CircularProgressIndicator()),
                           ],
                         );
@@ -57,7 +62,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(height: 10.h),
-                              for (int i = 0; i < 5; i++)
+                              for (int i = 0; i < item.length; i++)
                                 Padding(
                                   padding:
                                       EdgeInsets.only(top: 10.h, bottom: 10.h),
@@ -65,18 +70,19 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                     category: Category(
                                         parkingName: item[i].parkName,
                                         parkingLocation: item[i].parkLocation,
-                                        parkImage:
-                                        item[i].parkImage,
-                                        parkPrice: '${(item[i].parkPrice).toString().replaceFirst('.0', '')}/Hour',
+                                        parkPrice:
+                                            '${(item[i].parkPrice).toString().replaceFirst('.0', '')}/Hour',
                                         nextScreen: ParkingDetail1(
                                           parkName: item[i].parkName,
                                           parkLocation: item[i].parkLocation,
                                           parkPrice: item[i].parkPrice,
-                                          parkImage:
-                                          item[i].parkImage, parkId: state.parking[i].parkId,
+                                          parkImage: base64Decode(state.parking[i].parkImage),
+                                          parkId: state.parking[i].parkId,
                                         )),
                                     widthBookmark: 18.w,
                                     widthPrice: 65.w,
+                                    image: Image.memory(base64Decode(state.parking[i].parkImage),height: 60,width: 60,
+                                    ),
                                   ),
                                 ),
                             ],
@@ -84,9 +90,9 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                         );
                       case RequestState.error:
                         return Center(
-                          child: Text(state.message),
-                        );
-                    }
+                          child: Text(state.message)
+                       );
+                     }
                   },
                 ),
               ],
@@ -128,12 +134,12 @@ class MiniAppBarCustom extends StatelessWidget {
           ],
         ),
       ),
-      child: Center(child:Text(
-        "Nearby Parking",
-        style: TextStyle(
-          fontSize: 22,color: Colors.white,fontWeight: FontWeight.w600
-        )
-      ),
+      child: Center(
+        child: Text("Nearby Parking",
+            style: TextStyle(
+                fontSize: 22,
+                color: Colors.white,
+                fontWeight: FontWeight.w600)),
       ),
     );
   }

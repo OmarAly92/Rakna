@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rakna/data/data_source/remote_data_source.dart';
+import 'package:rakna/data/repository/parking_repository.dart';
 import 'package:rakna/domain/entities/parking_slot_entities.dart';
 import 'package:rakna/domain/usecase/get_parking_slot_usecase.dart';
 

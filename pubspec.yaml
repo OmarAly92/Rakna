@@ -66,6 +66,12 @@ dependencies:
   string_validator: ^1.0.0
   flutter_paypal: ^0.2.0
   intl: ^0.18.1
+  image_picker: ^0.8.9
+  image_cropper: ^2.0.3
+#  flutter_bloc_stream: ^6.0.1
+#  stream_bloc: ^0.5.3
+
+
 
 
 

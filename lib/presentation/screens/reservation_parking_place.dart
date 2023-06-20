@@ -423,8 +423,8 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                   // endH = today.add((Duration(hours: startHourHours + widget.hour, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
 
 
-                                    startH = today.add((Duration(hours: ((startHourHours))+8, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-35))).minute.seconds;
-                                    endH = today.add((Duration(hours: ((startHourHours + widget.hour))+8, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-35))).minute.seconds;
+                                    startH = today.add((Duration(hours: ((startHourHours))+10, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes+7))).minute.seconds;
+                                    endH = today.add((Duration(hours: ((startHourHours + widget.hour))+10, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes+7))).minute.seconds;
 
                                     finalStartDateFormat= _selectedDay.toString().replaceRange(11, 23, '$startH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');
                                finalEndDateFormat= _selectedDay.toString().replaceRange(11, 23, '$endH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');

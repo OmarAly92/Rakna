@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rakna/garage_owner/sign_in_garage_owner.dart';
-import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
 import '../../team2/notification_screen.dart';
+import '../presentation/screens/start_screen.dart';
 
 class SettingScreenGarageOwner extends StatefulWidget {
   SettingScreenGarageOwner({Key? key,required this.name,required this.email}) : super(key: key);
@@ -249,7 +248,7 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                           onTap: () {},
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignInOwner()));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const GetStarted()));
                             },
                             child: Row(
                               children: [

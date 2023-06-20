@@ -13,42 +13,35 @@ import '../model/garage_owner_parking_data_model.dart';
 abstract class BaseRemoteDataSource {
   Future<List<ParkingModel>> getParking();
 
+  Future<void> getBookMark();
+
   Future<List<GarageOwnerParkingModel>> getParkingGarageOwner(int garageOwnerId);
 
   Future<List<ParkingModel>> getSearchResult(String? query);
 
   Future<List<ParkingSlotModel>> getParkingSlot(int parkId);
 
+  Stream<List<ParkingSlotModel>> getParkingSlot1(int parkId);
+
   Future<List<UserDataModel>> checkUserData();
 
   Future<List<GarageOwnerDataModel>> checkGarageOwnerData();
 
-  void postSignUp({
-    required String userName,
-    required int age,
-    required String email,
-    required String password,
-    required String confirmPassword,
-    required String phoneNumber,
-  });
+  void postSignUp({required String userName, required int age, required String email, required String password, required String confirmPassword, required String phoneNumber,});
 
-  void postPark({
-    required String parkName,
-    required String parkLocation,
-    required String parkImage,
-    required double parkPrice,
-    required int garageOwnerId
-  });
+  void postPark({required String parkName, required String parkLocation, required String parkImage, required double parkPrice, required int garageOwnerId});
 
-  void putReservationData({
-    required int id,
-    required String parkingSlotName,
-    required String startHour,
-    required String endHour,
-    required bool isAvailable,
-    required String randomNumber,
-    required int parkForeignKey,
-  });
+  void putPark({required int parkId,required String parkName, required String parkLocation, required String parkImage, required double parkPrice,required double parkRating, required int garageOwnerId});
+
+  void putReservationData({required int id, required String parkingSlotName, required String startHour, required String endHour, required bool isAvailable, required String randomNumber, required int parkForeignKey,});
+
+  void postReservationData({required String parkingSlotName, required int parkForeignKey});
+
+  void postBookMark({required bool isFavorite, required int userId,required int parkId,});
+
+  void deleteReservationData({required int parkSlotId});
+
+
 }
 
 class ParkingRemoteDataSource extends BaseRemoteDataSource {
@@ -186,7 +179,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       if (query != null) {
         var x = result
             .where((element) =>
-                element.parkName.toLowerCase().contains(query!.toLowerCase()))
+                element.parkName.toLowerCase().contains(query.toLowerCase()))
             .toList();
         return x;
       } else {
@@ -239,6 +232,141 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     try {
       http.Response response = await http.post(
           Uri.parse('http://raknaapi-001-site1.ctempurl.com/Parks'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      print(response.statusCode);
+    } catch (e) {
+      print('$e error catch :( ');
+    }
+  }
+
+  @override
+  void postReservationData({required String parkingSlotName, required int parkForeignKey})async {
+    var body = {
+      "id": 0,
+      "parkingSlotName": parkingSlotName,
+      "startHour": '2023-06-14T18:33:00',
+      'endHour': '2023-06-14T18:33:00',
+      'isAvailable': true,
+      "numberOfSlots": 1,
+      "numberOfSections": 1,
+      'randomNumber': '1231',
+      'parkForiegnKey': parkForeignKey,
+    };
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      print(response.statusCode);
+    } catch (e) {
+      print('$e error catch :( ');
+    }
+  }
+
+  @override
+  void deleteReservationData({required int parkSlotId})async {
+
+
+    try {
+      http.Response response = await http.delete(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkSlotId'),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      print(response.statusCode);
+    } catch (e) {
+      print('$e error catch :( ');
+    }
+  }
+
+  @override
+  void putPark({required int parkId,required String parkName, required String parkLocation, required String parkImage, required double parkPrice, required double parkRating, required int garageOwnerId})async {
+    var body = {
+      "parkId": parkId,
+      "parkName": parkName,
+      "parkLocation": parkLocation,
+      "parkImage": parkImage,
+      'parkPrice': parkPrice,
+      "parkingRating": parkRating,
+      "parkSection": 0,
+      "reservationPlace": 0,
+      'garageForiegnKey':garageOwnerId
+    };
+
+    try {
+      http.Response response = await http.put(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Parks/$parkId'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      print(response.statusCode);
+    } catch (e) {
+      print('$e error catch :( ');
+    }
+  }
+
+  @override
+  Stream<List<ParkingSlotModel>> getParkingSlot1(int parkId)async* {
+    final Response response = await Dio().get(
+        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkId'); //todo put api url here
+    print('${response.statusCode}');
+    if (response.statusCode == 200) {
+      yield List<ParkingSlotModel>.from(
+          (response.data as List).map((e) => ParkingSlotModel.fromJson(e)));
+    } else {
+      throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+    }
+  }
+
+
+
+  @override
+  Future<List> getBookMark()  async {
+    final  response =
+    await http.get(Uri.parse('http://raknaapi-001-site1.ctempurl.com/BookMark'));
+    print('${response.statusCode}');
+    // print('${response.body}');
+    if (response.statusCode == 200) {
+     return  jsonDecode(response.body);
+    } else {
+      throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+    }
+  }
+
+  @override
+  void postBookMark({required bool isFavorite, required int userId, required int parkId})async {
+    var body = {
+      "isFav": isFavorite,
+      "userForeignKey": userId,
+      "parkForeignKey": parkId,
+    };
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/BookMark'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",

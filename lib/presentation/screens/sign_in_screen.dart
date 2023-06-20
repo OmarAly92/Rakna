@@ -223,15 +223,19 @@ class _SignInState extends State<SignIn> {
 
                                            }
 
-                                           if (emailDataList.toString().contains(emailController.text) == true && passwordDataList.toString().contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
-                                             Navigator.pushReplacement(
-                                                 context,
-                                                 MaterialPageRoute(
-                                                   builder: (context) =>
-                                                       NavigationBarScreen(),
-                                                 ));
-                                             setState(() {});
+
+
+                                           for(int i = 0;i<state.userData.length;i++){
+                                             if(emailDataList[i].contains(emailController.text) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false){
+                                               print(emailDataList[i]);
+                                               print(passwordDataList[i]);
+                                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen()));
+                                             }
                                            }
+
+                                           // if (emailDataList.toString().contains(emailController.text) == true && passwordDataList.toString().contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
+                                           //   setState(() {});
+                                           // }
                                          },
                                        ),
                                      );

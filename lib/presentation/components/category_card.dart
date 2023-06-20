@@ -1,5 +1,8 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rakna/data/data_source/remote_data_source.dart';
 
 import '../../core/utility/category.dart';
 import '../../core/utility/color.dart';
@@ -11,12 +14,13 @@ class CategoryCard extends StatefulWidget {
       {Key? key,
       required this.category,
       required this.widthBookmark,
-      required this.widthPrice})
+      required this.widthPrice, required this.image})
       : super(key: key);
   final Category category;
   late bool bookmark = true;
   final double widthBookmark;
   final double widthPrice;
+  final Widget image;
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -59,11 +63,12 @@ class _CategoryCardState extends State<CategoryCard> {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          widget.category.parkImage,
-                          height: kCategoryCardImageSize,
+                      child: SizedBox(
+                        height: 95.h,
+                        width: 95.h,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(60.r),
+                            child: widget.image,
                         ),
                       ),
                     ),
@@ -79,18 +84,34 @@ class _CategoryCardState extends State<CategoryCard> {
 
                               Padding(
                                 padding: const EdgeInsets.only(left: 60),
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      widget.bookmark = !widget.bookmark;
-                                    });
+                                child: FutureBuilder(future:   ParkingRemoteDataSource().getBookMark(),
+                                  builder: (context, snapshot) {
+                                  return  InkWell(
+                                      onTap: () {
+                                        List emailDataList = [];
+                                        List passwordDataList = [];
+                                        try{
+                                        for(int i = 0;i<snapshot.data!.length;i++){
+                                          emailDataList.add(snapshot.data![i]);
+
+                                        }
+                                        emailDataList.add('omar');
+                                        print(emailDataList[0]['isFav'].isNull);}catch (e){
+                                          // ParkingRemoteDataSource().postBookMark(isFavorite: true, userId: widget.userId, parkId: widget.parkId);
+                                          // widget.bookmark = true;
+                                        }
+                                        setState(() {
+                                          widget.bookmark = !widget.bookmark;
+                                        });
+                                      },
+                                      child: Icon(
+                                        widget.bookmark == true
+                                            ? Icons.bookmark_add_outlined
+                                            : Icons.bookmark_added,
+                                        color: kPrimaryColor,
+                                      ),
+                                    );
                                   },
-                                  child: Icon(
-                                    widget.bookmark == true
-                                        ? Icons.bookmark_add_outlined
-                                        : Icons.bookmark_added,
-                                    color: kPrimaryColor,
-                                  ),
                                 ),
                               ),
                             ],

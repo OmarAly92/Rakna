@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,11 +8,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
 import 'package:rakna/data/repository/parking_repository.dart';
 import 'package:rakna/domain/usecase/get_garage_owner_parking_usecase.dart';
+import '../core/services/services_locator.dart';
 import '../core/utility/color.dart';
 import '../core/utility/enums.dart';
 import '../data/model/garage_owner_parking_data_model.dart';
+import '../domain/entities/garage_owner_parking_data.dart';
 import '../presentation/controller/get_garage_owner_parking_bloc/get_garage_owner_parking_bloc.dart';
-import 'add_park.dart';
+import 'add_parking.dart';
+import 'edit_parking.dart';
+import 'slot_detail.dart';
 import 'category_card_garage_owner.dart';
 
 class GarageOwnerHomeScreen extends StatefulWidget {
@@ -31,9 +37,9 @@ class _GarageOwnerHomeScreenState extends State<GarageOwnerHomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MiniAppBarCustom(),
-              Padding(
-                padding: const EdgeInsets.only(
+              const MiniAppBarCustom(),
+              const Padding(
+                padding: EdgeInsets.only(
                     right: 15, left: 15, top: 30, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -72,7 +78,7 @@ class _GarageOwnerHomeScreenState extends State<GarageOwnerHomeScreen> {
                             parkImage:
                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU',
                             parkPrice: '10/Hours',
-                            nextScreen: Text('sddsdd'),
+                            nextScreen: const Text('sddsdd'),
                             widthCard: 0.w,
                             bookmark: true,
                           ),
@@ -87,7 +93,7 @@ class _GarageOwnerHomeScreenState extends State<GarageOwnerHomeScreen> {
                       color: Colors.white,
                       border: Border.all(color: Colors.blue, width: 2),
                       borderRadius: BorderRadius.circular(40),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             color: Colors.grey,
                             spreadRadius: .5,
@@ -135,7 +141,7 @@ class MiniAppBarCustom extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            stops: [0.1, 0.7],
+            stops: const [0.1, 0.7],
             colors: [
               kPrimaryLight,
               kPrimaryColor,
@@ -198,7 +204,7 @@ class _MyCustomUIState extends State<MyCustomUI>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
 
     _animation = Tween<double>(begin: 0, end: 1)
@@ -236,7 +242,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                 padding: EdgeInsets.only(left: 120.w, right: 120.w, top: 15.w),
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       'Your Parking',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
@@ -250,8 +256,8 @@ class _MyCustomUIState extends State<MyCustomUI>
             SliverToBoxAdapter(
               child: Container(
                 height: 800,
-                decoration: BoxDecoration(
-                  color: const Color(0xffF5F5F5),
+                decoration: const BoxDecoration(
+                  color: Color(0xffF5F5F5),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -262,7 +268,12 @@ class _MyCustomUIState extends State<MyCustomUI>
                   builder: (context, state) {
                     switch(state.requestState) {
                       case RequestState.loading:{
-                        return Center(child: CircularProgressIndicator());
+                        return Column(
+                          children: [
+                            SizedBox(height: 280.h),
+                            const CircularProgressIndicator(),
+                          ],
+                        );
                       }
                       case RequestState.loaded:{
                         List park = state.parking[0].parkingData;
@@ -275,7 +286,8 @@ class _MyCustomUIState extends State<MyCustomUI>
                             SizedBox(height: 30.h),
 
                             Column(
-                              children: List.generate(park.length, (index) {return Opacity(
+                              children: List.generate(park.length, (index) {
+                                return Opacity(
                                 opacity: _animation.value,
                                 child: Transform.translate(
                                   offset: Offset(0.01, _animation2.value),
@@ -283,11 +295,11 @@ class _MyCustomUIState extends State<MyCustomUI>
                                     enableFeedback: true,
                                     onTap: () {
                                       print(park);
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //       builder: (context) => RouteWhereYouGo(),
-                                      //     ));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>SlotsDetail(parkId: park[index]['parkId'], parkPrice:park[index]['parkPrice']),
+                                          ));
                                     },
                                     highlightColor: Colors.transparent,
                                     splashColor: Colors.transparent,
@@ -312,23 +324,24 @@ class _MyCustomUIState extends State<MyCustomUI>
                                             child: ClipRRect(
                                                 borderRadius:
                                                 BorderRadius.circular(50),
-                                                child: Image.network(
-                                                  park[index]['parkImage'],
+                                                child: Image.memory(base64Decode(park[index]['parkImage']),
+                                                  // '',
                                                   height: 200,
                                                   width: 200,
                                                   fit: BoxFit.cover,
                                                 )),
                                           ),
+                                          SizedBox(width: 5.w),
                                           Container(
                                             alignment: Alignment.centerLeft,
-                                            width: 185.w,
+                                            width: 180.w,
                                             child: Column(
                                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
-                                                  width: 200,
+                                                  width: 180,
                                                   child: Text(
                                                     park[index]['parkName'],
                                                     textScaleFactor: 1.45,
@@ -340,7 +353,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: 250,
+                                                  width: 180,
                                                   child: Text(
                                                     park[index]['parkLocation'],
                                                     style: TextStyle(
@@ -353,7 +366,34 @@ class _MyCustomUIState extends State<MyCustomUI>
                                               ],
                                             ),
                                           ),
-                                          Icon(Icons.navigate_next_outlined)
+                                          Container(
+                                            alignment: Alignment.centerRight,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  height: 30,
+                                                  width: 30,
+                                                  child: Builder(
+                                                      builder: (context) {
+                                                        return   PopUpMenu(icon: Icon(Icons.settings), menuList:  [
+                                                          PopupMenuItem(child: ListTile(
+                                                            leading: const Icon(Icons.edit,color: Colors.blue),
+                                                            title: const Text('Edite'),
+                                                            onTap: () {
+                                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>EditPark(garageOwnerId: widget.garageOwnerId, parkRating: park[index]['parkingRating'], parkId: park[index]['parkId'],)));
+                                                            } ,
+                                                          )),
+                                                        ]);
+                                                      }
+                                                  ),
+
+                                                ),
+                                                SizedBox(height: 20.h),
+                                                Text('${park[index]['parkPrice'].toString().replaceAll('.0', '')}/Hr',style: TextStyle(fontSize: 14.sp),)
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -451,3 +491,22 @@ class _MyCustomUIState extends State<MyCustomUI>
 //     return true;
 //   }
 // }
+
+
+
+class PopUpMenu extends StatelessWidget {
+  const PopUpMenu({Key? key, required this.menuList, this.icon}) : super(key: key);
+  final List<PopupMenuEntry>menuList;
+  final Widget? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+        itemBuilder: (context)=>menuList,icon: icon);
+  }
+}
+
+
+// ParkingRemoteDataSource().getParkingGarageOwner(widget.garageOwnerId),

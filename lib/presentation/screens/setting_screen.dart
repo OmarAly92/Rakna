@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
+import 'package:rakna/presentation/screens/start_screen.dart';
 
 import '../../team2/notification_screen.dart';
 
@@ -246,7 +247,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           onTap: () {},
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn(),));
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GetStarted()));
                             },
                             child: Row(
                               children: [

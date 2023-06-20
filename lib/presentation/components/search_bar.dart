@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
@@ -50,7 +52,7 @@ SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9G
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU')));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: base64Decode(snapshot.data![index].parkImage))));
                   },
                   child: ListTile(
                     title: Padding(
@@ -67,8 +69,6 @@ SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9G
                             child: Center(
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(30),
-
-
                                   child: Image.network(image,width: 60,height: 60,fit: BoxFit.fill,)),
                             ),
                           ),
@@ -83,7 +83,7 @@ SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9G
                                 ),
                                 Text(
                                   '${data?[index].parkLocation}',
-                                  style: const TextStyle(
+                                    style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,

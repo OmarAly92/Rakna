@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +19,7 @@ class ParkingDetail1 extends StatefulWidget {
   String parkName;
   String parkLocation;
   num parkPrice;
-  String parkImage;
+   Uint8List parkImage;
   int parkId;
 
   @override
@@ -39,7 +42,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
             height: MediaQuery.of(context).size.height * .6,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(widget.parkImage),
+                image: MemoryImage(widget.parkImage),
                 fit: BoxFit.cover,
               ),
             ),

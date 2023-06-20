@@ -1,37 +1,52 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
+import 'package:rakna/garage_owner/components/select_photo_options_screen.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
 
 import '../core/utility/color.dart';
 import '../presentation/components/LogButton_Widget.dart';
 import '../presentation/screens/navigation_bar.dart';
+import 'components/set_photo_screen.dart';
 import 'navigation_bar_garage_owner.dart';
 
-
-class AddPark extends StatefulWidget {
-  const AddPark({Key? key,required this.garageOwnerId}) : super(key: key);
- final int garageOwnerId;
+class AddSlotScreen extends StatefulWidget {
+  const AddSlotScreen({Key? key, required this.parkId}) : super(key: key);
+  final int parkId;
 
   @override
-  State<AddPark> createState() => _AddParkState();
+  State<AddSlotScreen> createState() => _AddSlotScreenState();
 }
 
-class _AddParkState extends State<AddPark> {
+class _AddSlotScreenState extends State<AddSlotScreen> {
+  File? _image;
+  Uint8List? bytes;
+  String? img64;
+  List<String> images = [];
 
   TextEditingController parkNameController = TextEditingController();
   TextEditingController parkLocationController = TextEditingController();
   TextEditingController parkPriceController = TextEditingController();
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     double height, width;
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    Color color =  Colors.blue.shade800;
+    Color color = Colors.blue.shade800;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -49,18 +64,18 @@ class _AddParkState extends State<AddPark> {
                     ),
                   ),
                   child: Padding(
-                    padding:  EdgeInsets.only(top: 35.h, left: 12.w),
+                    padding: EdgeInsets.only(top: 35.h, left: 12.w),
                     child: Row(
                       children: [
                         Padding(
-                          padding:  EdgeInsets.only(top: 1.h,right: 5.w),
+                          padding: EdgeInsets.only(top: 1.h, right: 5.w),
                           child: InkWell(
                             onTap: () {},
                             child: InkWell(
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child:  Icon(
+                              child: Icon(
                                 CupertinoIcons.arrow_left_circle_fill,
                                 color: Colors.white,
                                 size: 40.r,
@@ -69,7 +84,7 @@ class _AddParkState extends State<AddPark> {
                           ),
                         ),
                         Text(
-                          'Add New Park',
+                          'Add New Park Slot',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18.sp,
@@ -85,20 +100,23 @@ class _AddParkState extends State<AddPark> {
                   ),
                   child: Container(
                     height: height * .9,
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
                         BorderRadius.only(topLeft: Radius.circular(50.r))),
                     child: Column(
                       children: [
+                        const SizedBox(height: 30),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
                             controller: parkNameController,
-                            decoration:  InputDecoration(
-                              labelText: 'Park Name',
+                            decoration: InputDecoration(
+                              labelText: 'Park Slot Name',
                               labelStyle: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black54,
@@ -108,12 +126,14 @@ class _AddParkState extends State<AddPark> {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
                             controller: parkLocationController,
-                            decoration:  InputDecoration(
+                            decoration: InputDecoration(
                               // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: 'Park Location',
                                 labelStyle: TextStyle(
@@ -125,12 +145,14 @@ class _AddParkState extends State<AddPark> {
                           ),
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(
-                            right: 22.w, left: 22.w, top: 30.h,
+                          padding: EdgeInsets.only(
+                            right: 22.w,
+                            left: 22.w,
+                            top: 30.h,
                           ),
                           child: TextFormField(
                             controller: parkPriceController,
-                            decoration:  InputDecoration(
+                            decoration: InputDecoration(
                               // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                 labelText: 'Price',
                                 labelStyle: TextStyle(
@@ -141,23 +163,21 @@ class _AddParkState extends State<AddPark> {
                                 border: UnderlineInputBorder()),
                           ),
                         ),
-
-
                         Padding(
-                          padding:  EdgeInsets.only(bottom: 8.h, top: 50.h),
+                          padding: EdgeInsets.only(bottom: 8.h, top: 50.h),
                           child: LogButton(
                             backgroundColor: kPrimaryColor,
                             textColor: Colors.white,
                             radius: 15.r,
                             width: 305.w,
                             onPressed: () {
-                              ParkingRemoteDataSource().postPark(parkName: parkNameController.text,parkLocation:parkLocationController.text ,parkPrice:double.parse(parkPriceController.text), garageOwnerId: widget.garageOwnerId, parkImage: 'https://images.pexels.com/photos/9799756/pexels-photo-9799756.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarGarageOwner(garageOwnerId: widget.garageOwnerId, name: '', email: '',),));
-                            }, widget: const Text('Add Park'), height: 50.h,
+
+                            },
+                            widget: const Text('Add Park'),
+                            height: 50.h,
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -170,5 +190,3 @@ class _AddParkState extends State<AddPark> {
     );
   }
 }
-
-

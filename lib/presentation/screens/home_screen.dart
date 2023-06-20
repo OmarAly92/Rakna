@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -71,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        const NearbyParking(),
+                         NearbyParking(),
                         // Padding(
                         //   padding:
                         //       EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
@@ -117,75 +119,78 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class PreviousParking extends StatelessWidget {
-  const PreviousParking({
-    super.key,
-  });
+// class PreviousParking extends StatelessWidget {
+//   const PreviousParking({
+//     super.key,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocBuilder<ParkingBloc, ParkingState>(
+//       builder: (context, state) {
+//         switch (state.requestState) {
+//           case RequestState.loading:
+//             return Column(
+//               children: [
+//                 Padding(
+//                   padding: const EdgeInsets.symmetric(vertical: 55.5),
+//
+//                   child: CircularProgressIndicator(),
+//                 ),
+//               ],
+//             );
+//           case RequestState.loaded:
+//             return SingleChildScrollView(
+//               padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: List.generate(
+//                   state.parking.length,
+//                   (index) => Padding(
+//                     padding: EdgeInsets.symmetric(horizontal: 8.w),
+//                     child: SizedBox(
+//                       // width: 300,
+//                       child: CategoryCard(
+//                         category: Category(
+//                           parkingName: state.parking[index].parkName,
+//                           parkingLocation:
+//                               ' ${state.parking[index].parkLocation}',
+//                           parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
+//                           nextScreen: ParkingDetail1(
+//                               parkName: state.parking[index].parkName,
+//                               parkLocation: state.parking[index].parkLocation,
+//                               parkPrice:
+//                                   state.parking[index].parkPrice,
+//                               parkImage:
+//                               state.parking[index].parkImage.toString(),
+//                              parkId: state.parking[index].parkId,),
+//                         ),
+//                         widthBookmark: 60.w,
+//                         widthPrice: 75.w, image: Image.memory(base64Decode(state.parking[index].parkImage)),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             );
+//           case RequestState.error:
+//             return Center(child: Text(state.message));
+//         }
+//       },
+//     );
+//   }
+// }
+
+
+class NearbyParking extends StatefulWidget {
+   NearbyParking({Key? key}) : super(key: key);
+ late bool bookmark = true;
 
   @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ParkingBloc, ParkingState>(
-      builder: (context, state) {
-        switch (state.requestState) {
-          case RequestState.loading:
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 55.5),
-
-                  child: CircularProgressIndicator(),
-                ),
-              ],
-            );
-          case RequestState.loaded:
-            return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  state.parking.length,
-                  (index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: SizedBox(
-                      // width: 300,
-                      child: CategoryCard(
-                        category: Category(
-                          parkingName: state.parking[index].parkName,
-                          parkingLocation:
-                              ' ${state.parking[index].parkLocation}',
-                          parkImage:
-                              state.parking[index].parkImage,
-                          parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
-                          nextScreen: ParkingDetail1(
-                              parkName: state.parking[index].parkName,
-                              parkLocation: state.parking[index].parkLocation,
-                              parkPrice:
-                                  state.parking[index].parkPrice,
-                              parkImage:
-                              state.parking[index].parkImage,
-                             parkId: state.parking[index].parkId,),
-                        ),
-                        widthBookmark: 60.w,
-                        widthPrice: 75.w,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          case RequestState.error:
-            return Center(child: Text(state.message));
-        }
-      },
-    );
-  }
+  State<NearbyParking> createState() => _NearbyParkingState();
 }
 
-class NearbyParking extends StatelessWidget {
-  const NearbyParking({
-    super.key,
-  });
-
+class _NearbyParkingState extends State<NearbyParking> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ParkingBloc, ParkingState>(
@@ -204,39 +209,37 @@ class NearbyParking extends StatelessWidget {
             );
           case RequestState.loaded:
             return SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(
-                  state.parking.length,
-                  (index) => Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: SizedBox(
-                      // width: 300,
-                      child: CategoryCard(
-                        category: Category(
-                          parkingName: state.parking[index].parkName,
-                          parkingLocation:
-                              ' ${state.parking[index].parkLocation}',
-                          parkImage:
-                              state.parking[index].parkImage,
-                          parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
-                          nextScreen: ParkingDetail1(
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(
+                    state.parking.length,
+                        (index) => Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: SizedBox(
+                        // width: 300,
+                        child: CategoryCard(
+                          category: Category(
+                            parkingName: state.parking[index].parkName,
+                            parkingLocation:
+                            ' ${state.parking[index].parkLocation}',
+                            parkPrice: '${(state.parking[index].parkPrice).toString().replaceFirst('.0', '')}/Hours',
+                            nextScreen: ParkingDetail1(
                               parkName: state.parking[index].parkName,
                               parkLocation: state.parking[index].parkLocation,
                               parkPrice:
-                                  state.parking[index].parkPrice,
+                              state.parking[index].parkPrice,
                               parkImage:
-                              state.parking[index].parkImage, parkId: state.parking[index].parkId,),
+                              base64Decode(state.parking[index].parkImage), parkId: state.parking[index].parkId,),
+                          ),
+                          widthBookmark: 60.w,
+                          widthPrice: 75.w, image: Image.memory(base64Decode(state.parking[index].parkImage),
                         ),
-                        widthBookmark: 60.w,
-                        widthPrice: 75.w,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            );
+                ));
           case RequestState.error:
             return Center(child: Text(state.message));
         }
@@ -244,3 +247,5 @@ class NearbyParking extends StatelessWidget {
     );
   }
 }
+
+
