@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:equatable/equatable.dart';
 
@@ -11,6 +11,8 @@ class Parking extends Equatable {
   final num parkingRating;
   final int parkSection;
   final int reservationPlace;
+  final double latitude;
+  final double longitude;
   final List parkingSlotList;
 
   const Parking({
@@ -22,6 +24,8 @@ class Parking extends Equatable {
     required this.reservationPlace,
     required this.parkingRating,
     required this.parkSection,
+    required this.latitude,
+    required this.longitude,
     required this.parkingSlotList,
   });
 
@@ -36,6 +40,8 @@ class Parking extends Equatable {
         parkingRating,
         parkSection,
         reservationPlace,
+        latitude,
+        longitude,
         parkingSlotList,
       ];
 }

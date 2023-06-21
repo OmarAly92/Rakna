@@ -19,7 +19,7 @@ class ParkingDetail1 extends StatefulWidget {
   String parkName;
   String parkLocation;
   num parkPrice;
-   Uint8List parkImage;
+   String parkImage;
   int parkId;
 
   @override
@@ -42,7 +42,7 @@ class _ParkingDetail1State extends State<ParkingDetail1> {
             height: MediaQuery.of(context).size.height * .6,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: MemoryImage(widget.parkImage),
+                image: MemoryImage(base64Decode(widget.parkImage)),
                 fit: BoxFit.cover,
               ),
             ),

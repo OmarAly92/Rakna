@@ -52,7 +52,7 @@ SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9G
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: base64Decode(snapshot.data![index].parkImage))));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: snapshot.data![index].parkImage)));
                   },
                   child: ListTile(
                     title: Padding(

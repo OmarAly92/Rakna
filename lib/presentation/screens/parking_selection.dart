@@ -1,15 +1,21 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:rakna/core/utility/size.dart';
 import 'package:rakna/presentation/screens/parking_detail.dart';
+import '../../core/services/location_sevices.dart';
 import '../../core/services/services_locator.dart';
 import '../../core/utility/category.dart';
 import '../../core/utility/color.dart';
 import '../../core/utility/enums.dart';
+import '../../domain/entities/parking.dart';
 import '../components/appbar.dart';
 import '../components/circle_button.dart';
 import '../components/category_card.dart';
@@ -24,79 +30,220 @@ class ParkingSelection extends StatefulWidget {
 }
 
 class _ParkingSelectionState extends State<ParkingSelection> {
+
+  double calculateDistance({required lat1,required lon1,required lat2,required lon2}){
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))/2;
+    return 12742 * asin(sqrt(a));
+  }
+
+
+  late LatLng myLocations = LatLng(30.085942552537484, 31.287274807691574);
+  Future<void> _getMyLocation() async {
+    LocationData myLocation = await LocationServices().getLocation();
+    myLocations = LatLng(myLocation.latitude!, myLocation.longitude!);
+  }
+  @override
+  void initState() {
+    super.initState();
+    _getMyLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (context) => sl<ParkingBloc>()..add(GetParkingDataEvent()),
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Scaffold(
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MiniAppBarCustom(),
-                BlocBuilder<ParkingBloc, ParkingState>(
-                  builder: (context, state) {
-                    switch (state.requestState) {
-                      case RequestState.loading:
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 300.h,
-                            ),
-                            Center(child: CircularProgressIndicator()),
-                          ],
-                        );
-                      case RequestState.loaded:
-                        var item = state.parking;
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              top: 10.h, left: 20.w, right: 20.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 10.h),
-                              for (int i = 0; i < item.length; i++)
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 10.h, bottom: 10.h),
-                                  child: CategoryCard(
-                                    category: Category(
-                                        parkingName: item[i].parkName,
-                                        parkingLocation: item[i].parkLocation,
-                                        parkPrice:
-                                            '${(item[i].parkPrice).toString().replaceFirst('.0', '')}/Hour',
-                                        nextScreen: ParkingDetail1(
-                                          parkName: item[i].parkName,
-                                          parkLocation: item[i].parkLocation,
-                                          parkPrice: item[i].parkPrice,
-                                          parkImage: base64Decode(state.parking[i].parkImage),
-                                          parkId: state.parking[i].parkId,
-                                        )),
-                                    widthBookmark: 18.w,
-                                    widthPrice: 65.w,
-                                    image: Image.memory(base64Decode(state.parking[i].parkImage),height: 60,width: 60,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        );
-                      case RequestState.error:
-                        return Center(
-                          child: Text(state.message)
-                       );
-                     }
-                  },
+          backgroundColor: Colors.blue,
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 112.w, right: 112.w, top: 15.w),
+                  child: Row(
+                    children: [
+                       Text(
+                        'Nearby Parking',
+                        style: TextStyle(color: Colors.white, fontSize: 18.sp),
+                      ),
+                      SizedBox(
+                        height: 60.h,
+                      )
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 800,
+                  decoration: const BoxDecoration(
+                    color: Color(0xffF5F5F5),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: BlocBuilder<ParkingBloc, ParkingState>(
+                    builder: (context, state) {
+                      switch(state.requestState) {
+                        case RequestState.loading:{
+                          return Column(
+                            children: [
+                              SizedBox(height: 280.h),
+                              const CircularProgressIndicator(),
+                            ],
+                          );
+                        }
+                        case RequestState.loaded:{
+
+                          _getMyLocation();
+                          final parkingList = state.parking;
+                          final nearestDistanceList = List<Parking>.from(parkingList);
+                          nearestDistanceList.sort(
+                                (a, b) => calculateDistance(
+                              lat1: myLocations.latitude,
+                              lon1: myLocations.longitude,
+                              lat2: a.latitude,
+                              lon2: a.longitude,
+                            ).compareTo(
+                              calculateDistance(
+                                lat1: myLocations.latitude,
+                                lon1: myLocations.longitude,
+                                lat2: b.latitude,
+                                lon2: b.longitude,
+                              ),
+                            ),
+                          );
+                          List park = state.parking;
+                          return Column(
+                            children: [
+// CustomPaint(
+//   painter: MyPainter(),
+//   child: Container(height: 0),
+// ),
+                              SizedBox(height: 30.h),
+
+                              Column(
+                                  children: List.generate(park.length, (index) {
+                                    return InkWell(
+                                      enableFeedback: true,
+                                      onTap: () {
+                                        print(park);
+// Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//       builder: (context) =>SlotsDetail(parkId: park[index]['parkId'], parkPrice:park[index]['parkPrice']),
+//     ));
+                                      },
+                                      highlightColor: Colors.transparent,
+                                      splashColor: Colors.transparent,
+                                      child: Container(
+                                        margin:
+                                        EdgeInsets.fromLTRB(19.w, 19.w, 19.w, 0),
+                                        padding: EdgeInsets.all(18.w),
+// height: 100.h,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xffEDECEA),
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor:
+                                              Colors.blue.withOpacity(.1),
+                                              radius: 30.r,
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                  BorderRadius.circular(50),
+                                                  child: Image.memory(base64Decode(nearestDistanceList[index].parkImage),
+// '',
+                                                    height: 200,
+                                                    width: 200,
+                                                    fit: BoxFit.cover,
+                                                  )),
+                                            ),
+// SizedBox(width: 5.w),
+                                            Container(
+                                              alignment: Alignment.topLeft,
+                                              width: 150.w,
+                                              child: Column(
+// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    width: 160.w,
+                                                    child: Text(
+                                                      nearestDistanceList[index].parkName,
+                                                      textScaleFactor: 1.45,
+                                                      style: TextStyle(
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black
+                                                            .withOpacity(.7),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 180,
+                                                    child: Text(
+                                                      nearestDistanceList[index].parkLocation,
+                                                      style: TextStyle(
+                                                        fontWeight: FontWeight.w400,
+                                                        color: Colors.black
+                                                            .withOpacity(.8),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              alignment: Alignment.centerRight,
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  SizedBox(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: IconButton(onPressed: () {
+
+                                                      }, icon: Icon(Icons.bookmark))
+
+                                                  ),
+                                                  SizedBox(height: 20.h),
+                                                  Text('${nearestDistanceList[index].parkPrice.toString().replaceAll('.0', '')}/Hr',style: TextStyle(fontSize: 14.sp),)
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );})
+                              ),
+
+
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              SizedBox(height: 30.h),
+                            ],
+                          );
+                        }
+                        case RequestState.error:{
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -144,3 +291,4 @@ class MiniAppBarCustom extends StatelessWidget {
     );
   }
 }
+

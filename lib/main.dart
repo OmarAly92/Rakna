@@ -29,7 +29,6 @@ import 'core/utility/navigator_key.dart';
 import 'domain/usecase/get_parking_usecase.dart';
 import 'garage_owner/finance.dart';
 import 'garage_owner/garage_owner_home_screen.dart';
-
 import 'garage_owner/navigation_bar_garage_owner.dart';
 import 'garage_owner/sign_in_garage_owner.dart';
 
@@ -70,7 +69,7 @@ class MyApp extends StatelessWidget {
                   fontSize: 13.5.sp,
                   fontWeight: FontWeight.w500,
                 ),
-                displayMedium: TextStyle(
+                displayMedium: const TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 18,
                   color: Colors.black,

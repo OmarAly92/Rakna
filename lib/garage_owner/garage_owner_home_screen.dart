@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
 import 'package:rakna/data/repository/parking_repository.dart';
 import 'package:rakna/domain/usecase/get_garage_owner_parking_usecase.dart';
@@ -263,8 +264,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: BlocBuilder<GetGarageOwnerParkingBloc,
-                    GarageOwnerParkingState>(
+                child: BlocBuilder<GetGarageOwnerParkingBloc, GarageOwnerParkingState>(
                   builder: (context, state) {
                     switch(state.requestState) {
                       case RequestState.loading:{
@@ -331,17 +331,17 @@ class _MyCustomUIState extends State<MyCustomUI>
                                                   fit: BoxFit.cover,
                                                 )),
                                           ),
-                                          SizedBox(width: 5.w),
+                                          // SizedBox(width: 5.w),
                                           Container(
-                                            alignment: Alignment.centerLeft,
-                                            width: 180.w,
+                                            alignment: Alignment.topLeft,
+                                            width: 150.w,
                                             child: Column(
                                               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(
-                                                  width: 180,
+                                                  width: 160.w,
                                                   child: Text(
                                                     park[index]['parkName'],
                                                     textScaleFactor: 1.45,
@@ -425,7 +425,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                                 child: Center(
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPark(garageOwnerId: widget.garageOwnerId,)));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPark(garageOwnerId: widget.garageOwnerId)));
                                     },
                                     child: Icon(
                                       CupertinoIcons.add,

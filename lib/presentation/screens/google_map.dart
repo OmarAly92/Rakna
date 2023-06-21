@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:rakna/core/services/location_sevices.dart';
+import 'package:rakna/garage_owner/add_parking.dart';
 
 import '../components/polyline_services.dart';
 
@@ -11,7 +13,7 @@ class MapScreen extends StatefulWidget {
   @override
   _MapScreenState createState() => _MapScreenState();
 
-
+  MapScreen({super.key});
 }
 
 class _MapScreenState extends State<MapScreen> {
@@ -24,11 +26,12 @@ class _MapScreenState extends State<MapScreen> {
   );
 
   LatLng currentLocation = _initialCameraPosition.target;
+ late LatLng savedLocation;
 
   BitmapDescriptor? _locationIcon;
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
 
-  Set<Polyline> _polylines = {};
+  final Set<Polyline> _polylines = {};
   @override
   void initState() {
     _buildMarkerFromAssets();
@@ -65,23 +68,40 @@ class _MapScreenState extends State<MapScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            onPressed: () => _drawPolyline(LatLng(38.52900208591146,-98.54919254779816),currentLocation),
-            child: Icon(Icons.settings_ethernet_rounded),
-          ),
+          // FloatingActionButton(
+          //   onPressed: () => _drawPolyline(LatLng(38.52900208591146,-98.54919254779816),currentLocation),
+          //   child: Icon(Icons.settings_ethernet_rounded),
+          // ),
           SizedBox(
             height: 10.h,
           ),
+          _markers.isEmpty?
           FloatingActionButton(
-            onPressed: () => _setMarker(currentLocation),
-            child: Icon(Icons.location_on),
+            onPressed: () {
+              savedLocation =  currentLocation;
+              print('${savedLocation.latitude} ${savedLocation.longitude}');
+             return _setMarker(currentLocation);
+
+            },
+            child: const Icon(Icons.location_on),
+          ):FloatingActionButton(
+            onPressed: () {
+              print(savedLocation.latitude);
+              print(savedLocation.longitude);
+              Navigator.pop(context,savedLocation);
+              // Navigator.pushReplacement(context, MaterialPageRoute(
+              //     builder: (context) =>
+              //         AddPark(garageOwnerId: widget.garageOwnerId, latitude: savedLocation.latitude, longitude: savedLocation.longitude,
+              //             )));
+            },
+            child: const Icon(CupertinoIcons.check_mark),
           ),
           SizedBox(
             height: 10.h,
           ),
           FloatingActionButton(
             onPressed: () => _getMyLocation(),
-            child: Icon(Icons.gps_fixed),
+            child: const Icon(Icons.gps_fixed),
           ),
         ],
       ),
@@ -111,6 +131,7 @@ class _MapScreenState extends State<MapScreen> {
           snippet: "${currentLocation.latitude}, ${currentLocation.longitude}"),
     );
     _markers.add(newMarker);
+
     setState(() {});
   }
 
@@ -124,8 +145,8 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _getMyLocation() async {
-    LocationData _myLocation = await LocationServices().getLocation();
-    _animateCamera(LatLng(_myLocation.latitude!, _myLocation.longitude!));
+    LocationData myLocation = await LocationServices().getLocation();
+    _animateCamera(LatLng(myLocation.latitude!, myLocation.longitude!));
   }
 
 

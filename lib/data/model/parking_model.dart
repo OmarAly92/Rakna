@@ -11,6 +11,8 @@ class ParkingModel extends Parking {
     required super.reservationPlace,
     required super.parkingSlotList,
     required super.parkId,
+    required super.latitude,
+    required super.longitude,
   });
 
   factory ParkingModel.fromJson(Map<String, dynamic> json) => ParkingModel(
@@ -23,5 +25,7 @@ class ParkingModel extends Parking {
         reservationPlace: json['reservationPlace'],
         parkingSlotList: json['parkingSlot'],
         parkId: json['parkId'],
+        latitude: json['latitude'],
+        longitude: json['longitude'],
       );
 }

@@ -12,6 +12,7 @@ import '../model/garage_owner_parking_data_model.dart';
 
 abstract class BaseRemoteDataSource {
   Future<List<ParkingModel>> getParking();
+  Stream<List<ParkingModel>> getParking1();
 
   Future<void> getBookMark();
 
@@ -29,9 +30,9 @@ abstract class BaseRemoteDataSource {
 
   void postSignUp({required String userName, required int age, required String email, required String password, required String confirmPassword, required String phoneNumber,});
 
-  void postPark({required String parkName, required String parkLocation, required String parkImage, required double parkPrice, required int garageOwnerId});
+  void postPark({required String parkName, required String parkLocation, required String parkImage, required double parkPrice, required double latitude, required double longitude, required int garageOwnerId});
 
-  void putPark({required int parkId,required String parkName, required String parkLocation, required String parkImage, required double parkPrice,required double parkRating, required int garageOwnerId});
+  void putPark({required int parkId,required String parkName, required String parkLocation, required String parkImage, required double parkPrice,required double latitude, required double longitude,required double parkRating, required int garageOwnerId});
 
   void putReservationData({required int id, required String parkingSlotName, required String startHour, required String endHour, required bool isAvailable, required String randomNumber, required int parkForeignKey,});
 
@@ -48,11 +49,23 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<ParkingModel>> getParking() async {
     final Response response =
-        await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
+    await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
     print('${response.statusCode}');
-    print('${response.data}');
+    // print('${response.data}');
     if (response.statusCode == 200) {
       return List<ParkingModel>.from(
+          (response.data as List).map((e) => ParkingModel.fromJson(e)));
+    } else {
+      throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+    }
+  }
+  Stream<List<ParkingModel>> getParking1() async* {
+    final Response response =
+    await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
+    print('${response.statusCode}');
+    // print('${response.data}');
+    if (response.statusCode == 200) {
+      yield List<ParkingModel>.from(
           (response.data as List).map((e) => ParkingModel.fromJson(e)));
     } else {
       throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
@@ -220,13 +233,15 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void postPark({required String parkName, required String parkLocation, required double parkPrice, required int garageOwnerId,required String parkImage})async {
+  void postPark({required String parkName, required String parkLocation, required double parkPrice, required double latitude, required double longitude, required int garageOwnerId,required String parkImage})async {
     var body = {
       "parkName": parkName,
       "parkLocation": parkLocation,
       "parkImage": parkImage,
       'parkPrice': parkPrice,
-      'garageForiegnKey':garageOwnerId
+      'latitude': latitude.toDouble(),
+      'longitude': longitude.toDouble(),
+      'garageForeignKey':garageOwnerId,
     };
 
     try {
@@ -298,7 +313,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void putPark({required int parkId,required String parkName, required String parkLocation, required String parkImage, required double parkPrice, required double parkRating, required int garageOwnerId})async {
+  void putPark({required int parkId,required String parkName, required String parkLocation, required String parkImage, required double parkPrice, required double latitude, required double longitude, required double parkRating, required int garageOwnerId})async {
     var body = {
       "parkId": parkId,
       "parkName": parkName,
@@ -308,7 +323,9 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       "parkingRating": parkRating,
       "parkSection": 0,
       "reservationPlace": 0,
-      'garageForiegnKey':garageOwnerId
+      "latitude": latitude,
+      "longitude": longitude,
+      'garageForeignKey':garageOwnerId,
     };
 
     try {

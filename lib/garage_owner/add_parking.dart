@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,18 +11,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
 import 'package:rakna/garage_owner/components/select_photo_options_screen.dart';
 import 'package:rakna/presentation/screens/sign_in_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../core/utility/color.dart';
 import '../presentation/components/LogButton_Widget.dart';
+import '../presentation/screens/google_map.dart';
+import '../presentation/screens/map2.dart';
 import '../presentation/screens/navigation_bar.dart';
 import 'components/set_photo_screen.dart';
 import 'navigation_bar_garage_owner.dart';
-
+import 'package:maps_launcher/maps_launcher.dart';
 class AddPark extends StatefulWidget {
-  const AddPark({Key? key, required this.garageOwnerId}) : super(key: key);
+  const AddPark({Key? key, required this.garageOwnerId }) : super(key: key);
   final int garageOwnerId;
 
   @override
@@ -31,10 +39,13 @@ class _AddParkState extends State<AddPark> {
   Uint8List? bytes;
   String? img64;
   List<String> images = [];
+  LatLng latLng = LatLng(0,0);
+
 
   TextEditingController parkNameController = TextEditingController();
   TextEditingController parkLocationController = TextEditingController();
   TextEditingController parkPriceController = TextEditingController();
+
 
   Future _pickImage(ImageSource source) async {
     try {
@@ -130,12 +141,17 @@ class _AddParkState extends State<AddPark> {
                             ),
                           ),
                         ),
-                        Text(
-                          'Add New Parking',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500),
+                        InkWell(
+                          onTap: () {
+                            print(latLng);
+                          },
+                          child: Text(
+                            'Add New Parking',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ],
                     ),
@@ -152,21 +168,26 @@ class _AddParkState extends State<AddPark> {
                         borderRadius:
                             BorderRadius.only(topLeft: Radius.circular(50.r))),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 30),
                         InkWell(
                           onTap: () => _showSelectPhotoOptions(context),
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Colors.white
+                          child: Center(
+                            child: Container(
+                              height: 140,
+                              width: 225,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white
 
+                              ),
+                              child: Center(child: _image == null? ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.asset('assets/images/Default_Image_Thumbnail.png',width: 225,height: 140,fit: BoxFit.cover)):ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image(image: FileImage(_image!),width: 225,height: 140,fit: BoxFit.cover))),
                             ),
-                            child: Center(child: _image == null? const Text('No image selected'):ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image(image: FileImage(_image!),width: 100,height: 100,fit: BoxFit.cover,))),
                           ),
                         ),
                         Padding(
@@ -211,6 +232,7 @@ class _AddParkState extends State<AddPark> {
                             right: 22.w,
                             left: 22.w,
                             top: 30.h,
+                            bottom: 30.h
                           ),
                           child: TextFormField(
                             controller: parkPriceController,
@@ -226,38 +248,45 @@ class _AddParkState extends State<AddPark> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 8.h, top: 50.h),
-                          child: LogButton(
-                            backgroundColor: kPrimaryColor,
-                            textColor: Colors.white,
-                            radius: 15.r,
-                            width: 305.w,
-                            onPressed: () {
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: LogButton(onPressed: () {
+                       // Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(garageOwnerId: widget.garageOwnerId)));
+                            _navigateAndDisplayData(context);
+                          }, widget: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Select Park location'),
+                              SizedBox(width: 1),
+                              Icon(CupertinoIcons.location_solid,color: Colors.white),
+                            ],
+                          ), backgroundColor: CupertinoColors.activeBlue, textColor: Colors.white, radius: 5, width: 185, height: 50),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8.h, top: 115.h),
+                          child: Center(
+                            child: LogButton(
+                              backgroundColor:  CupertinoColors.activeBlue,
+                              textColor: Colors.white,
+                              radius: 5.r,
+                              width: 305.w,
+                              onPressed: () {
 
-                              print('$img64');
+                                print('$img64');
 
 
-                              ParkingRemoteDataSource().postPark(
-                                  parkName: parkNameController.text,
-                                  parkLocation: parkLocationController.text,
-                                  parkPrice:
-                                      double.parse(parkPriceController.text),
-                                  garageOwnerId: widget.garageOwnerId,
-                                  parkImage: '$img64');
+                                ParkingRemoteDataSource().postPark(
+                                    parkName: parkNameController.text,
+                                    parkLocation: parkLocationController.text,
+                                    parkPrice:
+                                        double.parse(parkPriceController.text),
+                                    garageOwnerId: widget.garageOwnerId,
+                                    parkImage: '$img64', latitude:latLng.latitude, longitude: latLng.longitude);
 
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        NavigationBarGarageOwner(
-                                      garageOwnerId: widget.garageOwnerId,
-                                      name: '',
-                                      email: '',
-                                    ),
-                                  ));
-                            },
-                            widget: const Text('Add Park'),
-                            height: 50.h,
+                                Navigator.pop(context);
+                              },
+                              widget: const Text('Add Park'),
+                              height: 50.h,
+                            ),
                           ),
                         ),
                       ],
@@ -270,5 +299,15 @@ class _AddParkState extends State<AddPark> {
         ),
       ),
     );
+
+
+
+  }
+  _navigateAndDisplayData(BuildContext context)async{
+   final LatLng result =await Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
+      latLng = result;
   }
 }
+
+
+
