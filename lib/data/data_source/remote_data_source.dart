@@ -13,6 +13,7 @@ import '../model/bookmark_model.dart';
 import '../model/garage_owner_data_model.dart';
 import '../model/garage_owner_parking_data_model.dart';
 import '../model/park_state_model.dart';
+import '../model/test_post.dart';
 
 abstract class BaseRemoteDataSource {
 
@@ -208,7 +209,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void putReservationData({
+  Future<bool> putReservationData({
     required int id,
     required String parkingSlotName,
     required String startHour,
@@ -219,8 +220,8 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }) async {
     var body = {
       'id': id,
-      "parkingSlotName": parkingSlotName,
-      "startHour": startHour,
+      'parkingSlotName': parkingSlotName,
+      'startHour': startHour,
       'endHour': endHour,
       'isAvailable': isAvailable,
       'randomNumber': randomNumber,
@@ -229,18 +230,30 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.put(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$id'),
-          body: jsonEncode(body),
-          headers: {
-            "Accept": "application/json",
-            "content-type": "application/json"
-          }).then((dynamic res) {
-        print(res.toString());
-        return res;
-      });
-      print(response.statusCode);
+        Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/55'),
+        body: jsonEncode(body),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      );
+      if(response.statusCode == 500 ){
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      }else
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
     } catch (e) {
-      print('$e error catch :( ');
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
     }
   }
 

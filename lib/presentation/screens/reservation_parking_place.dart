@@ -33,6 +33,9 @@ class ReservationParkingPlace extends StatefulWidget {
 }
 
 class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
+
+
+
   TextEditingController controller = TextEditingController();
   TextEditingController coupon = TextEditingController();
   CalendarFormat _calendarFormat = CalendarFormat.month;
@@ -407,13 +410,18 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                       startDateFormat: formattedStartDateTime,
                                       endDateFormat: formattedEndDateTime,
                                       coupon: coupon.text,
-                                      priceAmount:
-                                          (widget.parkPrice.toDouble() *
-                                              widget.hour),
+                                      priceAmount: (widget.parkPrice.toDouble() * widget.hour),
                                       parkSlotName: widget.parkSlotName,
                                       slotId: widget.slotId,
                                       hourSelected: widget.hour,
-                                      parkId: widget.parkForeignKey, randomNumber:widget.randomNumber, parkName: widget.parkName, parkLocation: widget.parkLocation, reservationDate: reservationDate.toString(), latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: combinedEndDateFormat,
+                                      parkId: widget.parkForeignKey,
+                                      randomNumber:widget.randomNumber,
+                                      parkName: widget.parkName,
+                                      parkLocation: widget.parkLocation,
+                                      reservationDate: reservationDate.toString(),
+                                      latitude: widget.latitude,
+                                      longitude: widget.longitude,
+                                      combinedEndDateFormat: combinedEndDateFormat,
                                     ),
                                   ),
                                 );

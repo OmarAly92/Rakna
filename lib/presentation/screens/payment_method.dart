@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,10 @@ class PaymentMethod extends StatefulWidget {
     required this.randomNumber,
     required this.parkName,
     required this.parkLocation,
-    required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat,
+    required this.reservationDate,
+    required this.latitude,
+    required this.longitude,
+    required this.combinedEndDateFormat,
   }) : super(key: key);
 
   final String startDateFormat;
@@ -42,7 +46,6 @@ class PaymentMethod extends StatefulWidget {
   final double latitude;
   final double longitude;
   final DateTime combinedEndDateFormat;
-  
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -245,7 +248,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                       style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
-                  onPressed: () {
+                  onPressed: () async {
                     if (selected == 1) {
                       if (kDebugMode) {
                         print(
@@ -325,7 +328,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             randomNumber: finalRandomNumber,
                             parkName: widget.parkName,
                             parkLocation: widget.parkLocation,
-                            reservationDate: widget.reservationDate, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,
+                            reservationDate: widget.reservationDate,
+                            latitude: widget.latitude,
+                            longitude: widget.longitude,
+                            combinedEndDateFormat: widget.combinedEndDateFormat,
                           ),
                         ),
                       );
@@ -336,7 +342,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         print(
                             '$finalRandomNumber this the random number cash test 1');
                       }
-                      ParkingRemoteDataSource().putReservationData(
+
+                      final currentContext = context;
+                      if (await ParkingRemoteDataSource().putReservationData(
                         id: widget.slotId,
                         parkingSlotName: widget.parkSlotName,
                         startHour: widget.startDateFormat,
@@ -344,25 +352,86 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         isAvailable: false,
                         randomNumber: finalRandomNumber,
                         parkForeignKey: widget.parkId,
-                      );
-                      if (kDebugMode) {
-                        print(
-                            '$finalRandomNumber this the random number test 2');
+                      )) {
+                        Future.delayed(Duration.zero, () {
+                          Navigator.push(
+                            currentContext,
+                            MaterialPageRoute(
+                              builder: (context) => ParkingTimer(
+                                slotId: widget.slotId,
+                                hourSelected: widget.hourSelected,
+                                parkSlotName: widget.parkSlotName,
+                                randomNumber: finalRandomNumber,
+                                parkName: widget.parkName,
+                                parkLocation: widget.parkLocation,
+                                reservationDate: widget.reservationDate,
+                                startDateFormat: widget.startDateFormat,
+                                endDateFormat: widget.endDateFormat,
+                                latitude: widget.latitude,
+                                longitude: widget.longitude,
+                                combinedEndDateFormat:
+                                    widget.combinedEndDateFormat,
+                              ),
+                            ),
+                          );
+                        });
+                      } else {
+                        print('Error occurred. Please try again.');
+                        AnimatedButton(
+                            text: 'Error Dialog',
+                            color: Colors.red,
+                            pressEvent: () {
+                              AwesomeDialog(
+                                context: context,
+                                dialogType: DialogType.error,
+                                animType: AnimType.rightSlide,
+                                headerAnimationLoop: false,
+                                title: 'Error',
+                                desc: 'Error occurred. Please try again.',
+                                btnOkOnPress: () {},
+                                btnOkIcon: Icons.cancel,
+                                btnOkColor: Colors.red,
+                              ).show();
+                            });
                       }
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ParkingTimer(
-                            slotId: widget.slotId,
-                            hourSelected: widget.hourSelected,
-                            parkSlotName: widget.parkSlotName,
-                            randomNumber: finalRandomNumber,
-                            parkName: widget.parkName,
-                            parkLocation: widget.parkLocation,
-                            reservationDate: widget.reservationDate, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,
-                          ),
-                        ),
-                      );
+
+                      //  if (isLoading == true ) {
+                      //    print('isLoading $isLoading');
+                      //  return;
+                      //  }else if(isRequestFailed == true){
+                      //    print('isRequestFailed $isRequestFailed');
+                      //
+                      //  } else{
+                      //    print('sucsssssssssss  fail $isRequestFailed   load $isLoading');
+                      //
+                      //    updateReservationData(putReservationData: ParkingRemoteDataSource().putReservationData(
+                      //     id: widget.slotId,
+                      //     parkingSlotName: widget.parkSlotName,
+                      //     startHour: widget.startDateFormat,
+                      //     endHour: widget.endDateFormat,
+                      //     isAvailable: false,
+                      //     randomNumber: finalRandomNumber,
+                      //     parkForeignKey: widget.parkId,
+                      //   ));
+                      //   if (kDebugMode) {
+                      //     print(
+                      //         '$finalRandomNumber this the random number test 2');
+                      //   }
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => ParkingTimer(
+                      //         slotId: widget.slotId,
+                      //         hourSelected: widget.hourSelected,
+                      //         parkSlotName: widget.parkSlotName,
+                      //         randomNumber: finalRandomNumber,
+                      //         parkName: widget.parkName,
+                      //         parkLocation: widget.parkLocation,
+                      //         reservationDate: widget.reservationDate, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
                     }
                   },
                   radius: 5.r,
