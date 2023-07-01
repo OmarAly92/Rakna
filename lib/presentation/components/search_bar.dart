@@ -10,7 +10,7 @@ import '../../data/model/parking_model.dart';
 class SearchUser extends SearchDelegate {
 String image;
 
-SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9FvFe1zRItStF3sa5SoJ6T9LihZcKSEGLdQ&usqp=CAU'});
+SearchUser({ this.image = 'assets/images/garage.png'});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -52,7 +52,7 @@ SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9G
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail1(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: snapshot.data![index].parkImage)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: snapshot.data![index].parkImage, latitude: snapshot.data![index].latitude, longitude: snapshot.data![index].longitude,)));
                   },
                   child: ListTile(
                     title: Padding(
@@ -69,7 +69,7 @@ SearchUser({ this.image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9G
                             child: Center(
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(30),
-                                  child: Image.network(image,width: 60,height: 60,fit: BoxFit.fill,)),
+                                  child: Image.asset(image,width: 60,height: 60,fit: BoxFit.cover,)),
                             ),
                           ),
                           const SizedBox(width: 20),

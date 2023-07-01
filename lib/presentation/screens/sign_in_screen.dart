@@ -195,7 +195,7 @@ class _SignInState extends State<SignIn> {
                                      return Padding(
                                        padding:
                                        EdgeInsets.only(bottom: 8.h, top: 20.h),
-                                       child: LogButton(
+                                       child: LogButton(borderColor: Colors.transparent,
                                          widget: Text('Sign In',
                                              style: TextStyle(
                                                  color: Colors.white,
@@ -206,12 +206,23 @@ class _SignInState extends State<SignIn> {
                                          width: 305.w,
                                          height: 50.h,
                                          onPressed: () {
+                                           List userNameDataList = [];
                                            List emailDataList = [];
                                            List passwordDataList = [];
+                                           List userImageDataList = [];
+                                           List userAgeDataList = [];
+                                           List userIdDataList = [];
+                                           List userPhoneDataList = [];
 
                                            for(int i = 0;i<state.userData.length;i++){
+
+                                             userNameDataList.add(state.userData[i].userName);
                                              emailDataList.add(state.userData[i].email);
                                              passwordDataList.add(state.userData[i].password);
+                                             userImageDataList.add(state.userData[i].userImage);
+                                             userAgeDataList.add(state.userData[i].age);
+                                             userIdDataList.add(state.userData[i].userID);
+                                             userPhoneDataList.add(state.userData[i].phoneNumber);
                                            }
 
 
@@ -229,7 +240,7 @@ class _SignInState extends State<SignIn> {
                                              if(emailDataList[i].contains(emailController.text) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false){
                                                print(emailDataList[i]);
                                                print(passwordDataList[i]);
-                                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen()));
+                                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen( userID: userIdDataList[i])));
                                              }
                                            }
 

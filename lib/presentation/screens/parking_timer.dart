@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 import '../../data/data_source/remote_data_source.dart';
 import '../components/LogButton_Widget.dart';
@@ -11,11 +12,24 @@ class ParkingTimer extends StatefulWidget {
       {Key? key,
       required this.slotId,
       required this.hourSelected,
-      required this.parkSlotName})
+      required this.parkSlotName,
+      required this.randomNumber,
+      required this.parkName,
+      required this.parkLocation,
+      required this.reservationDate, required this.startDateFormat, required this.endDateFormat, required this.latitude, required this.longitude, required this.combinedEndDateFormat})
       : super(key: key);
   final int hourSelected;
   final int slotId;
   final String parkSlotName;
+  final String randomNumber;
+  final String parkName;
+  final String parkLocation;
+  final String reservationDate;
+  final String startDateFormat;
+  final String endDateFormat;
+  final double latitude;
+  final double longitude;
+  final DateTime combinedEndDateFormat;
 
   @override
   State<ParkingTimer> createState() => _ParkingTimerState();
@@ -24,8 +38,9 @@ class ParkingTimer extends StatefulWidget {
 class _ParkingTimerState extends State<ParkingTimer>
     with TickerProviderStateMixin {
   late AnimationController controller;
-
   bool isPlaying = false;
+  DateTime now = DateTime.now();
+
 
   String get countText {
     Duration count = controller.duration! * controller.value;
@@ -42,17 +57,19 @@ class _ParkingTimerState extends State<ParkingTimer>
     }
   }
 
-
-
   @override
   void initState() {
     super.initState();
+    Duration remainingTime = widget.combinedEndDateFormat.difference(now);
+    int hours = remainingTime.inHours;
+    int minutes = remainingTime.inMinutes.remainder(60);
+    int seconds = remainingTime.inSeconds.remainder(60);
     controller = AnimationController(
         vsync: this,
-        duration: Duration(seconds: 50, minutes: 0, hours: 0
-        // widget.hourSelected
+        duration: Duration(seconds: seconds, minutes: minutes, hours: hours
+            // widget.hourSelected
 
-        ));
+            ));
     controller.reverse(from: controller.value == 0 ? 1.0 : controller.value);
     controller.addListener(() {
       notify();
@@ -77,6 +94,7 @@ class _ParkingTimerState extends State<ParkingTimer>
 
   @override
   Widget build(BuildContext context) {
+
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -85,25 +103,28 @@ class _ParkingTimerState extends State<ParkingTimer>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.all(8.0.r),
-                child: Row(
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.arrow_back, size: 30.r)),
-                    SizedBox(width: width * .01),
-                    Text(
-                      'Parking Timer',
-                      style: TextStyle(
-                          fontSize: 27.sp, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: height * .02),
+              // Padding(
+              //   padding: EdgeInsets.all(8.0.r),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       // InkWell(
+              //       //     onTap: () {
+              //       //       Navigator.pop(context);
+              //       //     },
+              //       //     child: Icon(Icons.arrow_back, size: 30.r)),
+              //       SizedBox(width: width * .01),
+              //       // Center(
+              //       //   child: Text(
+              //       //     'Parking Timer',
+              //       //     style: TextStyle(
+              //       //         fontSize: 35.sp, fontWeight: FontWeight.bold),
+              //       //   ),
+              //       // ),
+              //     ],
+              //   ),
+              // ),
+              SizedBox(height: 23.h),
               Center(
                 child: Stack(
                   alignment: Alignment.center,
@@ -139,7 +160,7 @@ class _ParkingTimerState extends State<ParkingTimer>
                         animation: controller,
                         builder: (BuildContext context, Widget? child) => Text(
                           countText,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 60,
                           ),
                         ),
@@ -148,6 +169,47 @@ class _ParkingTimerState extends State<ParkingTimer>
                   ],
                 ),
               ),
+              Center(
+                child: Container(
+                  // height: 315,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(
+                    bottom: 0.h,
+                    top: 30.h,
+                    left: 18.w,
+                    right: 18.w,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      left: 12.w,
+                      right: 12.w,
+                      top: 5.h,
+                      bottom: 5.h,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(7.0.r),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Your Entry Code',
+                              style: TextStyle(fontSize: 24.sp)),
+                          SizedBox(height: 8.h),
+                          Text(widget.randomNumber,
+                              style: TextStyle(
+                                  fontSize: 40.sp,
+                                  color: Colors.blue.shade800)),
+                          //TODO connect Api
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
               Container(
                 // height: 315,
                 // width:350,
@@ -171,13 +233,23 @@ class _ParkingTimerState extends State<ParkingTimer>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Padding(
+                      //   padding: EdgeInsets.all(7.0.r),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       const Text('Your Entry Code'),
+                      //       Text(widget.randomNumber), //TODO connect Api
+                      //     ],
+                      //   ),
+                      // ),
                       Padding(
                         padding: EdgeInsets.all(7.0.r),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Your Entry Code'),
-                            Text('1224'), //TODO connect Api
+                            const Text('Parking Name'),
+                            Text(widget.parkName), //TODO connect Api
                           ],
                         ),
                       ),
@@ -186,18 +258,8 @@ class _ParkingTimerState extends State<ParkingTimer>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Parking Name'),
-                            Text('Nasr City Parking'), //TODO connect Api
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(7.0.r),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('Location'),
-                            Text('Nasr City, Fair Square'), //TODO connect Api
+                            const Text('Location'),
+                            Text(widget.parkLocation), //TODO connect Api
                           ],
                         ),
                       ),
@@ -206,8 +268,8 @@ class _ParkingTimerState extends State<ParkingTimer>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Parking Spot'),
-                            Text('1st Floor (A05)'), //TODO connect Api
+                            const Text('Parking Spot'),
+                            Text(widget.parkSlotName), //TODO connect Api
                           ],
                         ),
                       ),
@@ -216,8 +278,9 @@ class _ParkingTimerState extends State<ParkingTimer>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Date'),
-                            Text('1 / 1 / 2023'), //TODO connect Api
+                            const Text('Date'),
+                            Text(widget.reservationDate.replaceFirst(
+                                ' 00:00:00.000', '')), //TODO connect Api
                             // Text('${today.toString().split(' ')[0]}'),
                           ],
                         ),
@@ -227,8 +290,9 @@ class _ParkingTimerState extends State<ParkingTimer>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Duration'),
-                            Text('1 hours'), //TODO connect Api
+                            const Text('Duration'),
+                            Text(widget.hourSelected.toString()),
+                            //TODO connect Api
                           ],
                         ),
                       ),
@@ -237,24 +301,43 @@ class _ParkingTimerState extends State<ParkingTimer>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Hours'),
-                            Text('12:00 PM - 13:00 PM'), //TODO connect Api
+                            const Text('Hours'),
+                            Text('${widget.startDateFormat.toString().replaceRange(0, 10, '')}  /  ${widget.endDateFormat.toString().replaceRange(0, 10, '')}'), //TODO connect Api
                           ],
                         ),
                       ),
+
+                      // Padding(
+                      //   padding: EdgeInsets.all(7.0.r),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text('Hours'),
+                      //       Text('12:00 PM - 13:00 PM'), //TODO connect Api
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 18.h),
+              SizedBox(height: 5.h),
               Center(
-                child: LogButton(
-                  widget: Text('Extend Parking Time',
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp)),
-                  backgroundColor: Color(0xff067fd0),
+                child: LogButton(borderColor: Colors.transparent,
+                  widget: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Direction',
+                          style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+                      SizedBox(width: 5.w),
+                      Icon(Icons.location_on)
+                    ],
+                  ),
+                  backgroundColor: Colors.blue,
                   textColor: Colors.white,
                   onPressed: () {
-                    ///TODO navigation
+                    MapsLauncher.launchCoordinates(widget.latitude, widget.longitude);
+
                   },
                   radius: 5.r,
                   width: 295.w,

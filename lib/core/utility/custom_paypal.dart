@@ -10,6 +10,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import '../../data/data_source/remote_data_source.dart';
 import '../../parking_timer_paypal.dart';
 
 class UsePaypal1 extends StatefulWidget {
@@ -19,9 +20,18 @@ class UsePaypal1 extends StatefulWidget {
   final bool sandboxMode;
   final String parkSlotName;
   final int slotId;
+  final int parkId;
   final int hourSelected;
   final String startDateFormat;
   final String endDateFormat;
+  final String finalRandomNumber;
+  final String randomNumber;
+  final String parkName;
+  final String parkLocation;
+  final String reservationDate;
+  final double latitude;
+  final double longitude;
+  final DateTime combinedEndDateFormat;
 
   const UsePaypal1({
     Key? key,
@@ -37,7 +47,7 @@ class UsePaypal1 extends StatefulWidget {
     this.note = '',
     required this.parkSlotName,
     required this.slotId,
-    required this.hourSelected, required this.startDateFormat, required this.endDateFormat,
+    required this.hourSelected, required this.startDateFormat, required this.endDateFormat, required this.finalRandomNumber, required this.parkId, required this.randomNumber, required this.parkName, required this.parkLocation, required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat,
   }) : super(key: key);
 
   @override
@@ -187,9 +197,20 @@ class UsePaypal1State extends State<UsePaypal1> {
               return NavigationDecision.prevent;
             }
             if (request.url.contains(widget.returnURL)) {
+
+              ParkingRemoteDataSource().putReservationData(
+                id: widget.slotId,
+                parkingSlotName: widget.parkSlotName,
+                startHour: widget.startDateFormat,
+                endHour: widget.endDateFormat,
+                isAvailable: false,
+                randomNumber: widget.finalRandomNumber,
+                parkForeignKey: widget.parkId,
+              );
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
+                    // finalRandomNumber
                   builder: (context) => ParkingTimerPaypal(
                       parkSlotName: widget.parkSlotName,
                       hourSelected: widget.hourSelected,
@@ -200,7 +221,7 @@ class UsePaypal1State extends State<UsePaypal1> {
                       accessToken: accessToken,
                       onSuccess: widget.onSuccess,
                       onCancel: widget.onCancel,
-                      onError: widget.onError, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat,),
+                      onError: widget.onError, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat, finalRandomNumber: widget.finalRandomNumber, randomNumber:widget.randomNumber, parkName: widget.parkName, parkLocation: widget.parkLocation, reservationDate: widget.reservationDate, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,),
                 ),
               );
             }

@@ -194,7 +194,7 @@ class _SlotsDetailState extends State<SlotsDetail> {
                                      height:125.h ,
                                    ),
 
-                                   onSelectedIndex == -1? LogButton(
+                                   onSelectedIndex == -1? LogButton(borderColor: Colors.transparent,
                                      widget: Text('Add Park Slot',
                                          style: TextStyle(
                                              color: Colors.white, fontSize: 16.sp)),
@@ -223,7 +223,7 @@ class _SlotsDetailState extends State<SlotsDetail> {
                                                          controller: parkSlotNameController,
                                                        ),
                                                      ),
-                                                     LogButton(
+                                                     LogButton(borderColor: Colors.transparent,
                                                        widget: const Icon(Icons.send),
                                                        backgroundColor: Colors.blue,
                                                        textColor: Colors.white,
@@ -248,7 +248,7 @@ class _SlotsDetailState extends State<SlotsDetail> {
                                      children: [
                                        Padding(
                                          padding:  EdgeInsets.only(left: 11.w),
-                                         child: LogButton(
+                                         child: LogButton(borderColor: Colors.transparent,
                                            widget: Text('Edit',
                                                style: TextStyle(
                                                    color: Colors.white, fontSize: 16.sp)),
@@ -280,7 +280,7 @@ class _SlotsDetailState extends State<SlotsDetail> {
                                                                controller: parkSlotNameController,
                                                              ),
                                                            ),
-                                                           LogButton(
+                                                           LogButton(borderColor: Colors.transparent,
                                                              widget: const Icon(Icons.send),
                                                              backgroundColor: Colors.blue,
                                                              textColor: Colors.white,
@@ -305,7 +305,7 @@ class _SlotsDetailState extends State<SlotsDetail> {
                                        SizedBox(width: 12.w),
                                        Padding(
                                          padding:  EdgeInsets.only(right: 11.w),
-                                         child: LogButton(
+                                         child: LogButton(borderColor: Colors.transparent,
                                            widget: Text('Delete',
                                                style: TextStyle(
                                                    color: Colors.white, fontSize: 16.sp)),

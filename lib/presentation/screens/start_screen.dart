@@ -29,7 +29,7 @@ class GetStarted extends StatelessWidget {
                   const SizedBox(
                     height: 100,
                   ),
-                  LogButton(
+                  LogButton(borderColor: Colors.transparent,
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => SignIn(),));
 
@@ -42,7 +42,7 @@ class GetStarted extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  LogButton(
+                  LogButton(borderColor: Colors.transparent,
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => SignInOwner(),));
                     },

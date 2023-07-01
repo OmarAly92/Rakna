@@ -7,4 +7,12 @@ class GarageOwnerParkingModel extends GarageOwnerParking {
       GarageOwnerParkingModel(
         parkingData: json['parks'],
       );
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'parks': parkingData,
+    };
+  }
+
 }

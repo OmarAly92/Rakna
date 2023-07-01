@@ -192,7 +192,7 @@ class AddPayment extends StatelessWidget {
                   height: 100.h,
                 ),
                 Center(
-                  child: LogButton(
+                  child: LogButton(borderColor: Colors.transparent,
                     widget: Text('add',style: TextStyle(color: Colors.white, fontSize: 16.sp),),
                     backgroundColor: Color(0xff067fd0),
                     textColor: Colors.white,

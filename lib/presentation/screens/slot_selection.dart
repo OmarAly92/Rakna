@@ -12,9 +12,13 @@ import '../components/LogButton_Widget.dart';
 import '../components/slot-place.dart';
 
 class SlotSelection extends StatefulWidget {
-   SlotSelection({Key? key,required this.parkId,required this.parkPrice}) : super(key: key);
-   int parkId;
-   num parkPrice;
+   const SlotSelection({Key? key,required this.parkId,required this.parkPrice, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude}) : super(key: key);
+   final int parkId;
+   final  num parkPrice;
+   final String parkName;
+   final String parkLocation;
+   final double latitude;
+   final double longitude;
 
   @override
   State<SlotSelection> createState() => _SlotSelectionState();
@@ -30,6 +34,8 @@ class _SlotSelectionState extends State<SlotSelection> {
   Color bookedColor = Color(0xff990000);
   late int slotId;
   late String parkingSlotName;
+  late String randomNumber;
+
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +214,9 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                       parkingSlotName = state
                                                           .data![index]
                                                           .parkingSlotName;
+                                                      randomNumber = state
+                                                          .data![index]
+                                                          .randomNumber;
                                                     },
                                                     index: index,
                                                     isAvailable:
@@ -228,7 +237,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                               bottom: 10.h, left: 5.w, right: 5.w),
                                           child: Column(
                                             children: [
-                                              LogButton(
+                                              LogButton(borderColor: Colors.transparent,
                                                 widget: Text('Book',
                                                     style: TextStyle(
                                                         color: Colors.white, fontSize: 16.sp)),
@@ -245,6 +254,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                             ReservationParkingPlace(
                                                               slotId: slotId,
                                                               parkSlotName: parkingSlotName, parkPrice: widget.parkPrice, parkForeignKey: widget.parkId,
+                                                              randomNumber: randomNumber, parkName: widget.parkName, parkLocation: widget.parkLocation, latitude: widget.latitude, longitude: widget.longitude,
                                                             ),
                                                       ),
                                                     );

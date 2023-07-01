@@ -236,7 +236,7 @@ class _PaymentMethodOwnerState extends State<PaymentMethodOwner> {
               ),
               SizedBox(height: 135.h),
               Center(
-                child: LogButton(
+                child: LogButton(borderColor: Colors.transparent,
                   widget: Text('Select',
                       style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),

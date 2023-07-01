@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:cached_memory_image/cached_image_base64_manager.dart';
+import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,6 +48,11 @@ class _AddParkState extends State<AddPark> {
   TextEditingController parkLocationController = TextEditingController();
   TextEditingController parkPriceController = TextEditingController();
 
+  void cacheImage()async{
+    final CachedImageManager cachedImageManager = CachedImageBase64Manager.instance();
+    await cachedImageManager.removeFile('app://image/1');
+
+  }
 
   Future _pickImage(ImageSource source) async {
     try {
@@ -101,9 +108,6 @@ class _AddParkState extends State<AddPark> {
 
   @override
   Widget build(BuildContext context) {
-    double height, width;
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
     Color color = Colors.blue.shade800;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -113,7 +117,7 @@ class _AddParkState extends State<AddPark> {
             Column(
               children: [
                 Container(
-                  height: 105.h,
+                  height: 85.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: color,
@@ -162,7 +166,7 @@ class _AddParkState extends State<AddPark> {
                     color: color,
                   ),
                   child: Container(
-                    height: height * .9,
+                    height: 605.h,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
@@ -175,18 +179,18 @@ class _AddParkState extends State<AddPark> {
                           onTap: () => _showSelectPhotoOptions(context),
                           child: Center(
                             child: Container(
-                              height: 140,
+                              height: 180,
                               width: 225,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   color: Colors.white
-
                               ),
                               child: Center(child: _image == null? ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
-                                  child: Image.asset('assets/images/Default_Image_Thumbnail.png',width: 225,height: 140,fit: BoxFit.cover)):ClipRRect(
+                                  child: Image.asset('assets/images/Default_Image_Thumbnail.png',width: 225,height: 180,fit: BoxFit.cover)):
+                              ClipRRect(
                                   borderRadius: BorderRadius.circular(15),
-                                  child: Image(image: FileImage(_image!),width: 225,height: 140,fit: BoxFit.cover))),
+                                  child: Image(image: FileImage(_image!),width: 225,height: 180,fit: BoxFit.cover))),
                             ),
                           ),
                         ),
@@ -247,22 +251,32 @@ class _AddParkState extends State<AddPark> {
                                 border: UnderlineInputBorder()),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: LogButton(onPressed: () {
+                        Center(
+                          child:latLng ==LatLng(0,0) ? LogButton(onPressed: () {
                        // Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(garageOwnerId: widget.garageOwnerId)));
                             _navigateAndDisplayData(context);
-                          }, widget: const Row(
+                          }, borderColor: Colors.transparent, widget: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('Select Park location'),
                               SizedBox(width: 1),
                               Icon(CupertinoIcons.location_solid,color: Colors.white),
                             ],
-                          ), backgroundColor: CupertinoColors.activeBlue, textColor: Colors.white, radius: 5, width: 185, height: 50),
-                        ),
+                          ), backgroundColor: CupertinoColors.activeBlue, textColor: Colors.white, radius:40, width: 185, height: 50):
+                          LogButton(onPressed: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(garageOwnerId: widget.garageOwnerId)));
+                            _navigateAndDisplayData(context);
+
+                          }, borderColor: Colors.transparent, widget: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Select Park location'),
+                              SizedBox(width: 1),
+                              Icon(CupertinoIcons.check_mark,color: Colors.white),
+                            ],
+                          ), backgroundColor: CupertinoColors.activeGreen, textColor: Colors.white, radius:40, width: 185, height: 50),),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 8.h, top: 115.h),
+                          padding: EdgeInsets.only(bottom: 8.h, top: 40.h),
                           child: Center(
                             child: LogButton(
                               backgroundColor:  CupertinoColors.activeBlue,
@@ -271,21 +285,24 @@ class _AddParkState extends State<AddPark> {
                               width: 305.w,
                               onPressed: () {
 
-                                print('$img64');
+                                print(img64);
 
-
-                                ParkingRemoteDataSource().postPark(
-                                    parkName: parkNameController.text,
-                                    parkLocation: parkLocationController.text,
-                                    parkPrice:
-                                        double.parse(parkPriceController.text),
-                                    garageOwnerId: widget.garageOwnerId,
-                                    parkImage: '$img64', latitude:latLng.latitude, longitude: latLng.longitude);
-
-                                Navigator.pop(context);
+                             if(latLng != LatLng(0.0, 0.0) && img64 != null) {
+                                  ParkingRemoteDataSource().postPark(
+                                      parkName: parkNameController.text,
+                                      parkLocation: parkLocationController.text,
+                                      parkPrice: double.parse(
+                                          parkPriceController.text),
+                                      garageOwnerId: widget.garageOwnerId,
+                                      parkImage: '$img64',
+                                      latitude: latLng.latitude,
+                                      longitude: latLng.longitude);
+                                  cacheImage();
+                                  Navigator.pop(context);
+                                }
                               },
                               widget: const Text('Add Park'),
-                              height: 50.h,
+                              height: 50.h, borderColor: Colors.transparent,
                             ),
                           ),
                         ),
@@ -305,7 +322,9 @@ class _AddParkState extends State<AddPark> {
   }
   _navigateAndDisplayData(BuildContext context)async{
    final LatLng result =await Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
-      latLng = result;
+      setState(() {
+        latLng = result;
+      });
   }
 }
 

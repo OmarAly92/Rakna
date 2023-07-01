@@ -123,29 +123,29 @@ class _HomeState extends State<Home> {
               ),
               child: Stack(
                 children: [
-                  Positioned(
-                    top: 35,
-                    left: 340,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(7),
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        color: Color.fromRGBO(250, 250, 250, 0.1),
-                        child: InkWell(
-                          onTap: () {
-
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
-                          },
-                          child: Icon(
-                            Icons.notifications_none,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 35,
+                  //   left: 340,
+                  //   child: ClipRRect(
+                  //     borderRadius: BorderRadius.circular(7),
+                  //     child: Container(
+                  //       height: 40,
+                  //       width: 40,
+                  //       color: Color.fromRGBO(250, 250, 250, 0.1),
+                  //       child: InkWell(
+                  //         onTap: () {
+                  //
+                  //           Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                  //         },
+                  //         child: Icon(
+                  //           Icons.notifications_none,
+                  //           size: 30,
+                  //           color: Colors.white,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(top: 35, left: 10),
                     child: Column(

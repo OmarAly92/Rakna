@@ -25,7 +25,7 @@ class _SuccessState extends State<Success> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
-              child: LogButton(
+              child: LogButton(borderColor: Colors.transparent,
                   widget: Text('OK',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Colors.blue,
                   textColor: Colors.white,

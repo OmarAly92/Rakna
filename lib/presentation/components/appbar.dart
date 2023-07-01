@@ -51,16 +51,16 @@ class _AppBarCustomState extends State<AppBarCustom> {
             "Hello,\nGood Morning",
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          InkWell(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Notifications()));
-            },
-            child: CircleButton(
-              icon: Icons.notifications,
-              onPressed: () {},
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => Notifications()));
+          //   },
+          //   child: CircleButton(
+          //     icon: Icons.notifications,
+          //     onPressed: () {},
+          //   ),
+          // ),
         ],
       ),
       const SizedBox(

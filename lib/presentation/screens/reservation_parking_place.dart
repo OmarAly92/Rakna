@@ -1,8 +1,7 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:rakna/presentation/screens/payment_method.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:time/time.dart';
@@ -11,11 +10,20 @@ import '../components/LogButton_Widget.dart';
 
 class ReservationParkingPlace extends StatefulWidget {
   ReservationParkingPlace(
-      {Key? key, required this.slotId, required this.parkSlotName,required this.parkPrice,required this.parkForeignKey})
+      {Key? key,
+      required this.slotId,
+      required this.parkSlotName,
+      required this.parkPrice,
+      required this.parkForeignKey, required this.randomNumber, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude})
       : super(key: key);
   final int slotId;
   final int parkForeignKey;
   final String parkSlotName;
+  final double latitude;
+  final double longitude;
+  final String randomNumber;
+  final String parkName;
+  final String parkLocation;
   int hour = 1;
   num parkPrice;
 
@@ -30,38 +38,14 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
- late  String finalStartDateFormat;
- late  String finalEndDateFormat;
-  int startHourHours = 0;
-  int startHourMinutes = 0;
-  String startHour = '';
-  String endHour = '';
-  late DateTime today =
-      DateTime.utc(2023, 1, 1, startHourHours, startHourMinutes);
-  late String? startDateFormat;
-  late String? endDateFormat;
+  TimeOfDay? pickTime;
 
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
-    setState(() {
-      today = day;
-    });
-  }
+  String? selectedDateTime;
+  String? startHourAndEndHour;
 
-  String dateTimeFormat(
-      {required int inDays,
-      required int inHours,
-      required inMinutes,
-      required int inSeconds}) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final String twoDigitMinutes = twoDigits(inMinutes.remainder(60));
-    final String twoDigitSeconds = twoDigits(inSeconds.remainder(60));
-    final String twoDigitDays = twoDigits(inDays.remainder(24));
-    final hour = twoDigits(inHours);
-    return "${DateTime.now().year}-${(DateTime.now().month).toString().padLeft(2, '0')}-$twoDigitDays ${hour == '00' ? '' : hour + ':'}$twoDigitMinutes:$twoDigitSeconds";
-  }
 
   final formKey = GlobalKey<FormState>();
-  final TextEditingController _date1 = TextEditingController();
+  late TextEditingController _date1 = TextEditingController();
   Duration startH = Duration();
   Duration endH = Duration();
 
@@ -70,8 +54,6 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-    DateTime _chosenDate = DateTime.now();
-    // final dateFormat = DateFormat('EEEE yyyy-MMMM-dd');
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -117,55 +99,58 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                           color: Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(10.r)),
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 13.w, right: 13.w, top: 13.w, bottom: 13.w),
-                        child:
-                        TableCalendar(currentDay: _selectedDay,
-                          firstDay: DateTime(2023,1,1),
-                          lastDay: DateTime.utc(2030,1,1),
-                          focusedDay: _focusedDay,
-                          calendarFormat: _calendarFormat,
-                          selectedDayPredicate: (day) {
-                            // Use `selectedDayPredicate` to determine which day is currently selected.
-                            // If this returns true, then `day` will be marked as selected.
+                          padding: EdgeInsets.only(
+                              left: 13.w, right: 13.w, top: 13.w, bottom: 13.w),
+                          child: TableCalendar(
+                            currentDay: _selectedDay,
+                            firstDay: DateTime(2023, 1, 1),
+                            lastDay: DateTime.utc(2030, 1, 1),
+                            focusedDay: _focusedDay,
+                            calendarFormat: _calendarFormat,
+                            selectedDayPredicate: (day) {
+                              // Use `selectedDayPredicate` to determine which day is currently selected.
+                              // If this returns true, then `day` will be marked as selected.
 
-                            // Using `isSameDay` is recommended to disregard
-                            // the time-part of compared DateTime objects.
-                            if(_selectedDay == null){
-                              _selectedDay = DateTime.now() ;
-                              _selectedDay = DateTime.tryParse(_selectedDay.toString().replaceRange(16, 25, '00.000000'));
-                              return isSameDay(_selectedDay, day);
-                            }else {
-                              return isSameDay(_selectedDay, day);
-                            }
+                              // Using `isSameDay` is recommended to disregard
+                              // the time-part of compared DateTime objects.
+                              DateFormat dateFormatText = DateFormat('yyyy-MM-dd');
+                               selectedDateTime = dateFormatText.format(_focusedDay);
 
+                              if (_selectedDay == null) {
+                                _selectedDay = DateTime.now();
+                                _selectedDay = DateTime.tryParse(_selectedDay
+                                    .toString()
+                                    .replaceRange(16, 25, '00.000000'));
+                                return isSameDay(_selectedDay, day);
+                              } else {
+                                return isSameDay(_selectedDay, day);
+                              }
 
-                            // return isSameDay(_selectedDay, day);
+                              // return isSameDay(_selectedDay, day);
                             },
-                          onDaySelected: (selectedDay, focusedDay) {
-                            if (!isSameDay(_selectedDay, selectedDay)) {
-                              // Call `setState()` when updating the selected day
-                              setState(() {
-                                _selectedDay = selectedDay;
-                                _focusedDay = focusedDay;
-                              });
-                            }
-                          },
-                          onFormatChanged: (format) {
-                            if (_calendarFormat != format) {
-                              // Call `setState()` when updating calendar format
-                              setState(() {
-                                _calendarFormat = format;
-                              });
-                            }
-                          },
-                          onPageChanged: (focusedDay) {
-                            // No need to call `setState()` here
+                            onDaySelected: (selectedDay, focusedDay) {
+                              if (!isSameDay(_selectedDay, selectedDay)) {
+                                // Call `setState()` when updating the selected day
+                                setState(() {
+                                  _selectedDay = selectedDay;
+                                  _focusedDay = focusedDay;
+                                });
+                              }
+                            },
+                            onFormatChanged: (format) {
+                              if (_calendarFormat != format) {
+                                // Call `setState()` when updating calendar format
+                                setState(() {
+                                  _calendarFormat = format;
+                                });
+                              }
+                            },
+                            onPageChanged: (focusedDay) {
+                              // No need to call `setState()` here
 
-                            _focusedDay = focusedDay;
-                          },
-                        )
-                      ),
+                              _focusedDay = focusedDay;
+                            },
+                          )),
                     ),
                   ),
                   // Text('${today.toString().split(' ')[0]}'),
@@ -213,71 +198,35 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                   suffixIcon: InkWell(
                                     borderRadius: BorderRadius.circular(10.r),
                                     onTap: () async {
-                                      TimeOfDay? pickTime =
-                                          await showTimePicker(
-                                              context: context,
-                                              initialTime: TimeOfDay.now());
-                                      if (pickTime != null) {
-                                        setState(() {
-                                          _date1.text = pickTime
-                                              .format(context)
-                                              .toString();
-                                          var dayNight = pickTime.period;
-                                          startHourHours = pickTime.hour;
-                                          startHourMinutes = pickTime.minute;
+                                      pickTime = await showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.now());
+
+                                      // DateTime combinedStartDateFormat = new DateTime(
+                                      //     _selectedDay!.year,
+                                      //     _selectedDay!.month,
+                                      //     _selectedDay!.day,
+                                      //     pickTime!.hour,
+                                      //     pickTime!.minute);
+                                      // DateTime combinedEndDateFormat = new DateTime(
+                                      //     _selectedDay!.year,
+                                      //     _selectedDay!.month,
+                                      //     _selectedDay!.day,
+                                      //     pickTime!.hour + widget.hour,
+                                      //     pickTime!.minute);
+                                      // DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+                                      // String formattedStartDateTime1 = dateFormat.format(combinedStartDateFormat);
+                                      // String formattedEndDateTime1 = dateFormat.format(combinedEndDateFormat);
 
 
 
-                                          String startHour = startH
-                                              .toString()
-                                              .replaceFirst('0:', '');
-                                          String hour = startHour
-                                              .replaceFirst('.000000', '')
-                                              .substring(0, 2);
+                                      setState(() {
+                                        _date1.text = pickTime!
+                                            .format(context)
+                                            .toString();
 
-                                          String datePicked = DateTime.now()
-                                              .date
-                                              .toString()
-                                              .replaceFirst('00:00:00.000', '');
-                                          String startDate = (startHour)
-                                              .replaceFirst(' ', '')
-                                              .replaceAll('.', ':');
-                                          String endDate = startDate.replaceFirst(
-                                              '$hour',
-                                              '${int.parse(hour) + widget.hour}');
-                                          startDateFormat =
-                                              (datePicked + 'T' + startHour)
-                                                  .replaceFirst(' ', '')
-                                                  .replaceAll('.', ':')
-                                                  .replaceRange(19, 21, '.');
-                                          endDateFormat =
-                                              (datePicked + 'T' + endDate)
-                                                  .replaceFirst(' ', '')
-                                                  .replaceRange(19, 21, '.');
-                                          // 2023-05-29T23:06:52.396
-                                          // 2023-06-15 14:01
-                                          startHour = dateTimeFormat(
-                                                  inDays: 1,
-                                                  inHours: startHourHours,
-                                                  inMinutes: startHourMinutes,
-                                                  inSeconds: 2)
-                                              .substring(11)
-                                              .substring(0, 5);
-                                          endHour = dateTimeFormat(
-                                                  inDays: 1,
-                                                  inHours: startHourHours +
-                                                      widget.hour,
-                                                  inMinutes: startHourMinutes,
-                                                  inSeconds: 2)
-                                              .substring(11)
-                                              .substring(0, 5);
+                                      });
 
-
-                                          print('object');
-                                        });
-                                      }
-                                      // 1900-01-01 00:00
-                                      // 0:15:35.000000
                                     },
                                     child:
                                         const Icon(Icons.access_time_rounded),
@@ -362,7 +311,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: 13.w, right: 13.w, top: 22.w, bottom: 18.w),
+                          left: 13.w, right: 13.w, top: 22.w, bottom: 22.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -377,25 +326,27 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(7.0.r),
+                            padding: EdgeInsets.all(10.0.r),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Date'),
-                                Text('$_selectedDay'.replaceFirst(' 00:00:00.000Z', '')),
+                                Text('$selectedDateTime'),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(7.0.r),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('Hours'),
-                                Text('${dateTimeFormat(inDays: 1, inHours: startHourHours, inMinutes: startHourMinutes, inSeconds: 2).substring(11).substring(0, 5)}  - ${dateTimeFormat(inDays: 1, inHours: startHourHours + widget.hour, inMinutes: startHourMinutes, inSeconds: 2).substring(11).substring(0, 5)}')
-                              ],
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.all(7.0.r),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text('Hours'),
+                          //       Text('${startHourText1} - $endHourText1')
+                          //
+                          //       ///todo put the hours here
+                          //     ],
+                          //   ),
+                          // ),
                           Divider(color: Colors.grey, thickness: .6),
                           Padding(
                             padding: EdgeInsets.all(7.0.r),
@@ -409,7 +360,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                           ),
                           SizedBox(height: 40.h),
                           Center(
-                            child: LogButton(
+                            child: LogButton(borderColor: Colors.transparent,
                               widget: Text('Next',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 16.sp)),
@@ -417,64 +368,52 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               textColor: Colors.white,
                               onPressed: () {
 
-                                if(_selectedDay == DateTime.tryParse(_selectedDay.toString().replaceRange(16, 23, '00.000000'))){
-                                    print('x');
-                                  // startH = today.add((Duration(hours: startHourHours, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
-                                  // endH = today.add((Duration(hours: startHourHours + widget.hour, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes))).minute.seconds;
+                                DateTime reservationDate = new DateTime(
+                                    _selectedDay!.year,
+                                    _selectedDay!.month,
+                                    _selectedDay!.day);
 
+                                DateTime combinedStartDateFormat = new DateTime(
+                                    _selectedDay!.year,
+                                    _selectedDay!.month,
+                                    _selectedDay!.day,
+                                    pickTime!.hour,
+                                    pickTime!.minute);
+                                DateTime combinedEndDateFormat = new DateTime(
+                                    _selectedDay!.year,
+                                    _selectedDay!.month,
+                                    _selectedDay!.day,
+                                    pickTime!.hour + widget.hour,
+                                    pickTime!.minute);
+                                DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
+                                String formattedStartDateTime = dateFormat.format(combinedStartDateFormat);
+                                String formattedEndDateTime = dateFormat.format(combinedEndDateFormat);
 
-                                    startH = today.add((Duration(hours: ((startHourHours))+10, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes+7))).minute.seconds;
-                                    endH = today.add((Duration(hours: ((startHourHours + widget.hour))+10, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes+7))).minute.seconds;
-
-                                    finalStartDateFormat= _selectedDay.toString().replaceRange(11, 23, '$startH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');
-                               finalEndDateFormat= _selectedDay.toString().replaceRange(11, 23, '$endH').replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst('Z', '');
-
-                                }else{
-
-                                  startH = today.add((Duration(hours: ((startHourHours)-4)+12, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-18))).minute.seconds;
-                                  endH = today.add((Duration(hours: ((startHourHours + widget.hour)-4)+12, minutes: startHourMinutes))).hour.minutes + (today.add(Duration(hours: startHourHours, minutes: startHourMinutes-18))).minute.seconds;
-
-
-                                  print('$startHourHours  testH');
-                                  print('$startH  test');
-                                  print('$endH  test');
-
-
-                                  finalStartDateFormat=_selectedDay.toString().replaceFirst('00:00:00.000Z', startH.toString()).replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst(':00.000', '') ;
-                                    finalEndDateFormat= _selectedDay.toString().replaceFirst('00:00:00.000Z', endH.toString()).replaceFirst(' 0:', ' ').replaceFirst('.000000','').replaceFirst(':00.000', '');
-                                }
-
-
-                                print('$finalStartDateFormat  end');
-                                print('$finalEndDateFormat  end');
+                                print('$formattedStartDateTime START');
+                                print('$formattedEndDateTime END');
+                                print('$combinedEndDateFormat ENDhour Date Time');
 
                                 if (!formKey.currentState!.validate()) {
-                                  final snackBar = SnackBar(content: Text('Submitting form'));_scaffoldkey.currentState!.showBottomSheet((context) => snackBar);
+                                  final snackBar = SnackBar(
+                                      content: Text('Submitting form'));
+                                  _scaffoldkey.currentState!
+                                      .showBottomSheet((context) => snackBar);
                                 }
-
-                                // String startHour = startH.toString().replaceFirst('0:', '');
-                                // String hour = startHour.replaceFirst('.000000', '').substring(0, 2);
-                                // String hourFormat = (int.parse(hour) + widget.hour).toString().padLeft(2, '0');
-                                // // print((int.parse(hour) + 1));
-                                // // print(hourFormat);
-                                // // print(startDateFormat);
-                                // endDateFormat = endDateFormat!.replaceFirst(
-                                //     'T${(int.parse(hour) + 1)}',
-                                //     'T$hourFormat');
-                                // // print(endDateFormat!.replaceFirst(
-                                // //     'T${(int.parse(hour) + 1)}',
-                                // //     'T$hourFormat'));
 
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => PaymentMethod(
-                                      startDateFormat: finalStartDateFormat,
-                                      endDateFormat: finalEndDateFormat,
+                                      startDateFormat: formattedStartDateTime,
+                                      endDateFormat: formattedEndDateTime,
                                       coupon: coupon.text,
-                                      priceAmount: (widget.parkPrice.toDouble() * widget.hour),
+                                      priceAmount:
+                                          (widget.parkPrice.toDouble() *
+                                              widget.hour),
                                       parkSlotName: widget.parkSlotName,
-                                      slotId: widget.slotId, hourSelected: widget.hour, parkForeignKey: widget.parkForeignKey,
+                                      slotId: widget.slotId,
+                                      hourSelected: widget.hour,
+                                      parkId: widget.parkForeignKey, randomNumber:widget.randomNumber, parkName: widget.parkName, parkLocation: widget.parkLocation, reservationDate: reservationDate.toString(), latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: combinedEndDateFormat,
                                     ),
                                   ),
                                 );

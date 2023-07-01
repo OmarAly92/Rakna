@@ -5,6 +5,10 @@ class GarageOwnerDataModel extends GarageOwnerData {
     required super.email,
     required super.password,
     required super.garageOwnerId,
+    required super.phoneNumber,
+    required super.age,
+    required super.garageOwnerImage,
+    required super.garageOwnerName,
   });
 
   factory GarageOwnerDataModel.fromJson(Map<String, dynamic> json) =>
@@ -12,5 +16,9 @@ class GarageOwnerDataModel extends GarageOwnerData {
         email: json['email'],
         password: json['password'],
         garageOwnerId: json['garageOwnerID'],
+        phoneNumber: json['phoneNumber'],
+        age: json['age'],
+        garageOwnerImage: json['garageOwnerImage'],
+        garageOwnerName: json['userName'],
       );
 }

@@ -8,12 +8,13 @@ class LogButton extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.onPressed,
-    required this.radius, required this.width, required this.height,
+    required this.radius, required this.width, required this.height, required this.borderColor,
   }) : super(key: key);
   final VoidCallback onPressed;
   final Widget widget;
   final Color textColor;
   final Color backgroundColor;
+  final Color borderColor;
   final double radius;
   final double width;
   final double height;
@@ -30,6 +31,7 @@ class LogButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all(backgroundColor),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
+              side: BorderSide(color: borderColor,width: 1.5),
               borderRadius: BorderRadius.circular(radius),
             ),
           ),

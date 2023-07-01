@@ -204,7 +204,7 @@ class _SignInOwnerState extends State<SignInOwner> {
                                       return Padding(
                                         padding:
                                         EdgeInsets.only(bottom: 8.h, top: 20.h),
-                                        child: LogButton(
+                                        child: LogButton(borderColor: Colors.transparent,
                                           widget: Text('Sign In',
                                               style: TextStyle(
                                                   color: Colors.white,

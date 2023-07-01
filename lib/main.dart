@@ -1,13 +1,18 @@
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/data/data_source/remote_data_source.dart';
 import 'package:rakna/data/repository/parking_repository.dart';
 import 'package:rakna/domain/repository/base_parking_repository.dart';
+import 'package:rakna/presentation/components/notification_component.dart';
 import 'package:rakna/presentation/screens/book_screen_OLD.dart';
 import 'package:rakna/presentation/screens/dashboard_OLD.dart';
 import 'package:rakna/presentation/screens/google_map.dart';
 import 'package:rakna/presentation/screens/home_screen.dart';
 import 'package:rakna/presentation/screens/map2.dart';
+import 'package:rakna/presentation/screens/new_park_detail.dart';
 import 'package:rakna/presentation/screens/old1H.dart';
 import 'package:rakna/presentation/screens/navigation_bar.dart';
 import 'package:rakna/presentation/screens/onboarding_screen.dart';
@@ -32,8 +37,20 @@ import 'garage_owner/garage_owner_home_screen.dart';
 import 'garage_owner/navigation_bar_garage_owner.dart';
 import 'garage_owner/sign_in_garage_owner.dart';
 
+import 'package:flutter/services.dart';
+
+
+
+
 void main() async {
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotifications();
+
+
+
+
   ServicesLocator().init();
   runApp(const MyApp());
 }
@@ -77,7 +94,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+            home: GetStarted(),
           );
         });
   }

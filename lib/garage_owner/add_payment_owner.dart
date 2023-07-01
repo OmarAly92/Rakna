@@ -199,7 +199,7 @@ class AddPaymentOwner extends StatelessWidget {
                     },
                     radius: 5.r,
                     width: 295.w,
-                    height: 43.h,
+                    height: 43.h, borderColor: Colors.transparent,
                   ),
                 ),
               ],

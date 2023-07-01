@@ -169,7 +169,7 @@ class _AddSlotScreenState extends State<AddSlotScreen> {
                             backgroundColor: kPrimaryColor,
                             textColor: Colors.white,
                             radius: 15.r,
-                            width: 305.w,
+                            width: 305.w,borderColor: Colors.transparent,
                             onPressed: () {
 
 

@@ -33,7 +33,7 @@ class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
         child:  [
           Home(),
           MyCustomUI(garageOwnerId: widget.garageOwnerId),
-          SettingScreenGarageOwner(name: widget.name, email: widget.email,),
+          SettingScreenGarageOwner(name: widget.name, email: widget.email, garageOwnerUserId: widget.garageOwnerId,),
         ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -124,7 +124,7 @@ class _BookState extends State<Book> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 100,horizontal: 20),
-            child: LogButton(
+            child: LogButton(borderColor: Colors.transparent,
               widget: Text('book',style: TextStyle(color: Colors.white, fontSize: 16.sp)),
               backgroundColor: Color(0xff4b78ff).withOpacity(.87),
               textColor: Colors.white,

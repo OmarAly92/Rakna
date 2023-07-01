@@ -109,7 +109,7 @@ class ForgetPassword extends StatelessWidget {
                         SizedBox(
                           height: 50,
                         ),
-                        LogButton(
+                        LogButton(borderColor: Colors.transparent,
                             widget: Text(
                               'Send Verification',
                               style: TextStyle(

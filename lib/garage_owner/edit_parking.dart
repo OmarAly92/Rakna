@@ -1,53 +1,70 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
-
+import 'package:cached_memory_image/cached_image_base64_manager.dart';
+import 'package:cached_memory_image/cached_image_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:maps_launcher/maps_launcher.dart';
-import 'package:rakna/data/data_source/remote_data_source.dart';
 import 'package:rakna/garage_owner/components/select_photo_options_screen.dart';
-import 'package:rakna/presentation/screens/sign_in_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-
-import '../core/utility/color.dart';
+import '../data/data_source/remote_data_source.dart';
 import '../presentation/components/LogButton_Widget.dart';
 import '../presentation/screens/google_map.dart';
-import '../presentation/screens/map2.dart';
-import '../presentation/screens/navigation_bar.dart';
-import 'components/set_photo_screen.dart';
-import 'navigation_bar_garage_owner.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+
 class EditPark extends StatefulWidget {
-  const EditPark({Key? key, required this.garageOwnerId, required this.parkRating, required this.parkId }) : super(key: key);
+   EditPark(
+      {Key? key,
+      required this.garageOwnerId,
+      required this.parkRating,
+      required this.parkId, required this.parkName, required this.parkLocation, required this.parkPrice, required this.parkImage, required this.latitude, required this.longitude})
+      : super(key: key);
   final int garageOwnerId;
-  final double  parkRating;
-  final int  parkId;
+  final double parkRating;
+  final int parkId;
+   String parkName;
+   String parkLocation;
+   double parkPrice;
+  final String parkImage;
+  final double latitude;
+  final double longitude;
+
+
+
 
   @override
   State<EditPark> createState() => _EditParkState();
 }
 
 class _EditParkState extends State<EditPark> {
+  bool boolParkName = true;
+  bool boolParkLocation = true;
+  bool boolParkPrice = true;
+
+
+
+
+
   File? _image;
   Uint8List? bytes;
   String? img64;
   List<String> images = [];
-  LatLng latLng = LatLng(0,0);
-
+  LatLng latLng = LatLng(0, 0);
 
   TextEditingController parkNameController = TextEditingController();
   TextEditingController parkLocationController = TextEditingController();
   TextEditingController parkPriceController = TextEditingController();
 
+
+
+
+  void cacheImage()async{
+    final CachedImageManager cachedImageManager = CachedImageBase64Manager.instance();
+    await cachedImageManager.removeFile('app://image/1');
+
+  }
 
   Future _pickImage(ImageSource source) async {
     try {
@@ -61,17 +78,15 @@ class _EditParkState extends State<EditPark> {
         img64 = base64Encode(bytes!);
         Navigator.pop(context);
       });
-
     } on PlatformException catch (e) {
       print(e);
       Navigator.pop(context);
     }
   }
 
-
   Future<File?> _cropImage({required File imageFile}) async {
     CroppedFile? croppedImage =
-    await ImageCropper().cropImage(sourcePath: imageFile.path);
+        await ImageCropper().cropImage(sourcePath: imageFile.path);
     if (croppedImage == null) return null;
     return File(croppedImage.path);
   }
@@ -103,9 +118,6 @@ class _EditParkState extends State<EditPark> {
 
   @override
   Widget build(BuildContext context) {
-    double height, width;
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
     Color color = Colors.blue.shade800;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -115,7 +127,7 @@ class _EditParkState extends State<EditPark> {
             Column(
               children: [
                 Container(
-                  height: 105.h,
+                  height: 84.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: color,
@@ -164,11 +176,11 @@ class _EditParkState extends State<EditPark> {
                     color: color,
                   ),
                   child: Container(
-                    height: height * .9,
+                    height: 605.h,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(50.r))),
+                            BorderRadius.only(topLeft: Radius.circular(50.r))),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -177,115 +189,204 @@ class _EditParkState extends State<EditPark> {
                           onTap: () => _showSelectPhotoOptions(context),
                           child: Center(
                             child: Container(
-                              height: 140,
+                              height: 180,
                               width: 225,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color: Colors.white
+                                  color: Colors.white),
+                              child: Center(
+                                  child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: _image == null?Image.memory(base64Decode(widget.parkImage)) :Image(
+                                              image: FileImage(_image!),
+                                              width: 225,
+                                              height: 180,
+                                              fit: BoxFit.cover))),
+                            ),
+                          ),
+                        ),
+                        boolParkName == true
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    right: 22, left: 22, top: 40.h),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(widget.parkName,
+                                        style: TextStyle(
+                                          fontSize: 20.sp,
+                                          color: Colors.black.withOpacity(.7),
+                                        )),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                           boolParkName =
+                                                !boolParkName;
+                                          });
+                                        },
+                                        icon: Icon(Icons.edit,
+                                            color: Colors.blue, size: 25.r)),
+                                  ],
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(
+                                  right: 22.w,
+                                  left: 22.w,
+                                  top: 30.h,
+                                ),
+                                child: TextFormField(
 
-                              ),
-                              child: Center(child: _image == null? ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image.asset('assets/images/Default_Image_Thumbnail.png',width: 225,height: 140,fit: BoxFit.cover)):ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image(image: FileImage(_image!),width: 225,height: 140,fit: BoxFit.cover))),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            right: 22.w,
-                            left: 22.w,
-                            top: 30.h,
-                          ),
-                          child: TextFormField(
-                            controller: parkNameController,
-                            decoration: InputDecoration(
-                              labelText: 'Park Name',
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black54,
-                                fontSize: 13.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            right: 22.w,
-                            left: 22.w,
-                            top: 30.h,
-                          ),
-                          child: TextFormField(
-                            controller: parkLocationController,
-                            decoration: InputDecoration(
-                              // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
-                                labelText: 'Park Location',
-                                labelStyle: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black54,
-                                  fontSize: 13.sp,
+                                  controller: parkNameController,
+                                  decoration: InputDecoration(
+
+                                    labelText: 'Park Name',
+                                    labelStyle: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54,
+                                      fontSize: 13.sp,
+                                    ),
+                                  ),
                                 ),
-                                border: UnderlineInputBorder()),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: 22.w,
-                              left: 22.w,
-                              top: 30.h,
-                              bottom: 30.h
-                          ),
-                          child: TextFormField(
-                            controller: parkPriceController,
-                            decoration: InputDecoration(
-                              // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
-                                labelText: 'Price',
-                                labelStyle: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black54,
-                                  fontSize: 13.sp,
+                              ),
+                       boolParkLocation == true
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    right: 22, left: 22, top: 40.h),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(widget.parkLocation,
+                                        style: TextStyle(
+                                            fontSize: 20.sp,
+                                            color:
+                                                Colors.black.withOpacity(.7))),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                          boolParkLocation =
+                                                !boolParkLocation;
+                                          });
+                                        },
+                                        icon: Icon(Icons.edit,
+                                            color: Colors.blue, size: 25.r)),
+                                  ],
                                 ),
-                                border: UnderlineInputBorder()),
-                          ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(
+                                  right: 22.w,
+                                  left: 22.w,
+                                  top: 30.h,
+                                ),
+                                child: TextFormField(
+
+                                  controller: parkLocationController,
+                                  decoration: InputDecoration(
+
+                                      // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
+                                      labelText: 'Park Location',
+                                      labelStyle: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black54,
+                                        fontSize: 13.sp,
+                                      ),
+                                      border: UnderlineInputBorder()),
+                                ),
+                              ),
+                        boolParkPrice == true
+                            ? Padding(
+                                padding: EdgeInsets.only(
+                                    right: 22, left: 22, top: 40.h, bottom: 30),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(widget.parkPrice.toString().replaceFirst('.0', ''),
+                                        style: TextStyle(
+                                            fontSize: 20.sp,
+                                            color:
+                                                Colors.black.withOpacity(.7))),
+                                    IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            boolParkPrice =
+                                                !boolParkPrice;
+                                          });
+                                        },
+                                        icon: Icon(Icons.edit,
+                                            color: Colors.blue, size: 25.r)),
+                                  ],
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(
+                                    right: 22.w,
+                                    left: 22.w,
+                                    top: 30.h,
+                                    bottom: 30.h),
+                                child: TextFormField(
+
+                                  controller: parkPriceController,
+                                  decoration: InputDecoration(
+
+                                      labelText: 'Price',
+                                      labelStyle: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black54,
+                                        fontSize: 13.sp,
+                                      ),
+                                      border: UnderlineInputBorder()),
+                                ),
+                              ),
+                        Center(
+                          child: LogButton(borderColor: Colors.transparent,
+                              onPressed: () {
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(garageOwnerId: widget.garageOwnerId)));
+                                _navigateAndDisplayData(context);
+                              },
+                              widget: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Select Park location'),
+                                  SizedBox(width: 1),
+                                  Icon(CupertinoIcons.location_solid,
+                                      color: Colors.white),
+                                ],
+                              ),
+                              backgroundColor: CupertinoColors.activeBlue,
+                              textColor: Colors.white,
+                              radius: 40,
+                              width: 185,
+                              height: 50),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: LogButton(onPressed: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen(garageOwnerId: widget.garageOwnerId)));
-                            _navigateAndDisplayData(context);
-                          }, widget: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Select Park location'),
-                              SizedBox(width: 1),
-                              Icon(CupertinoIcons.location_solid,color: Colors.white),
-                            ],
-                          ), backgroundColor: CupertinoColors.activeBlue, textColor: Colors.white, radius: 5, width: 185, height: 50),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 8.h, top: 115.h),
+                          padding: EdgeInsets.only(bottom: 0.h, top: 40.h),
                           child: Center(
-                            child: LogButton(
-                              backgroundColor:  CupertinoColors.activeBlue,
+                            child: LogButton(borderColor: Colors.transparent,
+                              backgroundColor: CupertinoColors.activeBlue,
                               textColor: Colors.white,
                               radius: 5.r,
                               width: 305.w,
-                              onPressed: (){
-
+                              onPressed: () {
                                 print('$img64');
-
-
                                 ParkingRemoteDataSource().putPark(
-                                    parkName: parkNameController.text,
-                                    parkLocation: parkLocationController.text,
-                                    parkPrice:
-                                    double.parse(parkPriceController.text),
+                                    parkName:boolParkName == false? parkNameController.text:widget.parkName,
+                                    parkLocation:boolParkLocation == false?  parkLocationController.text:widget.parkLocation,
+                                    parkPrice: boolParkPrice == false?  double.parse(parkPriceController.text):widget.parkPrice,
                                     garageOwnerId: widget.garageOwnerId,
-                                    parkImage: '$img64', parkId: widget.parkId, parkRating: widget.parkRating, latitude: latLng.latitude, longitude: latLng.longitude);
+                                    parkImage:_image != null? '$img64':widget.parkImage,
+                                    parkId: widget.parkId,
+                                    parkRating: widget.parkRating,
+                                    latitude:latLng != LatLng(0, 0)? latLng.latitude:widget.latitude,
+                                    longitude:latLng != LatLng(0, 0)? latLng.longitude:widget.longitude);
 
+
+                                cacheImage();
                                 Navigator.pop(context);
-
                               },
                               widget: const Text('Edit Park'),
                               height: 50.h,
@@ -302,12 +403,11 @@ class _EditParkState extends State<EditPark> {
         ),
       ),
     );
-
-
-
   }
-  _navigateAndDisplayData(BuildContext context)async{
-    final LatLng result =await Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
+
+  _navigateAndDisplayData(BuildContext context) async {
+    final LatLng result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MapScreen()));
     latLng = result;
   }
 }

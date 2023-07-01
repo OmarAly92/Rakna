@@ -300,7 +300,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(bottom: 8.h, top: 50.h),
-                              child: LogButton(
+                              child: LogButton(borderColor: Colors.transparent,
                                 widget: Text('Sign Up',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16.sp)),
@@ -317,15 +317,14 @@ class _SignUpState extends State<SignUp> {
                                         .showBottomSheet((context) => snackBar);
                                   }
 
-                                  BaseRemoteDataSource parkingRemoteDataSource =
-                                      ParkingRemoteDataSource();
-                                  parkingRemoteDataSource.postSignUp(
+                                  // BaseRemoteDataSource parkingRemoteDataSource =
+                                  //     ParkingRemoteDataSource();
+                                  ParkingRemoteDataSource().postSignUp(
                                     userName: userNameController.text,
                                     age: int.parse(ageController.text),
                                     email: emailController.text,
                                     password: passwordController.text,
-                                    confirmPassword:
-                                        confirmPasswordController.text,
+                                    confirmPassword: confirmPasswordController.text,
                                     phoneNumber: phoneNumberController.text,
                                   );
 
@@ -333,7 +332,9 @@ class _SignUpState extends State<SignUp> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            NavigationBarScreen(),
+                                            NavigationBarScreen(userID: 0),
+                                     ///todo userId must do patch
+
                                       ));
                                 },
                               ),

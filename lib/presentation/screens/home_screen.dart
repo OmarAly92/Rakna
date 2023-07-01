@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:cached_memory_image/cached_image_base64_manager.dart';
+import 'package:cached_memory_image/cached_image_manager.dart';
+import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,20 +23,24 @@ import '../../core/services/location_sevices.dart';
 import '../../core/services/services_locator.dart';
 import '../../core/utility/category.dart';
 import '../../core/utility/color.dart';
+import '../../core/utility/error_img.dart';
 import '../../data/data_source/remote_data_source.dart';
+import '../../data/model/bookmark_model.dart';
 import '../components/appbar.dart';
 import '../components/category_card.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
+  const HomeScreen({Key? key, required this.userId}) : super(key: key);
+  final int userId;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
   @override
   Widget build(BuildContext context) {
     // late double height = MediaQuery.of(context).size.height;
@@ -43,54 +50,51 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocProvider(
         create: (context) => sl<ParkingBloc>()..add(GetParkingDataEvent()),
         child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                AppBarCustom(
-                  image: 'https://cdn.wallpapersafari.com/82/10/tC7I1w.jpg',
-                ),
-                Column(
-                  children: [
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              top: 10.h, left: 20.w, right: 20.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Explore nearby parking",
-                                style: Theme.of(context).textTheme.bodyLarge,
+          body: Column(
+            children: [
+              AppBarCustom(
+                image: 'assets/images/garage.png',
+              ),
+              Column(
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Explore nearby parking",
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                ///todo fix this screen
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ParkingSelection(),
+                                    ));
+                              },
+                              child: Text(
+                                "See All",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(color: kPrimaryColor),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  ///todo fix this screen
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ParkingSelection(),
-                                      ));
-                                },
-                                child: Text(
-                                  "See All",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(color: kPrimaryColor),
-                                ),
-                              )
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                        NearbyParking(),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      ),
+                      NearbyParking(userId: widget.userId),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -99,21 +103,39 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class NearbyParking extends StatefulWidget {
-  NearbyParking({Key? key}) : super(key: key);
+  NearbyParking({Key? key, required this.userId}) : super(key: key);
   late bool bookmark = true;
+  final int userId;
+  int i = 0;
 
   @override
   State<NearbyParking> createState() => _NearbyParkingState();
 }
 
 class _NearbyParkingState extends State<NearbyParking> {
+
+
+    final CachedImageManager cachedImageManager = CachedImageBase64Manager.instance();
+
+
+@override
+  void dispose() {
+
+    super.dispose();
+    _getMyLocation();
+  }
+
+  Future refresh() async {
+    setState(() {
+      print('x');
+    });
+  }
+
   double calculateDistance(
       {required lat1, required lon1, required lat2, required lon2}) {
     var p = 0.017453292519943295;
     var c = cos;
-    var a = 0.5 -
-        c((lat2 - lat1) * p) / 2 +
-        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    var a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
   }
 
@@ -133,17 +155,105 @@ class _NearbyParkingState extends State<NearbyParking> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Parking>>(
-      stream: Stream.periodic(Duration(seconds: 30))
+      stream: Stream.periodic(Duration(seconds: 4))
           .asyncMap((_) => ParkingRemoteDataSource().getParking()),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: Text('Error: ${snapshot.error}'),
+            child: InkWell(
+              enableFeedback: true,
+              onTap: () {},
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              child: Container(
+                margin: EdgeInsets.fromLTRB(19.w, 5.w, 19.w, 0),
+                padding: EdgeInsets.all(20.w),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xffEDECEA),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 9.h),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.blue.withOpacity(.1),
+                        radius: 30.r,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: Container(
+                              color: Colors.transparent,
+                            )),
+                      ),
+                    ),
+                    SizedBox(height: 0.w),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0.w, 10.w, 0.w, 0),
+                      alignment: Alignment.centerLeft,
+                      width: 200.w,
+                      child: Column(
+// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 160.w,
+                            child: Text(
+                              'Tap to Refresh',
+                              textScaleFactor: 1.45,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black.withOpacity(.7),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 180,
+                            child: Text(
+                              '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black.withOpacity(.8),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Container(
+                    //   alignment: Alignment.centerRight,
+                    //   child: Column(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       // SizedBox(
+                    //       //     height: 30,
+                    //       //     width: 30,
+                    //       //     child: IconButton(
+                    //       //         onPressed: () {},
+                    //       //         icon: Icon(Icons.bookmark))),
+                    //       SizedBox(height: 20.h),
+                    //       Text(
+                    //         '0/Hr',
+                    //         style: TextStyle(fontSize: 14.sp),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+            ),
           );
         }
 
         if (!snapshot.hasData) {
-          return const CircularProgressIndicator(color: Colors.blue);
+          return Column(
+            children: [
+              SizedBox(height: 40.h),
+              const CircularProgressIndicator(color: Colors.blue),
+            ],
+          );
         }
         _getMyLocation();
         final parkingList = snapshot.data!;
@@ -164,107 +274,131 @@ class _NearbyParkingState extends State<NearbyParking> {
           ),
         );
 
-        return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-          scrollDirection: Axis.horizontal,
-          child: Row(
-              children: List.generate(nearestDistanceList.length, (index) {
-            return InkWell(
-              enableFeedback: true,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ParkingDetail1(
-                          parkId: nearestDistanceList[index].parkId,
-                          parkName: nearestDistanceList[index].parkName,
-                          parkLocation: nearestDistanceList[index].parkLocation,
-                          parkPrice: nearestDistanceList[index].parkPrice,
-                          parkImage: nearestDistanceList[index].parkImage)),
-                );
-              },
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              child: Container(
-                margin: EdgeInsets.fromLTRB(19.w, 5.w, 19.w, 0),
-                padding: EdgeInsets.all(20.w),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Color(0xffEDECEA),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.blue.withOpacity(.1),
-                      radius: 30.r,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.memory(
-                            base64Decode(nearestDistanceList[index].parkImage),
-// '',
-                            height: 200,
-                            width: 200,
-                            fit: BoxFit.cover,
-                          )),
+        return SizedBox(
+          height: 130,
+          child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+              scrollDirection: Axis.horizontal,
+              itemCount: nearestDistanceList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  enableFeedback: true,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ParkingDetail(
+                              parkId: nearestDistanceList[index].parkId,
+                              parkName: nearestDistanceList[index].parkName,
+                              parkLocation:
+                                  nearestDistanceList[index].parkLocation,
+                              parkPrice: nearestDistanceList[index].parkPrice,
+                              parkImage: nearestDistanceList[index].parkImage, latitude: nearestDistanceList[index].latitude, longitude: nearestDistanceList[index].longitude,)),
+                    );
+                  },
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(19.w, 5.w, 19.w, 0),
+                    padding: EdgeInsets.all(20.w),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Color(0xffEDECEA),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    SizedBox(width: 15.w),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      width: 150.w,
-                      child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 9.h),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blue.withOpacity(.1),
+                            radius: 30.r,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: CachedMemoryImage(
+                                  uniqueKey: 'app://image/1',
+                                  errorWidget: const Text('Error'),
+                                  base64:  nearestDistanceList[index]
+                                      .parkImage == 'string' ? errorImg : nearestDistanceList[index].parkImage, height: 200,
+                                    width: 200,
+                                    fit: BoxFit.cover,
+                                  placeholder: Container(color: Colors.transparent,),
+                                ),
+
+
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 15.w),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 150.w,
+                          child: Column(
 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 160.w,
-                            child: Text(
-                              nearestDistanceList[index].parkName,
-                              textScaleFactor: 1.45,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black.withOpacity(.7),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 160.w,
+                                child: Text(
+                                  nearestDistanceList[index].parkName,
+                                  textScaleFactor: 1.45,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black.withOpacity(.7),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 180,
-                            child: Text(
-                              nearestDistanceList[index].parkLocation,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black.withOpacity(.8),
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  nearestDistanceList[index].parkLocation,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black.withOpacity(.8),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: 30,
+                                width: 30,
+                                child:IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              ParkingRemoteDataSource().postBookMark(isFavorite: true, userId: widget.userId, parkId: snapshot.data![index].parkId);
+                                              widget.bookmark = !widget.bookmark;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            widget.bookmark == true
+                                                ? Icons.bookmark_border
+                                                : Icons.bookmark_added,
+                                            color: kPrimaryColor,
+                                          ),
+                                        ),
+
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                '${nearestDistanceList[index].parkPrice.toString().replaceAll('.0', '')}/Hr',
+                                style: TextStyle(fontSize: 14.sp),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                              height: 30,
-                              width: 30,
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.bookmark))),
-                          SizedBox(height: 20.h),
-                          Text(
-                            '${nearestDistanceList[index].parkPrice.toString().replaceAll('.0', '')}/Hr',
-                            style: TextStyle(fontSize: 14.sp),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          })),
+                  ),
+                );
+              }),
         );
       },
     );

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rakna/presentation/screens/parking_timer.dart';
@@ -17,7 +20,11 @@ class PaymentMethod extends StatefulWidget {
     required this.parkSlotName,
     required this.slotId,
     required this.hourSelected,
-    required this.parkForeignKey,
+    required this.parkId,
+    required this.randomNumber,
+    required this.parkName,
+    required this.parkLocation,
+    required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat,
   }) : super(key: key);
 
   final String startDateFormat;
@@ -27,8 +34,15 @@ class PaymentMethod extends StatefulWidget {
   final String parkSlotName;
   final int slotId;
   final int hourSelected;
-  final int parkForeignKey;
-
+  final int parkId;
+  final String randomNumber;
+  final String parkName;
+  final String parkLocation;
+  final String reservationDate;
+  final double latitude;
+  final double longitude;
+  final DateTime combinedEndDateFormat;
+  
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -36,9 +50,32 @@ class PaymentMethod extends StatefulWidget {
 
 class _PaymentMethodState extends State<PaymentMethod> {
   late int selected = 200;
+  var rng = Random();
+  List<String> randomNumber = [
+    '2209',
+    '1605',
+    '1106',
+    '2705',
+    '2604',
+    '1060',
+    '2080',
+    '2308',
+    '9070',
+    '9024',
+    '3024',
+    '1812',
+    '1018',
+    '2608',
+    '1501',
+    '9040',
+    '2901',
+    '1508',
+    '2201',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    String finalRandomNumber = randomNumber[rng.nextInt(19)];
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -203,12 +240,17 @@ class _PaymentMethodState extends State<PaymentMethod> {
               SizedBox(height: 280.h),
               Center(
                 child: LogButton(
+                  borderColor: Colors.transparent,
                   widget: Text('Book',
                       style: TextStyle(color: Colors.white, fontSize: 16.sp)),
                   backgroundColor: Color(0xff067fd0),
                   textColor: Colors.white,
                   onPressed: () {
                     if (selected == 1) {
+                      if (kDebugMode) {
+                        print(
+                            '$finalRandomNumber this the random number paypal test 1 ');
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -278,21 +320,35 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             parkSlotName: widget.parkSlotName,
                             startDateFormat: widget.startDateFormat,
                             endDateFormat: widget.endDateFormat,
+                            finalRandomNumber: finalRandomNumber,
+                            parkId: widget.parkId,
+                            randomNumber: finalRandomNumber,
+                            parkName: widget.parkName,
+                            parkLocation: widget.parkLocation,
+                            reservationDate: widget.reservationDate, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,
                           ),
                         ),
                       );
                     } else if (selected == 2) {
                       print(
                           '${widget.parkSlotName}\n${widget.startDateFormat} \n${widget.endDateFormat}');
+                      if (kDebugMode) {
+                        print(
+                            '$finalRandomNumber this the random number cash test 1');
+                      }
                       ParkingRemoteDataSource().putReservationData(
                         id: widget.slotId,
                         parkingSlotName: widget.parkSlotName,
                         startHour: widget.startDateFormat,
                         endHour: widget.endDateFormat,
                         isAvailable: false,
-                        randomNumber: '4521',
-                        parkForeignKey: widget.parkForeignKey,
+                        randomNumber: finalRandomNumber,
+                        parkForeignKey: widget.parkId,
                       );
+                      if (kDebugMode) {
+                        print(
+                            '$finalRandomNumber this the random number test 2');
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -300,6 +356,10 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             slotId: widget.slotId,
                             hourSelected: widget.hourSelected,
                             parkSlotName: widget.parkSlotName,
+                            randomNumber: finalRandomNumber,
+                            parkName: widget.parkName,
+                            parkLocation: widget.parkLocation,
+                            reservationDate: widget.reservationDate, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,
                           ),
                         ),
                       );

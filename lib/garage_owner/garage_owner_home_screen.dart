@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:rakna/domain/usecase/get_garage_owner_parking_usecase.dart';
 import '../core/services/services_locator.dart';
 import '../core/utility/color.dart';
 import '../core/utility/enums.dart';
+import '../core/utility/error_img.dart';
 import '../data/model/garage_owner_parking_data_model.dart';
 import '../domain/entities/garage_owner_parking_data.dart';
 import '../presentation/controller/get_garage_owner_parking_bloc/get_garage_owner_parking_bloc.dart';
@@ -199,6 +201,7 @@ class _MyCustomUIState extends State<MyCustomUI>
   late Animation<double> _animation;
   late Animation<double> _animation2;
 
+
   @override
   void initState() {
     super.initState();
@@ -228,6 +231,8 @@ class _MyCustomUIState extends State<MyCustomUI>
 
   @override
   Widget build(BuildContext context) {
+
+
     return BlocProvider(
       create: (context) => GetGarageOwnerParkingBloc(
           garageOwnerParkingUseCase: GetGarageOwnerParkingUseCase(
@@ -264,19 +269,21 @@ class _MyCustomUIState extends State<MyCustomUI>
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: BlocBuilder<GetGarageOwnerParkingBloc, GarageOwnerParkingState>(
-                  builder: (context, state) {
-                    switch(state.requestState) {
-                      case RequestState.loading:{
+                child:
+                  FutureBuilder<List<GarageOwnerParkingModel>>(
+                    future: ParkingRemoteDataSource().getParkingGarageOwner(widget.garageOwnerId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Show a progress indicator if the data is not yet loaded
                         return Column(
                           children: [
                             SizedBox(height: 280.h),
                             const CircularProgressIndicator(),
                           ],
                         );
-                      }
-                      case RequestState.loaded:{
-                        List park = state.parking[0].parkingData;
+                      } else if (snapshot.hasData) {
+                        // If data has been loaded successfully, render the UI using the data from snapshot
+                        final List park = snapshot.data![0].parkingData;
                         return Column(
                           children: [
                             // CustomPaint(
@@ -286,120 +293,131 @@ class _MyCustomUIState extends State<MyCustomUI>
                             SizedBox(height: 30.h),
 
                             Column(
-                              children: List.generate(park.length, (index) {
-                                return Opacity(
-                                opacity: _animation.value,
-                                child: Transform.translate(
-                                  offset: Offset(0.01, _animation2.value),
-                                  child: InkWell(
-                                    enableFeedback: true,
-                                    onTap: () {
-                                      print(park);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>SlotsDetail(parkId: park[index]['parkId'], parkPrice:park[index]['parkPrice']),
-                                          ));
-                                    },
-                                    highlightColor: Colors.transparent,
-                                    splashColor: Colors.transparent,
-                                    child: Container(
-                                      margin:
-                                      EdgeInsets.fromLTRB(19.w, 19.w, 19.w, 0),
-                                      padding: EdgeInsets.all(18.w),
-                                      // height: 100.h,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Color(0xffEDECEA),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundColor:
-                                            Colors.blue.withOpacity(.1),
-                                            radius: 30.r,
-                                            child: ClipRRect(
-                                                borderRadius:
-                                                BorderRadius.circular(50),
-                                                child: Image.memory(base64Decode(park[index]['parkImage']),
-                                                  // '',
-                                                  height: 200,
-                                                  width: 200,
-                                                  fit: BoxFit.cover,
-                                                )),
+                                children: List.generate(park.length, (index) {
+                                  return Opacity(
+                                    opacity: _animation.value,
+                                    child: Transform.translate(
+                                      offset: Offset(0.01, _animation2.value),
+                                      child: InkWell(
+                                        enableFeedback: true,
+                                        onTap: () {
+                                          print(park);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>SlotsDetail(parkId: park[index]['parkId'], parkPrice:park[index]['parkPrice']),
+                                              ));
+                                        },
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        child: Container(
+                                          margin:
+                                          EdgeInsets.fromLTRB(19.w, 19.w, 19.w, 0),
+                                          padding: EdgeInsets.all(18.w),
+                                          // height: 100.h,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffEDECEA),
+                                            borderRadius: BorderRadius.circular(20),
                                           ),
-                                          // SizedBox(width: 5.w),
-                                          Container(
-                                            alignment: Alignment.topLeft,
-                                            width: 150.w,
-                                            child: Column(
-                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: 160.w,
-                                                  child: Text(
-                                                    park[index]['parkName'],
-                                                    textScaleFactor: 1.45,
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.black
-                                                          .withOpacity(.7),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundColor:
+                                                Colors.blue.withOpacity(.1),
+                                                radius: 30.r,
+                                                child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.circular(50),
+                                                    child:CachedMemoryImage(
+                                                      uniqueKey: 'app://image/1',
+                                                      errorWidget: const Text('Error'),
+                                                      base64:  park[index]['parkImage'],
+                                                      height: 200,
+                                                      width: 200,
+                                                      fit: BoxFit.cover,
+                                                      placeholder: Container(color: Colors.transparent
                                                     ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 180,
-                                                  child: Text(
-                                                    park[index]['parkLocation'],
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w400,
-                                                      color: Colors.black
-                                                          .withOpacity(.8),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.centerRight,
-                                            child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                  width: 30,
-                                                  child: Builder(
-                                                      builder: (context) {
-                                                        return   PopUpMenu(icon: Icon(Icons.settings), menuList:  [
-                                                          PopupMenuItem(child: ListTile(
-                                                            leading: const Icon(Icons.edit,color: Colors.blue),
-                                                            title: const Text('Edite'),
-                                                            onTap: () {
-                                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>EditPark(garageOwnerId: widget.garageOwnerId, parkRating: park[index]['parkingRating'], parkId: park[index]['parkId'],)));
-                                                            } ,
-                                                          )),
-                                                        ]);
-                                                      }
-                                                  ),
 
+
+                                                    // Image.memory(base64Decode(park[index]['parkImage'] == 'string'?errorImg:park[index]['parkImage']),
+                                                      // '',
+                                                      // height: 200,
+                                                      // width: 200,
+                                                      // fit: BoxFit.cover,
+                                                    )),
+                                              ),
+                                              // SizedBox(width: 5.w),
+                                              Container(
+                                                alignment: Alignment.topLeft,
+                                                width: 150.w,
+                                                child: Column(
+                                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 160.w,
+                                                      child: Text(
+                                                        park[index]['parkName'],
+                                                        textScaleFactor: 1.45,
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w600,
+                                                          color: Colors.black
+                                                              .withOpacity(.7),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 180,
+                                                      child: Text(
+                                                        park[index]['parkLocation'],
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w400,
+                                                          color: Colors.black
+                                                              .withOpacity(.8),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                SizedBox(height: 20.h),
-                                                Text('${park[index]['parkPrice'].toString().replaceAll('.0', '')}/Hr',style: TextStyle(fontSize: 14.sp),)
-                                              ],
-                                            ),
+                                              ),
+                                              Container(
+                                                alignment: Alignment.centerRight,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    SizedBox(
+                                                      height: 30,
+                                                      width: 30,
+                                                      child: Builder(
+                                                          builder: (context) {
+                                                            return   PopUpMenu(icon: Icon(Icons.settings), menuList:  [
+                                                              PopupMenuItem(child: ListTile(
+                                                                leading: const Icon(Icons.edit,color: Colors.blue),
+                                                                title: const Text('Edit'),
+                                                                onTap: () {
+                                                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>EditPark(garageOwnerId: widget.garageOwnerId, parkRating: park[index]['parkingRating'], parkId: park[index]['parkId'], parkName: park[index]['parkName'], parkLocation: park[index]['parkLocation'], parkPrice: park[index]['parkPrice'], parkImage: park[index]['parkImage'], latitude: park[index]['latitude'], longitude: park[index]['longitude'],)));
+                                                                } ,
+                                                              )),
+                                                            ]);
+                                                          }
+                                                      ),
+
+                                                    ),
+                                                    SizedBox(height: 20.h),
+                                                    Text('${park[index]['parkPrice'].toString().replaceAll('.0', '')}/Hr',style: TextStyle(fontSize: 14.sp),)
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );})
+                                  );})
                             ),
 
 
@@ -438,13 +456,14 @@ class _MyCustomUIState extends State<MyCustomUI>
                             SizedBox(height: 30.h),
                           ],
                         );
-                      }
-                      case RequestState.error:{
+                      } else {
+                        // If an error occurs or data is not loaded yet, show an error message
                         return Center(child: CircularProgressIndicator());
                       }
-                    }
-                  },
-                ),
+                    },
+                  )
+
+
               ),
             ),
           ],
