@@ -14,7 +14,7 @@ class ReservationParkingPlace extends StatefulWidget {
       required this.slotId,
       required this.parkSlotName,
       required this.parkPrice,
-      required this.parkForeignKey, required this.randomNumber, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude})
+      required this.parkForeignKey, required this.randomNumber, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude, required this.userName, required this.userPhoneNumber, required this.userId})
       : super(key: key);
   final int slotId;
   final int parkForeignKey;
@@ -24,6 +24,9 @@ class ReservationParkingPlace extends StatefulWidget {
   final String randomNumber;
   final String parkName;
   final String parkLocation;
+  final String userName;
+  final String  userPhoneNumber;
+  final int userId;
   int hour = 1;
   num parkPrice;
 
@@ -371,6 +374,8 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                               textColor: Colors.white,
                               onPressed: () {
 
+                              print('${widget.hour} oamr oamr hour selected');
+
                                 DateTime reservationDate = new DateTime(
                                     _selectedDay!.year,
                                     _selectedDay!.month,
@@ -421,7 +426,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                       reservationDate: reservationDate.toString(),
                                       latitude: widget.latitude,
                                       longitude: widget.longitude,
-                                      combinedEndDateFormat: combinedEndDateFormat,
+                                      combinedEndDateFormat: combinedEndDateFormat, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId,
                                     ),
                                   ),
                                 );

@@ -20,13 +20,13 @@ import '../../garage_owner/components/select_photo_options_screen.dart';
 import '../../team2/notification_screen.dart';
 
 class SettingScreen extends StatefulWidget {
-  SettingScreen(
-      {Key? key,required this.userID}): super(key: key);
+  const SettingScreen({Key? key, required this.userID, required this.getUserData}) : super(key: key);
   final int userID;
+
+  final Future<List<UserDataModel>> getUserData;
 
   @override
   State<SettingScreen> createState() => _SettingScreenState();
-  double bottom = 20;
 }
 
 class _SettingScreenState extends State<SettingScreen> {
@@ -34,11 +34,12 @@ class _SettingScreenState extends State<SettingScreen> {
   Uint8List? bytes;
   String? img64;
   List<String> images = [];
+  bool isImageHere = false;
 
-  void cacheImage()async{
-    final CachedImageManager cachedImageManager = CachedImageBase64Manager.instance();
-    await cachedImageManager.removeFile('app://userImage/1');
-
+  void cacheImage() async {
+    final CachedImageManager cachedImageManager =
+        CachedImageBase64Manager.instance();
+    await cachedImageManager.clearCache();
   }
 
   Future _pickImage(ImageSource source) async {
@@ -52,12 +53,16 @@ class _SettingScreenState extends State<SettingScreen> {
         _image = img;
         bytes = File(_image!.path).readAsBytesSync();
         img64 = base64Encode(bytes!);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(userID: userId,screenIndex: 2)));
+        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(userId: userId,screenIndex: 2)));
+        setState(() {
+          isImageHere = true;
+        });
+        Navigator.pop(context);
       });
     } on PlatformException catch (e) {
       print(e);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(userID: userId,screenIndex: 2,)));
-
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(userId: userId,screenIndex: 2, userName: '', userPhoneNumber: '',)));
+      Navigator.pop(context);
     }
   }
 
@@ -91,18 +96,21 @@ class _SettingScreenState extends State<SettingScreen> {
             );
           }),
     );
-
   }
+
   @override
- initState() {
+  initState() {
     super.initState();
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isImageHere == true) {
+      print('isImageHere $isImageHere    omar omar omar');
+      cacheImage();
+      ParkingRemoteDataSource()
+          .patchUserData(userId: widget.userID, userImage: img64!);
+    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -116,39 +124,34 @@ class _SettingScreenState extends State<SettingScreen> {
                 height: 20.w,
               ),
               FutureBuilder<List<UserDataModel>>(
-                future: ParkingRemoteDataSource().getUserData(widget.userID),
+                future: widget.getUserData,
                 builder: (context, snapshot) {
-                  // if (img64 != null) {
-                  //   cacheImage();
-                  //   ParkingRemoteDataSource().putUserData(
-                  //       userID: widget.userID,
-                  //       userName: snapshot.data![0].userName,
-                  //       phoneNumber: snapshot.data![0].phoneNumber,
-                  //       password: snapshot.data![0].password,
-                  //       email: snapshot.data![0].email,
-                  //       age: snapshot.data![0].age,
-                  //       userImage: img64!);
-                  // }else{print('img64 is null omar');}
-
-
                   if (!snapshot.hasData) {
                     return Center(
                       child: Column(
                         children: [
                           Container(
-                            height: 120.w,
-                            width: 120.w,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(60.r),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(60.r),
-                              child: Image.asset(
+                              height: 120.w,
+                              width: 120.w,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(60.r),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(60.r),
+                                child: Image.asset(
                                     'assets/images/default-avatar-profile.jpg'),
-                            )
-                          ),
+                              )),
                           SizedBox(height: 5.w),
+                          Text(
+                            '',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 19.sp),
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(fontSize: 13.sp),
+                          )
                         ],
                       ),
                     );
@@ -171,15 +174,19 @@ class _SettingScreenState extends State<SettingScreen> {
                                     ? ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(60.r),
+
                                         ///todo put avatar image
-                                        child: snapshot.data![0].userImage == 'strin'
+                                        child: snapshot.data![0].userImage ==
+                                                'strin'
                                             ? Image.asset(
                                                 'assets/images/default-avatar-profile.jpg')
                                             : CachedMemoryImage(
-                                                uniqueKey: 'app://userImage/1',
+                                                uniqueKey:
+                                                    'app://userImage/${snapshot.data![0].userID}',
                                                 errorWidget:
                                                     const Text('Error'),
-                                                base64: snapshot.data![0].userImage,
+                                                base64:
+                                                    snapshot.data![0].userImage,
                                                 height: 200,
                                                 width: 200,
                                                 fit: BoxFit.cover,
@@ -211,8 +218,6 @@ class _SettingScreenState extends State<SettingScreen> {
                                     child: InkWell(
                                       onTap: () {
                                         _showSelectPhotoOptions(context);
-
-
                                       },
                                       child: Icon(
                                         Icons.edit,
@@ -300,7 +305,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     //   ),
                     // ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(
@@ -355,7 +360,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     //   ),
                     // ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(
@@ -405,7 +410,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     //   ),
                     // ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(

@@ -2,75 +2,142 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rakna/presentation/screens/setting_screen.dart';
 
+import '../../data/data_source/remote_data_source.dart';
+import '../../data/model/user_data_model.dart';
 import '../../garage_owner/book_mark.dart';
-import 'booking_state_screen.dart';
+import 'ticket_state_screen.dart';
 import 'home_screen.dart';
 
-
 class NavigationBarScreen extends StatefulWidget {
-   NavigationBarScreen({super.key,  required this.userID,this.screenIndex =0});
-  int screenIndex;
-  final int userID;
+  NavigationBarScreen({super.key, this.screenIndex = 0, required this.userPhoneNumber, required this.userEmail, required this.userName});
 
-
-
-
+        int screenIndex;
+        int userId = 0;
+  final  String userName ;
+  final String  userPhoneNumber;
+  final String  userEmail;
 
   @override
   State<NavigationBarScreen> createState() => _NavigationBarScreenState();
 }
 
 class _NavigationBarScreenState extends State<NavigationBarScreen> {
-  int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
-
+  bool isLoading = true;
+late String userName;
+  late String  userPhoneNumber;
+  late int  userId1;
   void _onItemTapped(int index) {
     setState(() {
       widget.screenIndex = index;
     });
   }
 
+
+  // void userId()async{
+  //   List<UserDataModel> userDataList = await ParkingRemoteDataSource().checkUserData();
+  //
+  //   for(int i = 0; i<userDataList.length; i++) {
+  //     if(userDataList[i].email == widget.userEmail){
+  //       widget.userId =  userDataList[i].userID;
+  //     }
+  //   }
+  //
+  //   print('widget.userId: ${widget.userId} omar  check');
+  // }
+
+  void userId() async {
+    List<UserDataModel> userDataList = await ParkingRemoteDataSource().checkUserData();
+    for (int i = 0; i < userDataList.length; i++) {
+      if (userDataList[i].email == widget.userEmail) {
+        widget.userId = userDataList[i].userID;
+      }
+    }
+      print('widget.userId: ${widget.userId} omar  check');
+
+      isLoading = false;
+
+
+  }
+  @override
+  void initState() {
+    super.initState();
+    userName = widget.userName; // or provide a default value
+    userPhoneNumber =  widget.userPhoneNumber; // or provide a default value
+
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    userId();
+    return  Scaffold(
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Center(
         child: [
-          HomeScreen(userId: widget.userID),
+          HomeScreen(userId: widget.userId, userName: userName, userPhoneNumber: userPhoneNumber, getParking: ParkingRemoteDataSource().getParking()),
+          TicketState(userId: widget.userId),
+          BookMark(userId: widget.userId, userName: userName, userPhoneNumber: userPhoneNumber, getBookMark:  ParkingRemoteDataSource().getBookMark(widget.userId)),
+          SettingScreen(userID: widget.userId, getUserData:   ParkingRemoteDataSource().getUserData(widget.userId)),
+        ].elementAt(widget.screenIndex),),
+      bottomNavigationBar: BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.tickets_fill),
+          label: 'Ticket',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark),
+          label: 'BookMark',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Account',
+        ),
+      ],
+      currentIndex: widget.screenIndex,
+      selectedItemColor: Colors.blue[800],
+      onTap: _onItemTapped,
+    ),
 
-          const BookingState(),
-          BookMark(),
-          SettingScreen( userID: widget.userID),
-        ].elementAt(widget.screenIndex),
-      ),
-      bottomNavigationBar:
-
-
-      BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items:  const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.book_fill),
-            label: 'Booking',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'BookMark',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-        ],
-        currentIndex: widget.screenIndex,
-        selectedItemColor: Colors.blue[800],
-        onTap: _onItemTapped,
-      ),
     );
+    //   Scaffold(
+    //   body:widget.userId != 0? Center(
+    //     child: [
+    //        HomeScreen(userId: widget.userId, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, getParking: ParkingRemoteDataSource().getParking()),
+    //        TicketState(userId: widget.userId),
+    //        BookMark(userId: widget.userId, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, getBookMark:  ParkingRemoteDataSource().getBookMark(widget.userId)),
+    //        SettingScreen(userID: widget.userId, getUserData:   ParkingRemoteDataSource().getUserData(widget.userId)),
+    //     ].elementAt(widget.screenIndex),):const Center(child: Text('Please Reload the Screen')),
+    //   bottomNavigationBar: BottomNavigationBar(
+    //     type: BottomNavigationBarType.fixed,
+    //     items: const <BottomNavigationBarItem>[
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.home),
+    //         label: 'Home',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(CupertinoIcons.tickets_fill),
+    //         label: 'Ticket',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.bookmark),
+    //         label: 'BookMark',
+    //       ),
+    //       BottomNavigationBarItem(
+    //         icon: Icon(Icons.person),
+    //         label: 'Account',
+    //       ),
+    //     ],
+    //     currentIndex: widget.screenIndex,
+    //     selectedItemColor: Colors.blue[800],
+    //     onTap: _onItemTapped,
+    //   ),
+    // );
   }
 }

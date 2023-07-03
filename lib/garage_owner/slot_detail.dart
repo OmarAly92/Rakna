@@ -15,10 +15,12 @@ import 'add_slot_screen.dart';
 import 'components/add_slot_component.dart';
 
 class SlotsDetail extends StatefulWidget {
-  SlotsDetail({Key? key, required this.parkId, required this.parkPrice})
+  SlotsDetail({Key? key, required this.parkId, required this.parkPrice, required this.getParkingSlot})
       : super(key: key);
   int parkId;
   num parkPrice;
+
+final  Stream<List<ParkingSlotModel>>  getParkingSlot ;
 
   @override
   State<SlotsDetail> createState() => _SlotsDetailState();
@@ -135,7 +137,7 @@ class _SlotsDetailState extends State<SlotsDetail> {
                           ),
                           SizedBox(height: 30.h),
                           StreamBuilder<List<ParkingSlotModel>> (
-                            stream: ParkingRemoteDataSource().getParkingSlot1(widget.parkId),
+                            stream: widget.getParkingSlot,
                             builder: (context, state) {
                              if(!state.hasData){
                                return Column(

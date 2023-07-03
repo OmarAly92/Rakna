@@ -94,7 +94,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             debugShowCheckedModeBanner: false,
-            home: GetStarted(),
+            home: SplashScreen(),
           );
         });
   }

@@ -25,9 +25,11 @@ import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
 
 class ParkingSelection extends StatefulWidget {
-  ParkingSelection({Key? key}) : super(key: key);
+  ParkingSelection({Key? key, required this.userId, required this.userName, required this.userPhoneNumber}) : super(key: key);
   bool bookmark = true;
-
+  final int userId;
+  final String userName;
+  final String  userPhoneNumber;
   @override
   State<ParkingSelection> createState() => _ParkingSelectionState();
 }
@@ -137,7 +139,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
 
                                 Column(
                                     children:
-                                        List.generate(park.length, (index) {
+                                        List.generate(nearestDistanceList.length, (index) {
                                   return InkWell(
                                     enableFeedback: true,
                                     onTap: () {
@@ -166,7 +168,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                                           .latitude,
                                                   longitude:
                                                       nearestDistanceList[index]
-                                                          .longitude,
+                                                          .longitude, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId,
                                                 )),
                                       );
                                     },
@@ -194,7 +196,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                                 borderRadius:
                                                     BorderRadius.circular(50),
                                                 child: CachedMemoryImage(
-                                                  uniqueKey: 'app://image/1',
+                                                  uniqueKey: 'app://imageSelection/$index',
                                                   errorWidget:
                                                       const Text('Error'),
                                                   base64:

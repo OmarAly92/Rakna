@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -75,21 +76,21 @@ class _SignInOwnerState extends State<SignInOwner> {
                         height: height * .5,
                         decoration: BoxDecoration(
                             color: color,
-                            borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(50))),
+                            borderRadius:  BorderRadius.only(
+                                bottomRight: Radius.circular(45.r))),
                         child: Column(
                           children: [
                             Padding(
                               padding: EdgeInsets.only(top: 170.h),
                               child: Container(
-                                height: 95.h,
+                                height: 105.w,
                                 width: 105.w,
                                 decoration: BoxDecoration(
-                                    color: Colors.yellow.shade700,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(200))),
+                                    color: Colors.blue,
+                                    borderRadius:  BorderRadius.all(
+                                        Radius.circular(200.r))),
                                 child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(200),
+                                    borderRadius: BorderRadius.circular(200.r),
                                     child: Image.asset(
                                         'assets/images/rakna_logo.jpg')),
                               ),
@@ -201,6 +202,9 @@ class _SignInOwnerState extends State<SignInOwner> {
                                   ),
                                   BlocBuilder<SignInGarageOwnerBloc, SignInGarageOwnerState>(
                                     builder: (context, state) {
+                                      print('${state.requestState }   omar poamra');
+                                      print('${state.garageOwnerData.isEmpty }   omar isEmpty');
+
                                       return Padding(
                                         padding:
                                         EdgeInsets.only(bottom: 8.h, top: 20.h),
@@ -218,7 +222,6 @@ class _SignInOwnerState extends State<SignInOwner> {
                                             List garageOwnerIdList = [];
                                             List emailDataList = [];
                                             List passwordDataList = [];
-
                                             for(int i = 0;i<state.garageOwnerData.length;i++){
                                               garageOwnerIdList.add(state.garageOwnerData[i].garageOwnerId);
                                               emailDataList.add(state.garageOwnerData[i].email);
@@ -234,16 +237,62 @@ class _SignInOwnerState extends State<SignInOwner> {
 
                                             }
 
-
-                                            for(int i = 0;i<state.garageOwnerData.length;i++){
-                                              if(emailDataList[i].contains(emailController.text) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false){
-                                                print(garageOwnerIdList[i]);
-                                                print(emailDataList[i]);
-                                                print(passwordDataList[i]);
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => NavigationBarGarageOwner(garageOwnerId: garageOwnerIdList[i], name: 'user', email: emailDataList[i],),));
+                                            final currentContext = context;
+                                        if(state.garageOwnerData.isNotEmpty) {
+                                              for (int i = 0;
+                                                  i <
+                                                      state.garageOwnerData
+                                                          .length;
+                                                  i++) {
+                                                if (emailDataList[i].contains(
+                                                            emailController
+                                                                .text) ==
+                                                        true &&
+                                                    passwordDataList[i].contains(
+                                                            passwordController
+                                                                .text) ==
+                                                        true &&
+                                                    emailController
+                                                            .text.isEmpty ==
+                                                        false &&
+                                                    passwordController
+                                                            .text.isEmpty ==
+                                                        false) {
+                                                  print(garageOwnerIdList[i]);
+                                                  print(emailDataList[i]);
+                                                  print(passwordDataList[i]);
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            NavigationBarGarageOwner(
+                                                          garageOwnerId:
+                                                              garageOwnerIdList[
+                                                                  i],
+                                                          name: 'user',
+                                                          email:
+                                                              emailDataList[i],
+                                                        ),
+                                                      ));
+                                                }
                                               }
-                                            }
-
+                                            }else{
+                                          print('Error occurred. Please try again.');
+                                          Future.delayed(
+                                              Duration.zero,
+                                                  () => AwesomeDialog(
+                                                context: currentContext,
+                                                dialogType: DialogType.error,
+                                                animType: AnimType.rightSlide,
+                                                headerAnimationLoop: false,
+                                                title: 'Error',
+                                                desc:
+                                                'Error occurred. Please try again.',
+                                                btnOkOnPress: () {},
+                                                btnOkIcon: Icons.cancel,
+                                                btnOkColor: Colors.red,
+                                              ).show());
+                                        }
                                           },
                                         ),
                                       );

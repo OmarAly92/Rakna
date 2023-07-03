@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 import 'package:rakna/data/model/parking_model.dart';
 import 'package:rakna/data/model/parking_slot_model.dart';
 import 'package:rakna/data/model/user_data_model.dart';
@@ -16,13 +16,11 @@ import '../model/park_state_model.dart';
 import '../model/test_post.dart';
 
 abstract class BaseRemoteDataSource {
-
-
   Future<List<ParkingModel>> getParking();
 
   Stream<List<ParkingModel>> getParking1();
 
-  Future<void> getBookMark();
+  Future<void> getBookMark(int userId);
 
   Future<List<GarageOwnerParkingModel>> getParkingGarageOwner(
       int garageOwnerId);
@@ -34,21 +32,26 @@ abstract class BaseRemoteDataSource {
   Stream<List<ParkingSlotModel>> getParkingSlot1(int parkId);
 
   Future<List<UserDataModel>> checkUserData();
+
   Future<List<UserDataModel>> getUserData(int userId);
+
   Future<List<GarageOwnerDataModel>> garageOwnerData(int garageOwnerId);
 
   Future<List<GarageOwnerDataModel>> checkGarageOwnerData();
 
-  Future<List<ParkStateModel>> parkSateApis();
- void putUserData({
- required int userID,
- required String userName,
- required String phoneNumber,
- required String password,
- required String email,
- required int age,
- required String userImage,
-});
+  Future<List<ParkStateModel>> parkSateApis(
+      {required int userId, required String state});
+
+  void putUserData({
+    required int userID,
+    required String userName,
+    required String phoneNumber,
+    required String password,
+    required String email,
+    required int age,
+    required String userImage,
+  });
+
   void postSignUp({
     required String userName,
     required int age,
@@ -66,6 +69,25 @@ abstract class BaseRemoteDataSource {
       required double latitude,
       required double longitude,
       required int garageOwnerId});
+
+  void postParkSateApis({
+    required String parkName,
+    required String location,
+    required String parkState,
+    required String userName,
+    required String parkCode,
+    required String startHour,
+    required String endHour,
+    required String userPhoneNumber,
+    required String parkSlotName,
+    required double parkPrice,
+    required double latitude,
+    required double longitude,
+    required int reservationDuration,
+    required int slotID,
+    required int userForeignKey,
+    required bool isCash,
+  });
 
   void putPark(
       {required int parkId,
@@ -91,11 +113,12 @@ abstract class BaseRemoteDataSource {
   void postReservationData(
       {required String parkingSlotName, required int parkForeignKey});
 
-  void postBookMark({
+  void putBookMarks({
     required bool isFavorite,
     required int userId,
     required int parkId,
   });
+
   void putBookMark({
     required bool isFavorite,
     required int userId,
@@ -103,11 +126,11 @@ abstract class BaseRemoteDataSource {
   });
 
   void deleteReservationData({required int parkSlotId});
+
   void deleteBookMark({required int bookMarkId});
 }
 
 class ParkingRemoteDataSource extends BaseRemoteDataSource {
-
   @override
   Future<List<ParkingModel>> getParking() async {
     final Response response =
@@ -164,7 +187,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void postSignUp({
+  Future<bool> postSignUp({
     required String userName,
     required int age,
     required String email,
@@ -179,6 +202,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       'email': email,
       "age": age.toString(),
       'confirmPassword': confirmPassword,
+      'userImage': 'strin',
     });
 
     try {
@@ -196,15 +220,22 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       print(response.statusCode);
       print(response.body);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print(response.body);
-        print('Sign up successfully');
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
       } else {
-        print('failed');
-        throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
       }
     } catch (e) {
-      print('$e error catch :( ');
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
     }
   }
 
@@ -230,19 +261,18 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.put(
-        Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/55'),
+        Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$id'),
         body: jsonEncode(body),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
       );
-      if(response.statusCode == 500 ){
+      if (response.statusCode == 500) {
         print('Failed to update reservation data!');
         print('Response status code: ${response.statusCode} g500');
         return false; // Return false to indicate failure
-      }else
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
         // Request was successful, no response body expected
         print('Reservation data updated successfully!');
         return true; // Return true to indicate success
@@ -295,30 +325,22 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  Future<List<GarageOwnerParkingModel>> getParkingGarageOwner(int garageOwnerId) async{
-    final Response response =
-        await Dio().get('http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId');
+  Future<List<GarageOwnerParkingModel>> getParkingGarageOwner(
+      int garageOwnerId) async {
+    final Response response = await Dio().get(
+        'http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId');
     print('${response.statusCode}');
     print('${response.data}');
     if (response.statusCode == 200) {
-      return List<GarageOwnerParkingModel>.from(
-          (response.data as List).map((e) => GarageOwnerParkingModel.fromJson(e)));
+      return List<GarageOwnerParkingModel>.from((response.data as List)
+          .map((e) => GarageOwnerParkingModel.fromJson(e)));
     } else {
       throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
     }
   }
 
-
-
-
-
-
-
-
-
-
   @override
-  void postPark(
+  Future<bool> postPark(
       {required String parkName,
       required String parkLocation,
       required double parkPrice,
@@ -347,9 +369,22 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
         print(res.toString());
         return res;
       });
-      print(response.statusCode);
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
     } catch (e) {
-      print('$e error catch :( ');
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
     }
   }
 
@@ -405,9 +440,8 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void putPark(
-      {
-      required int parkId,
+  Future<bool> putPark(
+      {required int parkId,
       required String parkName,
       required String parkLocation,
       required String parkImage,
@@ -441,16 +475,29 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
         print(res.toString());
         return res;
       });
-      print(response.statusCode);
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
     } catch (e) {
-      print('$e error catch :( ');
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
     }
   }
 
   @override
   Stream<List<ParkingSlotModel>> getParkingSlot1(int parkId) async* {
-    final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkId'); 
+    final Response response = await Dio()
+        .get('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkId');
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       yield List<ParkingSlotModel>.from(
@@ -459,15 +506,15 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
       throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
     }
   }
+
   @override
-  Future<List<BookMarkModel>> getBookMark() async {
-    final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/BookMark/user/1/park/1'
-    );
+  Future<List<BookMarkModel>> getBookMark(int userId) async {
+    final Response response = await Dio()
+        .get('http://raknaapi-001-site1.ctempurl.com/BookMark/user/$userId');
     print('${response.statusCode} bookmark');
     // print('${response.body}');
     if (response.statusCode == 200) {
-      return  List<BookMarkModel>.from(
+      return List<BookMarkModel>.from(
           (response.data as List).map((e) => BookMarkModel.fromJson(e)));
     } else {
       throw LocalException(statusMessage: 'Api error RDS: 1', success: false);
@@ -475,19 +522,22 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void postBookMark(
-      {required bool isFavorite,
-      required int userId,
+  void putBookMarks(
+      {
+      required bool isFavorite,
+        required int userId,
+         int bookMarkId = 0,
       required int parkId}) async {
     var body = {
+
       "isFav": isFavorite,
       "userForeignKey": userId,
       "parkForeignKey": parkId,
     };
 
     try {
-      http.Response response = await http.post(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/BookMark'),
+      http.Response response = await http.put(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/BookMark/$bookMarkId'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -503,12 +553,20 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  void putBookMark({required bool isFavorite, required int userId, required int parkId}) {
+  void putBookMark(
+      {required bool isFavorite, required int userId, required int parkId}) {
     // TODO: implement putBookMark
   }
 
   @override
-  Future<void> putUserData({required int userID, required String userName, required String phoneNumber, required String password, required String email, required int age, required String userImage}) async {
+  Future<void> putUserData(
+      {required int userID,
+      required String userName,
+      required String phoneNumber,
+      required String password,
+      required String email,
+      required int age,
+      required String userImage}) async {
     var body = {
       "userName": userName,
       "userID": userID,
@@ -538,7 +596,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  Future<List<UserDataModel>> getUserData(int userId)async {
+  Future<List<UserDataModel>> getUserData(int userId) async {
     final Response response = await Dio().get(
         'http://raknaapi-001-site1.ctempurl.com/Register/$userId'); //todo put api url here
     print('${response.statusCode}');
@@ -551,9 +609,8 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     }
   }
 
-
   @override
-  Future<List<GarageOwnerDataModel>> garageOwnerData(int garageOwnerId) async{
+  Future<List<GarageOwnerDataModel>> garageOwnerData(int garageOwnerId) async {
     final Response response = await Dio().get(
         'http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId'); //todo put api url here
     print('${response.statusCode}');
@@ -566,15 +623,8 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     }
   }
 
-
-
-
-
-
-
-
   @override
-  void deleteBookMark({required int bookMarkId})async {
+  void deleteBookMark({required int bookMarkId}) async {
     try {
       http.Response response = await http.delete(
           Uri.parse(
@@ -593,9 +643,10 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  Future<List<ParkStateModel>> parkSateApis() async{
+  Future<List<ParkStateModel>> parkSateApis(
+      {required int userId, required String state}) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/ParkSateApis'); //todo put api url here
+        'http://raknaapi-001-site1.ctempurl.com/ParkSateApis/$userId/$state'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       print('${response.statusCode}');
@@ -606,5 +657,179 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     }
   }
 
+  @override
+  Future<bool> postParkSateApis({
+    required String parkName,
+    required String location,
+    required String parkState,
+    required String userName,
+    required String parkCode,
+    required String startHour,
+    required String endHour,
+    required String userPhoneNumber,
+    required String parkSlotName,
+    required double parkPrice,
+    required double latitude,
+    required double longitude,
+    required int reservationDuration,
+    required int slotID,
+    required int userForeignKey,
+    required bool isCash,
+  }) async {
+    var body = {
+      "id": 0,
+      "parkName": parkName,
+      "location": location,
+      "parkPrice": parkPrice.toDouble(),
+      "parkState": parkState,
+      "isCash": isCash,
+      "userName": userName,
+      "parkCode": parkCode,
+      "reservationDuration": reservationDuration,
+      "startHour": startHour,
+      "endHour": endHour,
+      "userPhoneNumber": userPhoneNumber,
+      "parkSlotName": parkSlotName,
+      "latitude": latitude,
+      "longitude": longitude,
+      "slotID": slotID,
+      "endDateFormat": endHour,
+      "userForeignKey": userForeignKey
+    };
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkSateApis'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
+    } catch (e) {
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
+    }
+  }
+
+
+
+  Future<bool> patchUserData({required int userId, required String userImage}) async {
+    var body = [
+      { "op": "replace", "path": "/userImage", "value": userImage },
+    ];
+
+    try {
+      http.Response response = await http.patch(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Register/$userId'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
+    } catch (e) {
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
+    }
+  }
+  Future<bool> patchGarageOwnerData({required int garageOwnerId, required String garageOwnerImage}) async {
+    var body = [
+      { "op": "replace", "path": "/garageOwnerImage", "value": garageOwnerImage },
+    ];
+
+    try {
+      http.Response response = await http.patch(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
+    } catch (e) {
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
+    }
+  }
+  Future<bool> patchParkState({required int parkStateId, required String parkState}) async {
+    var body = [
+      { "op": "replace", "path": "/parkState", "value": parkState },
+    ];
+
+    try {
+      http.Response response = await http.patch(
+          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkSateApis/$parkStateId'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
+    } catch (e) {
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
+    }
+  }
 
 }

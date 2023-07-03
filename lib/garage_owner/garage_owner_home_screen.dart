@@ -187,12 +187,13 @@ class MiniAppBarCustom extends StatelessWidget {
 }
 
 class MyCustomUI extends StatefulWidget {
-  const MyCustomUI({super.key, required this.garageOwnerId});
+  const MyCustomUI({super.key, required this.garageOwnerId, required this.garageOwnerParkingFuture});
 
   @override
   _MyCustomUIState createState() => _MyCustomUIState();
-
+  final Future<List<GarageOwnerParkingModel>> garageOwnerParkingFuture ;
   final int garageOwnerId;
+
 }
 
 class _MyCustomUIState extends State<MyCustomUI>
@@ -205,6 +206,8 @@ class _MyCustomUIState extends State<MyCustomUI>
   @override
   void initState() {
     super.initState();
+
+
 
     _controller = AnimationController(
       vsync: this,
@@ -231,7 +234,6 @@ class _MyCustomUIState extends State<MyCustomUI>
 
   @override
   Widget build(BuildContext context) {
-
 
     return BlocProvider(
       create: (context) => GetGarageOwnerParkingBloc(
@@ -271,7 +273,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                 ),
                 child:
                   FutureBuilder<List<GarageOwnerParkingModel>>(
-                    future: ParkingRemoteDataSource().getParkingGarageOwner(widget.garageOwnerId),
+                    future: widget.garageOwnerParkingFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         // Show a progress indicator if the data is not yet loaded
@@ -305,7 +307,8 @@ class _MyCustomUIState extends State<MyCustomUI>
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>SlotsDetail(parkId: park[index]['parkId'], parkPrice:park[index]['parkPrice']),
+                                                builder: (context) =>SlotsDetail(parkId: park[index]['parkId'], parkPrice:park[index]['parkPrice'], getParkingSlot:   ParkingRemoteDataSource().getParkingSlot1(park[index]['parkId'])
+                                                  ,),
                                               ));
                                         },
                                         highlightColor: Colors.transparent,
@@ -332,7 +335,7 @@ class _MyCustomUIState extends State<MyCustomUI>
                                                     borderRadius:
                                                     BorderRadius.circular(50),
                                                     child:CachedMemoryImage(
-                                                      uniqueKey: 'app://image/1',
+                                                      uniqueKey: 'app://image/$index',
                                                       errorWidget: const Text('Error'),
                                                       base64:  park[index]['parkImage'],
                                                       height: 200,

@@ -28,7 +28,7 @@ class PaymentMethod extends StatefulWidget {
     required this.reservationDate,
     required this.latitude,
     required this.longitude,
-    required this.combinedEndDateFormat,
+    required this.combinedEndDateFormat, required this.userName, required this.userPhoneNumber, required this.userId,
   }) : super(key: key);
 
   final String startDateFormat;
@@ -46,6 +46,10 @@ class PaymentMethod extends StatefulWidget {
   final double latitude;
   final double longitude;
   final DateTime combinedEndDateFormat;
+
+  final String userName;
+  final String  userPhoneNumber;
+  final int userId;
 
   @override
   State<PaymentMethod> createState() => _PaymentMethodState();
@@ -331,7 +335,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             reservationDate: widget.reservationDate,
                             latitude: widget.latitude,
                             longitude: widget.longitude,
-                            combinedEndDateFormat: widget.combinedEndDateFormat,
+                            combinedEndDateFormat: widget.combinedEndDateFormat, priceAmount: widget.priceAmount, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId:widget.userId,
                           ),
                         ),
                       );
@@ -345,16 +349,45 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
                       final currentContext = context;
                       if (await ParkingRemoteDataSource().putReservationData(
-                        id: widget.slotId,
-                        parkingSlotName: widget.parkSlotName,
-                        startHour: widget.startDateFormat,
-                        endHour: widget.endDateFormat,
-                        isAvailable: false,
-                        randomNumber: finalRandomNumber,
-                        parkForeignKey: widget.parkId,
-                      )) {
-                        Future.delayed(Duration.zero, () {
-                          Navigator.push(
+                            id: widget.slotId,
+                            parkingSlotName: widget.parkSlotName,
+                            startHour: widget.startDateFormat,
+                            endHour: widget.endDateFormat,
+                            isAvailable: false,
+                            randomNumber: finalRandomNumber,
+                            parkForeignKey: widget.parkId,
+                          ) &&
+                          await ParkingRemoteDataSource().postParkSateApis(
+                              parkName: widget.parkName,
+                              location: widget.parkLocation,
+                              parkState: 'ongoing',
+                              userName: widget.userName,
+                              parkCode: finalRandomNumber,
+                              startHour: widget.startDateFormat,
+                              endHour: widget.endDateFormat,
+                              userPhoneNumber: widget.userPhoneNumber,
+                              parkSlotName: widget.parkSlotName,
+                              parkPrice: widget.priceAmount,
+                              reservationDuration: widget.hourSelected,
+                              userForeignKey: widget.userId,
+                              isCash: true, latitude: widget.latitude, longitude: widget.longitude, slotID: widget.slotId)) {
+                        print('${widget.hourSelected} oamrommromaf hour selected ');
+
+                        Future.delayed(Duration.zero,
+                            () => AwesomeDialog(
+                                  context: currentContext,
+                                  animType: AnimType.leftSlide,
+                                  headerAnimationLoop: false,
+                                  dialogType: DialogType.success,
+                                  showCloseIcon: true,
+                                  title: 'Success',
+                                  desc: 'Payment Success',
+                                  btnOkOnPress: () {
+                                    debugPrint('OnClcik');
+                                  },
+                                ).show());
+                        Future.delayed(const Duration(milliseconds: 1600), () {
+                          Navigator.pushReplacement(
                             currentContext,
                             MaterialPageRoute(
                               builder: (context) => ParkingTimer(
@@ -377,61 +410,20 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         });
                       } else {
                         print('Error occurred. Please try again.');
-                        AnimatedButton(
-                            text: 'Error Dialog',
-                            color: Colors.red,
-                            pressEvent: () {
-                              AwesomeDialog(
-                                context: context,
-                                dialogType: DialogType.error,
-                                animType: AnimType.rightSlide,
-                                headerAnimationLoop: false,
-                                title: 'Error',
-                                desc: 'Error occurred. Please try again.',
-                                btnOkOnPress: () {},
-                                btnOkIcon: Icons.cancel,
-                                btnOkColor: Colors.red,
-                              ).show();
-                            });
+                        Future.delayed(
+                            Duration.zero,
+                            () => AwesomeDialog(
+                                  context: currentContext,
+                                  dialogType: DialogType.error,
+                                  animType: AnimType.rightSlide,
+                                  headerAnimationLoop: false,
+                                  title: 'Error',
+                                  desc: 'Error occurred. Please try again.',
+                                  btnOkOnPress: () {},
+                                  btnOkIcon: Icons.cancel,
+                                  btnOkColor: Colors.red,
+                                ).show());
                       }
-
-                      //  if (isLoading == true ) {
-                      //    print('isLoading $isLoading');
-                      //  return;
-                      //  }else if(isRequestFailed == true){
-                      //    print('isRequestFailed $isRequestFailed');
-                      //
-                      //  } else{
-                      //    print('sucsssssssssss  fail $isRequestFailed   load $isLoading');
-                      //
-                      //    updateReservationData(putReservationData: ParkingRemoteDataSource().putReservationData(
-                      //     id: widget.slotId,
-                      //     parkingSlotName: widget.parkSlotName,
-                      //     startHour: widget.startDateFormat,
-                      //     endHour: widget.endDateFormat,
-                      //     isAvailable: false,
-                      //     randomNumber: finalRandomNumber,
-                      //     parkForeignKey: widget.parkId,
-                      //   ));
-                      //   if (kDebugMode) {
-                      //     print(
-                      //         '$finalRandomNumber this the random number test 2');
-                      //   }
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => ParkingTimer(
-                      //         slotId: widget.slotId,
-                      //         hourSelected: widget.hourSelected,
-                      //         parkSlotName: widget.parkSlotName,
-                      //         randomNumber: finalRandomNumber,
-                      //         parkName: widget.parkName,
-                      //         parkLocation: widget.parkLocation,
-                      //         reservationDate: widget.reservationDate, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,
-                      //       ),
-                      //     ),
-                      //   );
-                      // }
                     }
                   },
                   radius: 5.r,

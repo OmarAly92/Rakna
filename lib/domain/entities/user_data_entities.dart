@@ -5,8 +5,8 @@ class UserData extends Equatable {
   final String email;
   final String password;
   final String userImage;
-  final int userID;
   final String phoneNumber;
+  final int userID;
   final int age;
 
   const UserData({

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
@@ -8,23 +7,33 @@ import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../team2/notification_screen.dart';
 import '../data/data_source/remote_data_source.dart';
 import '../data/model/garage_owner_data_model.dart';
-import '../data/model/user_data_model.dart';
 import '../presentation/screens/start_screen.dart';
+import 'components/select_photo_options_screen.dart';
 
 class SettingScreenGarageOwner extends StatefulWidget {
-  SettingScreenGarageOwner({Key? key,required this.name,required this.email, required this.garageOwnerUserId}) : super(key: key);
- final String name;
- final String email;
+  const SettingScreenGarageOwner(
+      {Key? key,
+      required this.name,
+      required this.email,
+      required this.garageOwnerUserId, required this.garageOwnerDataFuture})
+      : super(key: key);
+  final String name;
+  final String email;
   final int garageOwnerUserId;
 
+  final Future<List<GarageOwnerDataModel>> garageOwnerDataFuture ;
+
+
+
   @override
-  State<SettingScreenGarageOwner> createState() => _SettingScreenGarageOwnerState();
-  double bottom = 20;
+  State<SettingScreenGarageOwner> createState() =>
+      _SettingScreenGarageOwnerState();
 }
 
 class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
@@ -32,75 +41,81 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
   Uint8List? bytes;
   String? img64;
   List<String> images = [];
+  bool isImageHere = false;
 
-  void cacheImage()async{
-    final CachedImageManager cachedImageManager = CachedImageBase64Manager.instance();
-    await cachedImageManager.removeFile('app://userImage/1');
-
+  void cacheImage() async {
+    final CachedImageManager cachedImageManager =
+        CachedImageBase64Manager.instance();
+    await cachedImageManager.clearCache();
   }
 
-  // Future _pickImage(ImageSource source) async {
-  //   int userId = widget.userID;
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: source);
-  //     if (image == null) return;
-  //     File? img = File(image.path);
-  //     img = await _cropImage(imageFile: img);
-  //     setState(() {
-  //       _image = img;
-  //       bytes = File(_image!.path).readAsBytesSync();
-  //       img64 = base64Encode(bytes!);
-  //       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(userID: userId,screenIndex: 2)));
-  //     });
-  //   } on PlatformException catch (e) {
-  //     print(e);
-  //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen(userID: userId,screenIndex: 2,)));
-  //
-  //   }
-  // }
+  Future _pickImage(ImageSource source) async {
+    // int userId = widget.userID;
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      File? img = File(image.path);
+      img = await _cropImage(imageFile: img);
+      setState(() {
+        _image = img;
+        bytes = File(_image!.path).readAsBytesSync();
+        img64 = base64Encode(bytes!);
+        setState(() {
+          isImageHere = true;
+        });
+        Navigator.pop(context);
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      Navigator.pop(context);
+    }
+  }
 
-  // Future<File?> _cropImage({required File imageFile}) async {
-  //   CroppedFile? croppedImage =
-  //   await ImageCropper().cropImage(sourcePath: imageFile.path);
-  //   if (croppedImage == null) return null;
-  //   return File(croppedImage.path);
-  // }
+  Future<File?> _cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage =
+        await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedImage == null) return null;
+    return File(croppedImage.path);
+  }
 
-  // void _showSelectPhotoOptions(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(
-  //         top: Radius.circular(25.0),
-  //       ),
-  //     ),
-  //     builder: (context) => DraggableScrollableSheet(
-  //         initialChildSize: 0.28,
-  //         maxChildSize: 0.4,
-  //         minChildSize: 0.28,
-  //         expand: false,
-  //         builder: (context, scrollController) {
-  //           return SingleChildScrollView(
-  //             controller: scrollController,
-  //             child: SelectPhotoOptionsScreen(
-  //               onTap: _pickImage,
-  //             ),
-  //           );
-  //         }),
-  //   );
-  //
-  // }
+  void _showSelectPhotoOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.0),
+        ),
+      ),
+      builder: (context) => DraggableScrollableSheet(
+          initialChildSize: 0.28,
+          maxChildSize: 0.4,
+          minChildSize: 0.28,
+          expand: false,
+          builder: (context, scrollController) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: SelectPhotoOptionsScreen(
+                onTap: _pickImage,
+              ),
+            );
+          }),
+    );
+  }
+
   @override
   initState() {
     super.initState();
-
-
-
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isImageHere == true) {
+      print('isImageHere $isImageHere    omar omar omar');
+      cacheImage();
+      ParkingRemoteDataSource().patchGarageOwnerData(
+          garageOwnerId: widget.garageOwnerUserId, garageOwnerImage: img64!);
+    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -114,21 +129,8 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                 height: 20.w,
               ),
               FutureBuilder<List<GarageOwnerDataModel>>(
-                future: ParkingRemoteDataSource().garageOwnerData(widget.garageOwnerUserId),
+                future: widget.garageOwnerDataFuture,
                 builder: (context, snapshot) {
-                  // if (img64 != null) {
-                  //   cacheImage();
-                  //   ParkingRemoteDataSource().putUserData(
-                  //       userID: widget.userID,
-                  //       userName: snapshot.data![0].userName,
-                  //       phoneNumber: snapshot.data![0].phoneNumber,
-                  //       password: snapshot.data![0].password,
-                  //       email: snapshot.data![0].email,
-                  //       age: snapshot.data![0].age,
-                  //       userImage: img64!);
-                  // }else{print('img64 is null omar');}
-
-
                   if (!snapshot.hasData) {
                     return Center(
                       child: Column(
@@ -144,9 +146,17 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                                 borderRadius: BorderRadius.circular(60.r),
                                 child: Image.asset(
                                     'assets/images/default-avatar-profile.jpg'),
-                              )
-                          ),
+                              )),
                           SizedBox(height: 5.w),
+                          Text(
+                            '',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 19.sp),
+                          ),
+                          Text(
+                            '',
+                            style: TextStyle(fontSize: 13.sp),
+                          )
                         ],
                       ),
                     );
@@ -167,32 +177,36 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                                 ),
                                 child: _image == null
                                     ? ClipRRect(
-                                  borderRadius:
-                                  BorderRadius.circular(60.r),
-                                  ///todo put avatar image
-                                  child: snapshot.data![0].garageOwnerImage == 'strin'
-                                      ? Image.asset(
-                                      'assets/images/default-avatar-profile.jpg')
-                                      : CachedMemoryImage(
-                                    uniqueKey: 'app://userImage/1',
-                                    errorWidget:
-                                    const Text('Error'),
-                                    base64: snapshot.data![0].garageOwnerImage,
-                                    height: 200,
-                                    width: 200,
-                                    fit: BoxFit.cover,
-                                    placeholder: Container(
-                                        color: Colors.transparent),
-                                  ),
-                                )
+                                        borderRadius:
+                                            BorderRadius.circular(60.r),
+
+                                        ///todo put avatar image
+                                        child: snapshot.data![0]
+                                                    .garageOwnerImage ==
+                                                'strin'
+                                            ? Image.asset(
+                                                'assets/images/default-avatar-profile.jpg')
+                                            : CachedMemoryImage(
+                                                uniqueKey: 'app://garageOwnerImage/${snapshot.data![0].garageOwnerId}',
+                                                errorWidget:
+                                                    const Text('Error'),
+                                                base64: snapshot
+                                                    .data![0].garageOwnerImage,
+                                                height: 200,
+                                                width: 200,
+                                                fit: BoxFit.cover,
+                                                placeholder: Container(
+                                                    color: Colors.transparent),
+                                              ),
+                                      )
                                     : ClipRRect(
-                                    borderRadius:
-                                    BorderRadius.circular(60.r),
-                                    child: Image(
-                                        image: FileImage(_image!),
-                                        width: 225,
-                                        height: 180,
-                                        fit: BoxFit.cover)),
+                                        borderRadius:
+                                            BorderRadius.circular(60.r),
+                                        child: Image(
+                                            image: FileImage(_image!),
+                                            width: 225,
+                                            height: 180,
+                                            fit: BoxFit.cover)),
                               ),
                               Positioned(
                                 top: 85.w,
@@ -208,9 +222,7 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                                     ),
                                     child: InkWell(
                                       onTap: () {
-                                        // _showSelectPhotoOptions(context);
-
-
+                                        _showSelectPhotoOptions(context);
                                       },
                                       child: Icon(
                                         Icons.edit,
@@ -298,7 +310,7 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                     //   ),
                     // ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(
@@ -353,7 +365,7 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                     //   ),
                     // ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(
@@ -403,7 +415,7 @@ class _SettingScreenGarageOwnerState extends State<SettingScreenGarageOwner> {
                     //   ),
                     // ),
                     Padding(
-                      padding: EdgeInsets.only(bottom: widget.bottom),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: SizedBox(
                         height: 38.w,
                         child: InkWell(

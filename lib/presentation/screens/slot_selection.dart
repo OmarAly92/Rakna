@@ -12,21 +12,38 @@ import '../components/LogButton_Widget.dart';
 import '../components/slot-place.dart';
 
 class SlotSelection extends StatefulWidget {
-   const SlotSelection({Key? key,required this.parkId,required this.parkPrice, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude}) : super(key: key);
-   final int parkId;
-   final  num parkPrice;
-   final String parkName;
-   final String parkLocation;
-   final double latitude;
-   final double longitude;
+  const SlotSelection(
+      {Key? key,
+      required this.parkId,
+      required this.parkPrice,
+      required this.parkName,
+      required this.parkLocation,
+      required this.latitude,
+      required this.longitude,
+      required this.userName,
+      required this.userPhoneNumber,
+      required this.userId,
+      required this.getParkingSlot})
+      : super(key: key);
+  final int parkId;
+  final num parkPrice;
+  final String parkName;
+  final String parkLocation;
+  final double latitude;
+  final double longitude;
+  final String userName;
+  final String userPhoneNumber;
+  final int userId;
+
+  final Stream<List<ParkingSlotModel>> getParkingSlot;
 
   @override
   State<SlotSelection> createState() => _SlotSelectionState();
 }
 
 class _SlotSelectionState extends State<SlotSelection> {
-
   int onSelectedIndex = -1;
+
   // bool click = false;
   Color primaryColor = Color(0xff007fff);
   Color mainColor = Colors.blue;
@@ -36,12 +53,12 @@ class _SlotSelectionState extends State<SlotSelection> {
   late String parkingSlotName;
   late String randomNumber;
 
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          ParkingSlotBloc(GetParkingSlotUseCase(sl()),widget.parkId)..add(GetParkingSlotDataEvent()),
+          ParkingSlotBloc(GetParkingSlotUseCase(sl()), widget.parkId)
+            ..add(GetParkingSlotDataEvent()),
       child: GestureDetector(
         onTap: () {
           setState(() {
@@ -51,8 +68,8 @@ class _SlotSelectionState extends State<SlotSelection> {
         child: Scaffold(
           body: SafeArea(
             child: Padding(
-              padding:
-                  EdgeInsets.only(bottom: 20.w, left: 3.w, right: 3.w, top: 10.w),
+              padding: EdgeInsets.only(
+                  bottom: 20.w, left: 3.w, right: 3.w, top: 10.w),
               child: Column(
                 children: [
                   Row(
@@ -138,7 +155,8 @@ class _SlotSelectionState extends State<SlotSelection> {
                                 style: TextStyle(color: Colors.black),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(left: 25.w, right: 5.w),
+                                padding:
+                                    EdgeInsets.only(left: 25.w, right: 5.w),
                                 child: Container(
                                   height: 18.w,
                                   width: 18.w,
@@ -150,7 +168,8 @@ class _SlotSelectionState extends State<SlotSelection> {
                               Text('Selected',
                                   style: TextStyle(color: Colors.black)),
                               Padding(
-                                padding: EdgeInsets.only(left: 25.w, right: 5.w),
+                                padding:
+                                    EdgeInsets.only(left: 25.w, right: 5.w),
                                 child: Container(
                                   height: 18.w,
                                   width: 18.w,
@@ -165,17 +184,17 @@ class _SlotSelectionState extends State<SlotSelection> {
                           ),
                         ),
                         SizedBox(height: 30.h),
-                        StreamBuilder<List<ParkingSlotModel>> (
-                            stream: ParkingRemoteDataSource().getParkingSlot1(widget.parkId),
+                        StreamBuilder<List<ParkingSlotModel>>(
+                            stream: widget.getParkingSlot,
                             builder: (context, state) {
-                              if(!state.hasData){
+                              if (!state.hasData) {
                                 return Column(
                                   children: [
                                     SizedBox(height: 200.h),
                                     CircularProgressIndicator(),
                                   ],
                                 );
-                              }else if(state.hasData){
+                              } else if (state.hasData) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 0),
                                   child: SingleChildScrollView(
@@ -185,32 +204,33 @@ class _SlotSelectionState extends State<SlotSelection> {
                                         SizedBox(
                                           height: 350.h,
                                           width: 350.w,
-
                                           child: Wrap(
                                             direction: Axis.vertical,
                                             children: List.generate(
 // 30,
-                                              state.data!.length, ///todo uncomment this
+                                              state.data!.length,
 
-                                                  (index) => Row(
+                                              ///todo uncomment this
+
+                                              (index) => Row(
                                                 crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   SlotPlace(
                                                     name1:
 // 'c200',
-                                                    state.data![index].parkingSlotName,
+                                                        state.data![index]
+                                                            .parkingSlotName,
                                                     textName: '⏐',
                                                     onSelectedIndex:
-                                                    onSelectedIndex,
+                                                        onSelectedIndex,
                                                     color1: mainColor,
                                                     color2: selectedColor,
                                                     onTap: () {
                                                       onSelectedIndex = index;
                                                       setState(() {});
                                                       slotId = state
-                                                          .data![index]
-                                                          .slotId;
+                                                          .data![index].slotId;
                                                       parkingSlotName = state
                                                           .data![index]
                                                           .parkingSlotName;
@@ -221,10 +241,10 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                     index: index,
                                                     isAvailable:
 // false
-                                                    state.data![index].isAvailable
-                                                    ,
+                                                        state.data![index]
+                                                            .isAvailable,
                                                     notAvailableColor:
-                                                    bookedColor,
+                                                        bookedColor,
                                                   ),
                                                 ],
                                               ),
@@ -234,30 +254,54 @@ class _SlotSelectionState extends State<SlotSelection> {
                                         SizedBox(height: 110.h),
                                         Padding(
                                           padding: EdgeInsets.only(
-                                              bottom: 10.h, left: 5.w, right: 5.w),
+                                              bottom: 10.h,
+                                              left: 5.w,
+                                              right: 5.w),
                                           child: Column(
                                             children: [
-                                              LogButton(borderColor: Colors.transparent,
+                                              LogButton(
+                                                borderColor: Colors.transparent,
                                                 widget: Text('Book',
                                                     style: TextStyle(
-                                                        color: Colors.white, fontSize: 16.sp)),
+                                                        color: Colors.white,
+                                                        fontSize: 16.sp)),
                                                 backgroundColor: mainColor,
                                                 textColor: Colors.white,
                                                 onPressed: () {
                                                   print(slotId);
                                                   print(parkingSlotName);
-                                                  if(onSelectedIndex != -1)
+                                                  if (onSelectedIndex != -1) {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             ReservationParkingPlace(
-                                                              slotId: slotId,
-                                                              parkSlotName: parkingSlotName, parkPrice: widget.parkPrice, parkForeignKey: widget.parkId,
-                                                              randomNumber: randomNumber, parkName: widget.parkName, parkLocation: widget.parkLocation, latitude: widget.latitude, longitude: widget.longitude,
-                                                            ),
+                                                          slotId: slotId,
+                                                          parkSlotName:
+                                                              parkingSlotName,
+                                                          parkPrice:
+                                                              widget.parkPrice,
+                                                          parkForeignKey:
+                                                              widget.parkId,
+                                                          randomNumber:
+                                                              randomNumber,
+                                                          parkName:
+                                                              widget.parkName,
+                                                          parkLocation: widget
+                                                              .parkLocation,
+                                                          latitude:
+                                                              widget.latitude,
+                                                          longitude:
+                                                              widget.longitude,
+                                                          userName:
+                                                              widget.userName,
+                                                          userPhoneNumber: widget
+                                                              .userPhoneNumber,
+                                                          userId: widget.userId,
+                                                        ),
                                                       ),
                                                     );
+                                                  }
                                                 },
                                                 radius: 5.r,
                                                 width: 300.w,
@@ -270,12 +314,12 @@ class _SlotSelectionState extends State<SlotSelection> {
                                     ),
                                   ),
                                 );
-                              }else {
-                                return Center(child: Text('Error else condition'),);
+                              } else {
+                                return Center(
+                                  child: Text('Error else condition'),
+                                );
                               }
-                            }
-                        ),
-
+                            }),
                       ],
                     ),
                   ),

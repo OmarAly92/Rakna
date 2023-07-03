@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,9 +11,9 @@ import 'old1H.dart';
 import 'navigation_bar.dart';
 
 class SignUp extends StatefulWidget {
-   SignUp({Key? key}) : super(key: key);
-   bool eyeOne = true;
-   bool eyeTwo = true;
+  SignUp({Key? key}) : super(key: key);
+  bool eyeOne = true;
+  bool eyeTwo = true;
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -227,12 +228,15 @@ class _SignUpState extends State<SignUp> {
                                 obscureText: widget.eyeOne,
                                 controller: passwordController,
                                 decoration: InputDecoration(
-                                    suffixIcon:IconButton(icon:Icon(widget.eyeOne == true
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),onPressed: () {
-                                      widget.eyeOne = !widget.eyeOne;
-                                      setState(() {});
-                                        },),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(widget.eyeOne == true
+                                          ? Icons.visibility
+                                          : Icons.visibility_off),
+                                      onPressed: () {
+                                        widget.eyeOne = !widget.eyeOne;
+                                        setState(() {});
+                                      },
+                                    ),
 
                                     // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                     labelText: "Password",
@@ -268,12 +272,14 @@ class _SignUpState extends State<SignUp> {
                                 obscureText: widget.eyeTwo,
                                 controller: confirmPasswordController,
                                 decoration: InputDecoration(
-                                    suffixIcon: IconButton(onPressed: () {
-                                      widget.eyeTwo = !widget.eyeTwo;
-                                      setState(() {});
-                                    }, icon: Icon(widget.eyeTwo == true
-                                        ? Icons.visibility
-                                        : Icons.visibility_off)),
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          widget.eyeTwo = !widget.eyeTwo;
+                                          setState(() {});
+                                        },
+                                        icon: Icon(widget.eyeTwo == true
+                                            ? Icons.visibility
+                                            : Icons.visibility_off)),
                                     // labelStyle: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey,),
                                     labelText: "Confirm Password",
                                     labelStyle: TextStyle(
@@ -283,7 +289,8 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     border: UnderlineInputBorder()),
                                 validator: (value) {
-                                  if (value!.isEmpty && value == passwordController.text) {
+                                  if (value!.isEmpty &&
+                                      value == passwordController.text) {
                                     return "Please enter password";
                                   } else {
                                     //call function to check password
@@ -300,7 +307,8 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(bottom: 8.h, top: 50.h),
-                              child: LogButton(borderColor: Colors.transparent,
+                              child: LogButton(
+                                borderColor: Colors.transparent,
                                 widget: Text('Sign Up',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16.sp)),
@@ -309,7 +317,7 @@ class _SignUpState extends State<SignUp> {
                                 radius: 15.r,
                                 width: 305.w,
                                 height: 50.h,
-                                onPressed: () {
+                                onPressed: () async {
                                   if (!formKeyReg.currentState!.validate()) {
                                     final snackBar = SnackBar(
                                         content: Text('Submitting form'));
@@ -319,23 +327,66 @@ class _SignUpState extends State<SignUp> {
 
                                   // BaseRemoteDataSource parkingRemoteDataSource =
                                   //     ParkingRemoteDataSource();
-                                  ParkingRemoteDataSource().postSignUp(
+
+                                  final currentContext = context;
+                                  if (await ParkingRemoteDataSource()
+                                      .postSignUp(
                                     userName: userNameController.text,
                                     age: int.parse(ageController.text),
                                     email: emailController.text,
                                     password: passwordController.text,
-                                    confirmPassword: confirmPasswordController.text,
+                                    confirmPassword:
+                                        confirmPasswordController.text,
                                     phoneNumber: phoneNumberController.text,
-                                  );
+                                  )) {
+                                    Future.delayed(
+                                        Duration.zero,
+                                        () => AwesomeDialog(
+                                              context: currentContext,
+                                              animType: AnimType.leftSlide,
+                                              headerAnimationLoop: false,
+                                              dialogType: DialogType.success,
+                                              showCloseIcon: true,
+                                              title: 'Success',
+                                              desc: 'Payment Success',
+                                              btnOkOnPress: () {
+                                                debugPrint('OnClcik');
+                                              },
+                                            ).show());
+                                    Future.delayed(
+                                        const Duration(milliseconds: 1600), () {
+                                      Navigator.pushReplacement(
+                                          currentContext,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NavigationBarScreen(
+                                                      userName: userNameController.text,
+                                                      userPhoneNumber: phoneNumberController.text, userEmail:emailController.text),
+                                              settings: const RouteSettings(
+                                                name: 'NavigationBarScreen',
+                                              )
 
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            NavigationBarScreen(userID: 0),
-                                     ///todo userId must do patch
+                                              ///todo userId must do patch
 
-                                      ));
+                                              ));
+                                    });
+                                  } else {
+                                    print('Error occurred. Please try again.');
+                                    Future.delayed(
+                                        Duration.zero,
+                                        () => AwesomeDialog(
+                                              context: currentContext,
+                                              dialogType: DialogType.error,
+                                              animType: AnimType.rightSlide,
+                                              headerAnimationLoop: false,
+                                              title: 'Error',
+                                              desc:
+                                                  'Error occurred. Please try again.',
+                                              btnOkOnPress: () {},
+                                              btnOkIcon: Icons.cancel,
+                                              btnOkColor: Colors.red,
+                                            ).show());
+                                  }
                                 },
                               ),
                             ),

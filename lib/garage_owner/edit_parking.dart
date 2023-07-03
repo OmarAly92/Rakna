@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_memory_image/cached_image_base64_manager.dart';
 import 'package:cached_memory_image/cached_image_manager.dart';
+import 'package:cached_memory_image/cached_memory_image.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rakna/garage_owner/components/select_photo_options_screen.dart';
+import '../core/utility/error_img.dart';
 import '../data/data_source/remote_data_source.dart';
 import '../presentation/components/LogButton_Widget.dart';
 import '../presentation/screens/google_map.dart';
@@ -59,11 +62,9 @@ class _EditParkState extends State<EditPark> {
 
 
 
-
-  void cacheImage()async{
+  void cacheImage() async {
     final CachedImageManager cachedImageManager = CachedImageBase64Manager.instance();
-    await cachedImageManager.removeFile('app://image/1');
-
+    await cachedImageManager.clearCache();
   }
 
   Future _pickImage(ImageSource source) async {
@@ -198,7 +199,20 @@ class _EditParkState extends State<EditPark> {
                                   child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(15),
-                                          child: _image == null?Image.memory(base64Decode(widget.parkImage)) :Image(
+                                          child: _image == null?
+
+                                          CachedMemoryImage(
+                                            uniqueKey: 'app://editPark/${widget.parkId}',
+                                            errorWidget: const Text('Error'),
+                                            base64:  widget.parkImage,
+                                            width: 200,
+                                            fit: BoxFit.cover,
+                                            placeholder: Container(color: Colors.blue.shade200),
+                                          )
+                                          // Image.memory(base64Decode(widget.parkImage))
+
+
+                                              :Image(
                                               image: FileImage(_image!),
                                               width: 225,
                                               height: 180,
@@ -371,9 +385,12 @@ class _EditParkState extends State<EditPark> {
                               textColor: Colors.white,
                               radius: 5.r,
                               width: 305.w,
-                              onPressed: () {
+                              onPressed: ()async {
                                 print('$img64');
-                                ParkingRemoteDataSource().putPark(
+
+
+                                final currentContext = context;
+                                if (await ParkingRemoteDataSource().putPark(
                                     parkName:boolParkName == false? parkNameController.text:widget.parkName,
                                     parkLocation:boolParkLocation == false?  parkLocationController.text:widget.parkLocation,
                                     parkPrice: boolParkPrice == false?  double.parse(parkPriceController.text):widget.parkPrice,
@@ -382,11 +399,54 @@ class _EditParkState extends State<EditPark> {
                                     parkId: widget.parkId,
                                     parkRating: widget.parkRating,
                                     latitude:latLng != LatLng(0, 0)? latLng.latitude:widget.latitude,
-                                    longitude:latLng != LatLng(0, 0)? latLng.longitude:widget.longitude);
+                                    longitude:latLng != LatLng(0, 0)? latLng.longitude:widget.longitude))
+                                {
+                                  Future.delayed(
+                                      Duration.zero,
+                                          () => AwesomeDialog(
+                                        context: currentContext,
+                                        animType: AnimType.leftSlide,
+                                        headerAnimationLoop: false,
+                                        dialogType: DialogType.success,
+                                        showCloseIcon: true,
+                                        title: 'Success',
+                                        desc: 'Payment Success',
+                                        btnOkOnPress: () {
+                                          debugPrint('OnClcik');
+                                        },
+                                      ).show());
+                                  Future.delayed(
+                                      const Duration(milliseconds: 1600), () {
+                                    cacheImage();
+                                    Navigator.pop(context);
+                                  });
+                                  Future.delayed(
+                                      const Duration(milliseconds: 2000), () {
+                                    cacheImage();
+                                    Navigator.pop(context);
+                                  });
+                                } else {
+                                  print('Error occurred. Please try again.');
+                                  Future.delayed(
+                                      Duration.zero,
+                                          () => AwesomeDialog(
+                                        context: currentContext,
+                                        dialogType: DialogType.error,
+                                        animType: AnimType.rightSlide,
+                                        headerAnimationLoop: false,
+                                        title: 'Error',
+                                        desc:
+                                        'Error occurred. Please try again.',
+                                        btnOkOnPress: () {},
+                                        btnOkIcon: Icons.cancel,
+                                        btnOkColor: Colors.red,
+                                      ).show());
+                                }
 
 
-                                cacheImage();
-                                Navigator.pop(context);
+
+
+
                               },
                               widget: const Text('Edit Park'),
                               height: 50.h,

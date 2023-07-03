@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -71,23 +72,24 @@ class _SignInState extends State<SignIn> {
                         height: height * .5,
                         decoration: BoxDecoration(
                             color: color,
-                            borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(50))),
+                            borderRadius:  BorderRadius.only(
+                                bottomRight: Radius.circular(45.r))),
                         child: Column(
                           children: [
                             Padding(
                               padding: EdgeInsets.only(top: 170.h),
                               child: Container(
-                                height: 95.h,
+                                height: 105.w,
                                 width: 105.w,
-                                decoration: BoxDecoration(
-                                    color: Colors.yellow.shade700,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(200))),
+                                decoration:  BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(200.r))),
                                 child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(200),
+                                    borderRadius: BorderRadius.circular(200.r),
                                     child: Image.asset(
-                                        'assets/images/rakna_logo.jpg')),
+                                        'assets/images/rakna_logo.jpg',  height: 205.h,
+                                      width: 105.w,)),
                               ),
                             ),
                             Padding(
@@ -234,17 +236,47 @@ class _SignInState extends State<SignIn> {
 
                                            }
 
+                                           final currentContext = context;
 
-
-                                           for(int i = 0;i<state.userData.length;i++){
-                                             if(emailDataList[i].contains(emailController.text) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false){
-                                               print(emailDataList[i]);
-                                               print(passwordDataList[i]);
-                                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NavigationBarScreen( userID: userIdDataList[i])));
-                                             }
+                                           if(state.userData.isNotEmpty) {
+                                              for (int i = 0; i < state.userData.length; i++) {
+                                                if (emailDataList[i].contains(emailController.text) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
+                                                  print(emailDataList[i]);
+                                                  print(passwordDataList[i]);
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            NavigationBarScreen(
+                                                                  userName: userNameDataList[i],
+                                                                userPhoneNumber: userPhoneDataList[i], userEmail:emailDataList[i]),
+                                                        settings:
+                                                            const RouteSettings(
+                                                          name:
+                                                              'NavigationBarScreen',
+                                                        ),
+                                                      ));
+                                                }
+                                              }
+                                            }else{
+                                             print('Error occurred. Please try again.');
+                                             Future.delayed(
+                                                 Duration.zero,
+                                                     () => AwesomeDialog(
+                                                   context: currentContext,
+                                                   dialogType: DialogType.error,
+                                                   animType: AnimType.rightSlide,
+                                                   headerAnimationLoop: false,
+                                                   title: 'Error',
+                                                   desc:
+                                                   'Error occurred. Please try again.',
+                                                   btnOkOnPress: () {},
+                                                   btnOkIcon: Icons.cancel,
+                                                   btnOkColor: Colors.red,
+                                                 ).show());
                                            }
 
-                                           // if (emailDataList.toString().contains(emailController.text) == true && passwordDataList.toString().contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
+                                            // if (emailDataList.toString().contains(emailController.text) == true && passwordDataList.toString().contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
                                            //   setState(() {});
                                            // }
                                          },

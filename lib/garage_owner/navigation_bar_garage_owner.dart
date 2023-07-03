@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rakna/garage_owner/setting_screen_owner.dart';
 
+import '../data/data_source/remote_data_source.dart';
 import 'finance.dart';
 import 'garage_owner_home_screen.dart';
 
@@ -32,8 +33,8 @@ class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
       body: Center(
         child:  [
           Home(),
-          MyCustomUI(garageOwnerId: widget.garageOwnerId),
-          SettingScreenGarageOwner(name: widget.name, email: widget.email, garageOwnerUserId: widget.garageOwnerId,),
+          MyCustomUI(garageOwnerId: widget.garageOwnerId, garageOwnerParkingFuture:  ParkingRemoteDataSource().getParkingGarageOwner(widget.garageOwnerId)),
+          SettingScreenGarageOwner(name: widget.name, email: widget.email, garageOwnerUserId: widget.garageOwnerId, garageOwnerDataFuture: ParkingRemoteDataSource().garageOwnerData(widget.garageOwnerId)),
         ].elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -3,106 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:rakna/presentation/components/LogButton_Widget.dart';
+import 'package:rakna/garage_owner/finance.dart';
+import 'package:rakna/presentation/screens/home_screen.dart';
 
 import '../../data/data_source/remote_data_source.dart';
-import 'core/utility/custom_paypal.dart';
+import '../components/LogButton_Widget.dart';
 
-class ParkingTimerPaypal extends StatefulWidget {
-   ParkingTimerPaypal(
+class ParkingTimerState extends StatefulWidget {
+  const ParkingTimerState(
       {Key? key,
       required this.slotId,
       required this.hourSelected,
       required this.parkSlotName,
-      required this.onSuccess,
-      required this.onError,
-      required this.onCancel,
-      required this.services,
-      required this.url,
-      required this.executeUrl,
-      required this.accessToken,
-      required this.startDateFormat,
-      required this.endDateFormat, required this.finalRandomNumber, required this.randomNumber, required this.parkName, required this.parkLocation, required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat,
-      })
+      required this.randomNumber,
+      required this.parkName,
+      required this.parkLocation,
+      required this.reservationDate, required this.startDateFormat, required this.endDateFormat, required this.latitude, required this.longitude, required this.combinedEndDateFormat, required this.parkStateId})
       : super(key: key);
-
-
-  final String startDateFormat;
-  final String endDateFormat;
   final int hourSelected;
   final int slotId;
+  final int parkStateId;
   final String parkSlotName;
-  final String finalRandomNumber;
-   final double latitude;
-   final double longitude;
   final String randomNumber;
   final String parkName;
   final String parkLocation;
   final String reservationDate;
-   final DateTime combinedEndDateFormat;
-
-
-
-   Function onSuccess, onCancel, onError;
-  PaypalServices services;
-  String url, executeUrl, accessToken;
+  final String startDateFormat;
+  final String endDateFormat;
+  final double latitude;
+  final double longitude;
+  final DateTime combinedEndDateFormat;
 
   @override
-  State<ParkingTimerPaypal> createState() => _ParkingTimerPaypalState();
+  State<ParkingTimerState> createState() => _ParkingTimerStateState();
 }
 
-class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProviderStateMixin {
-
-  bool loading = true;
-  bool loadingError = false;
-
-  // complete() async {
-  //   final uri = Uri.parse(widget.url);
-  //   final payerID = uri.queryParameters['PayerID'];
-  //   if (payerID != null) {
-  //     Map params = {
-  //       "payerID": payerID,
-  //       "paymentId": uri.queryParameters['paymentId'],
-  //       "token": uri.queryParameters['token'],
-  //     };
-  //     setState(() {
-  //       loading = true;
-  //       loadingError = false;
-  //     });
-  //
-  //     Map resp = await widget.services
-  //         .executePayment(widget.executeUrl, payerID, widget.accessToken);
-  //     if (resp['error'] == false) {
-  //       params['status'] = 'success';
-  //       params['data'] = resp['data'];
-  //       await widget.onSuccess(params);
-  //       setState(() {
-  //         loading = false;
-  //         loadingError = false;
-  //       });
-  //       Navigator.pop(context);
-  //     } else {
-  //       if (resp['exception'] != null && resp['exception'] == true) {
-  //         widget.onError({"message": resp['message']});
-  //         setState(() {
-  //           loading = false;
-  //           loadingError = true;
-  //         });
-  //       } else {
-  //         await widget.onError(resp['data']);
-  //         Navigator.of(context).pop();
-  //       }
-  //     }
-  //     //return NavigationDecision.prevent;
-  //   } else {
-  //     Navigator.of(context).pop();
-  //   }
-  // }
-
-
+class _ParkingTimerStateState extends State<ParkingTimerState>
+    with TickerProviderStateMixin {
   late AnimationController controller;
-
   bool isPlaying = false;
+  DateTime now = DateTime.now();
+
 
   String get countText {
     Duration count = controller.duration! * controller.value;
@@ -119,26 +60,24 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
     }
   }
 
-
-
   @override
   void initState() {
     super.initState();
-    print(widget.startDateFormat);
-    print(widget.endDateFormat);
-    Duration remainingTime = widget.combinedEndDateFormat.difference(DateTime.now());
+    Duration remainingTime = widget.combinedEndDateFormat.difference(now);
     int hours = remainingTime.inHours;
     int minutes = remainingTime.inMinutes.remainder(60);
     int seconds = remainingTime.inSeconds.remainder(60);
 
-
     if (seconds < 0 || minutes < 0 || hours < 0) {
+      ParkingRemoteDataSource().patchParkState(parkStateId:widget.parkStateId ,parkState:'completed' );
       seconds = minutes = hours = 0;
     }
     controller = AnimationController(
         vsync: this,
         duration: Duration(seconds: seconds, minutes: minutes, hours: hours
-        ));
+            // widget.hourSelected
+
+            ));
     controller.reverse(from: controller.value == 0 ? 1.0 : controller.value);
     controller.addListener(() {
       notify();
@@ -163,17 +102,13 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
+   var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
-        // Define the desired behavior here
-        // For example, you can navigate back to the previous screen
         Navigator.of(context).popUntil((route){
           return route.settings.name == 'NavigationBarScreen';
         });
-
-        // Return false to prevent the default behavior (closing the app)
         return Future.value(false);
       },
       child: Scaffold(
@@ -182,27 +117,7 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Padding(
-                //   padding: EdgeInsets.all(8.0.r),
-                //   child: Row(
-                //     children: [
-                //       InkWell(
-                //           onTap: () {
-                //             Navigator.pop(context);
-                //           },
-                //           child: Icon(Icons.arrow_back, size: 30.r)),
-                //       SizedBox(width: width * .01),
-                //       Text(
-                //         'Parking Timer',
-                //         style: TextStyle(
-                //             fontSize: 27.sp, fontWeight: FontWeight.bold),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // SizedBox(height: height * .02),
                 SizedBox(height: 23.h),
-
                 Center(
                   child: Stack(
                     alignment: Alignment.center,
@@ -238,7 +153,7 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
                           animation: controller,
                           builder: (BuildContext context, Widget? child) => Text(
                             countText,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 60,
                             ),
                           ),
@@ -280,12 +195,14 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
                                 style: TextStyle(
                                     fontSize: 40.sp,
                                     color: Colors.blue.shade800)),
+                            //TODO connect Api
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
+
                 Container(
                   // height: 315,
                   // width:350,
@@ -366,7 +283,7 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text('Hours'),
-                              Text('${widget.startDateFormat.toString().replaceRange(0, 10, '').replaceFirst('T', '').replaceFirst(':00', '')}  /  ${widget.endDateFormat.toString().replaceRange(0, 10, '').replaceFirst('T', '').replaceFirst(':00', '')}'),
+                              Text('${widget.startDateFormat.toString().replaceRange(0, 10, '').replaceFirst('T', '').replaceFirst(':00', '')}  /  ${widget.endDateFormat.toString().replaceRange(0, 10, '').replaceFirst('T', '').replaceFirst(':00', '')}'), //TODO connect Api
                             ],
                           ),
                         ),
@@ -422,7 +339,6 @@ class _ParkingTimerPaypalState extends State<ParkingTimerPaypal> with TickerProv
                     ),
                   ],
                 ),
-
                 SizedBox(
                   height: 18.h,
                 )

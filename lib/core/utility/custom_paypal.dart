@@ -1,5 +1,6 @@
 library flutter_paypal;
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert' as convert;
@@ -7,11 +8,13 @@ import 'package:http_auth/http_auth.dart';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:rakna/presentation/screens/payment_method.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import '../../data/data_source/remote_data_source.dart';
 import '../../parking_timer_paypal.dart';
+import '../../presentation/screens/parking_timer.dart';
 
 class UsePaypal1 extends StatefulWidget {
   final Function onSuccess, onCancel, onError;
@@ -32,7 +35,10 @@ class UsePaypal1 extends StatefulWidget {
   final double latitude;
   final double longitude;
   final DateTime combinedEndDateFormat;
-
+  final double priceAmount;
+  final String  userName;
+  final String  userPhoneNumber;
+  final int  userId;
   const UsePaypal1({
     Key? key,
     required this.onSuccess,
@@ -47,7 +53,7 @@ class UsePaypal1 extends StatefulWidget {
     this.note = '',
     required this.parkSlotName,
     required this.slotId,
-    required this.hourSelected, required this.startDateFormat, required this.endDateFormat, required this.finalRandomNumber, required this.parkId, required this.randomNumber, required this.parkName, required this.parkLocation, required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat,
+    required this.hourSelected, required this.startDateFormat, required this.endDateFormat, required this.finalRandomNumber, required this.parkId, required this.randomNumber, required this.parkName, required this.parkLocation, required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat, required this.priceAmount, required this.userName, required this.userPhoneNumber, required this.userId,
   }) : super(key: key);
 
   @override
@@ -198,7 +204,9 @@ class UsePaypal1State extends State<UsePaypal1> {
             }
             if (request.url.contains(widget.returnURL)) {
 
-              ParkingRemoteDataSource().putReservationData(
+
+              final currentContext = context;
+              if (await ParkingRemoteDataSource().putReservationData(
                 id: widget.slotId,
                 parkingSlotName: widget.parkSlotName,
                 startHour: widget.startDateFormat,
@@ -206,24 +214,80 @@ class UsePaypal1State extends State<UsePaypal1> {
                 isAvailable: false,
                 randomNumber: widget.finalRandomNumber,
                 parkForeignKey: widget.parkId,
-              );
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    // finalRandomNumber
-                  builder: (context) => ParkingTimerPaypal(
+              )&&
+                  await ParkingRemoteDataSource().postParkSateApis(
+                      parkName: widget.parkName,
+                      location: widget.parkLocation,
+                      parkState: 'ongoing',
+                      userName: widget.userName,
+                      parkCode: widget.finalRandomNumber,
+                      startHour: widget.startDateFormat,
+                      endHour: widget.endDateFormat,
+                      userPhoneNumber: widget.userPhoneNumber,
                       parkSlotName: widget.parkSlotName,
-                      hourSelected: widget.hourSelected,
-                      slotId: widget.slotId,
-                      url: request.url,
-                      services: services,
-                      executeUrl: executeUrl,
-                      accessToken: accessToken,
-                      onSuccess: widget.onSuccess,
-                      onCancel: widget.onCancel,
-                      onError: widget.onError, startDateFormat: widget.startDateFormat, endDateFormat: widget.endDateFormat, finalRandomNumber: widget.finalRandomNumber, randomNumber:widget.randomNumber, parkName: widget.parkName, parkLocation: widget.parkLocation, reservationDate: widget.reservationDate, latitude: widget.latitude, longitude: widget.longitude, combinedEndDateFormat: widget.combinedEndDateFormat,),
-                ),
-              );
+                      parkPrice: widget.priceAmount,
+                      reservationDuration: widget.hourSelected,
+                      userForeignKey: widget.userId,
+                      isCash: false, latitude: widget.latitude, longitude: widget.longitude, slotID: widget.slotId)) {
+
+                Future.delayed(Duration.zero, () {
+                  Navigator.pushReplacement(
+                    currentContext,
+                    MaterialPageRoute(
+                      // finalRandomNumber
+                      builder: (context) => ParkingTimer(
+                        parkSlotName: widget.parkSlotName,
+                        hourSelected: widget.hourSelected,
+                        slotId: widget.slotId,
+                        // url: request.url,
+                        // services: services,
+                        // executeUrl: executeUrl,
+                        // accessToken: accessToken,
+                        // onSuccess: widget.onSuccess,
+                        // onCancel: widget.onCancel,
+                        // onError: widget.onError,
+                        // finalRandomNumber: widget.finalRandomNumber,
+                        startDateFormat: widget.startDateFormat,
+                        endDateFormat: widget.endDateFormat,
+                        randomNumber:widget.finalRandomNumber,
+                        parkName: widget.parkName,
+                        parkLocation: widget.parkLocation,
+                        reservationDate: widget.reservationDate,
+                        latitude: widget.latitude,
+                        longitude: widget.longitude,
+                        combinedEndDateFormat: widget.combinedEndDateFormat),
+                    ),
+                  );
+                });
+              } else {
+                print('Error occurred. Please try again.');
+                Future.delayed(
+                    Duration.zero,
+                        () => AwesomeDialog(
+                      context: currentContext,
+                      dialogType: DialogType.error,
+                      animType: AnimType.rightSlide,
+                      headerAnimationLoop: false,
+                      title: 'Error',
+                      desc: 'Error occurred. Please try again.',
+                      btnOkOnPress: () {},
+                      btnOkIcon: Icons.cancel,
+                      btnOkColor: Colors.red,
+                    ).show());
+                Future.delayed(const Duration(milliseconds: 1600),() => Navigator.pop(currentContext));
+                Future.delayed(const Duration(milliseconds: 2000),() => Navigator.pop(currentContext));
+
+              }
+
+              // ParkingRemoteDataSource().putReservationData(
+              //   id: widget.slotId,
+              //   parkingSlotName: widget.parkSlotName,
+              //   startHour: widget.startDateFormat,
+              //   endHour: widget.endDateFormat,
+              //   isAvailable: false,
+              //   randomNumber: widget.finalRandomNumber,
+              //   parkForeignKey: widget.parkId,
+              // );
             }
             if (request.url.contains(widget.cancelURL)) {
               final uri = Uri.parse(request.url);

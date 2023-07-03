@@ -15,7 +15,10 @@ class ParkStateModel extends ParkStateData {
       required super.parkCode,
       required super.reservationDuration,
       required super.userForeignKey,
-      required super.userPhoneNumber});
+      required super.userPhoneNumber,
+      required super.slotId,
+      required super.longitude,
+      required super.latitude});
 
   factory ParkStateModel.fromJson(Map<String, dynamic> json) => ParkStateModel(
         id: json['id'],
@@ -32,5 +35,8 @@ class ParkStateModel extends ParkStateData {
         reservationDuration: json['reservationDuration'],
         parkCode: json['parkCode'],
         userForeignKey: json['userForeignKey'],
+        slotId: json['slotID'],
+        longitude: json['longitude'],
+        latitude: json['latitude'],
       );
 }

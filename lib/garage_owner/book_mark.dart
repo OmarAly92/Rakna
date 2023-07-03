@@ -11,44 +11,18 @@ import '../data/model/bookmark_model.dart';
 import '../presentation/screens/parking_detail.dart';
 
 class BookMark extends StatefulWidget {
-  const BookMark({super.key});
-
+  const BookMark({super.key, required this.userId, required this.userName, required this.userPhoneNumber, required this.getBookMark});
+  final int userId;
+  final String userName;
+  final String  userPhoneNumber;
+  final Future<List<BookMarkModel>> getBookMark;
   @override
   _BookMarkState createState() => _BookMarkState();
 }
 
 class _BookMarkState extends State<BookMark>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-  late Animation<double> _animation2;
+     {
 
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 1),
-    );
-
-    _animation = Tween<double>(begin: 0, end: 1)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut))
-      ..addListener(() {
-        setState(() {});
-      });
-
-    _animation2 = Tween<double>(begin: 0, end: -5).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack));
-
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +63,7 @@ class _BookMarkState extends State<BookMark>
                   // ),
                   SizedBox(height: 30.h),
                   FutureBuilder<List<BookMarkModel>>(
-                    future: ParkingRemoteDataSource().getBookMark(),
+                    future: widget.getBookMark,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Column(
@@ -132,7 +106,7 @@ class _BookMarkState extends State<BookMark>
                                                 latitude: snapshot.data![index]
                                                     .park['latitude'],
                                                 longitude: snapshot.data![index]
-                                                    .park['longitude'],
+                                                    .park['longitude'], userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId:widget.userId,
                                               )),
                                     );
                                   },
