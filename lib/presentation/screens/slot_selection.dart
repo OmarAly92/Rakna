@@ -23,7 +23,7 @@ class SlotSelection extends StatefulWidget {
       required this.userName,
       required this.userPhoneNumber,
       required this.userId,
-      required this.getParkingSlot})
+      required this.getParkingSlot, required this.userEmail})
       : super(key: key);
   final int parkId;
   final num parkPrice;
@@ -33,6 +33,7 @@ class SlotSelection extends StatefulWidget {
   final double longitude;
   final String userName;
   final String userPhoneNumber;
+  final String userEmail;
   final int userId;
 
   final Stream<List<ParkingSlotModel>> getParkingSlot;
@@ -297,7 +298,7 @@ class _SlotSelectionState extends State<SlotSelection> {
                                                               widget.userName,
                                                           userPhoneNumber: widget
                                                               .userPhoneNumber,
-                                                          userId: widget.userId,
+                                                          userId: widget.userId, userEmail: widget.userEmail,
                                                         ),
                                                       ),
                                                     );

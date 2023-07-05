@@ -32,7 +32,7 @@ class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
     return Scaffold(
       body: Center(
         child:  [
-          Home(),
+          // Home(),
           MyCustomUI(garageOwnerId: widget.garageOwnerId, garageOwnerParkingFuture:  ParkingRemoteDataSource().getParkingGarageOwner(widget.garageOwnerId)),
           SettingScreenGarageOwner(name: widget.name, email: widget.email, garageOwnerUserId: widget.garageOwnerId, garageOwnerDataFuture: ParkingRemoteDataSource().garageOwnerData(widget.garageOwnerId)),
         ].elementAt(_selectedIndex),
@@ -43,10 +43,10 @@ class _NavigationBarGarageOwnerState extends State<NavigationBarGarageOwner> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_parking),
-            label: 'Parking',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.local_parking),
+          //   label: 'Parking',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Account',

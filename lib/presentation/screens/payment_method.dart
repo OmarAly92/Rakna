@@ -28,11 +28,12 @@ class PaymentMethod extends StatefulWidget {
     required this.reservationDate,
     required this.latitude,
     required this.longitude,
-    required this.combinedEndDateFormat, required this.userName, required this.userPhoneNumber, required this.userId,
+    required this.combinedEndDateFormat, required this.userName, required this.userPhoneNumber, required this.userId, required this.userEmail,
   }) : super(key: key);
 
   final String startDateFormat;
   final String endDateFormat;
+  final String userEmail;
   final String coupon;
   final double priceAmount;
   final String parkSlotName;
@@ -59,25 +60,46 @@ class _PaymentMethodState extends State<PaymentMethod> {
   late int selected = 200;
   var rng = Random();
   List<String> randomNumber = [
-    '2209',
-    '1605',
-    '1106',
-    '2705',
-    '2604',
-    '1060',
-    '2080',
-    '2308',
-    '9070',
+    '8020',
     '9024',
+    '2209',
     '3024',
+    '1605',
     '1812',
+    '1106',
     '1018',
+    '2705',
     '2608',
+    '2604',
     '1501',
+    '1060',
     '9040',
+    '2080',
     '2901',
+    '2308',
     '1508',
+    '9070',
     '2201',
+    '9090',
+    '2803',
+    '1211',
+    '2105',
+    '2060',
+    '2104',
+    '2307',
+    '2110',
+    '1301',
+    '2311',
+    '1305',
+    '1040',
+    '1070',
+    '2404',
+    '2104',
+    '1401',
+    '2611',
+    '8021',
+    '2605',
+    '2508',
   ];
 
   @override
@@ -313,7 +335,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             note: "Contact us for any questions on your order.",
                             onSuccess: (Map params) async {
                               // navigatorKey?.currentState?.pushNamed('/');
-
+                              print('$params omar success');
+return params;
                               print("onSuccess: $params");
                             },
                             onError: (error) {
@@ -335,7 +358,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             reservationDate: widget.reservationDate,
                             latitude: widget.latitude,
                             longitude: widget.longitude,
-                            combinedEndDateFormat: widget.combinedEndDateFormat, priceAmount: widget.priceAmount, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId:widget.userId,
+                            combinedEndDateFormat: widget.combinedEndDateFormat, priceAmount: widget.priceAmount, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId:widget.userId, userEmail: widget.userEmail,
                           ),
                         ),
                       );
@@ -346,7 +369,11 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         print(
                             '$finalRandomNumber this the random number cash test 1');
                       }
-
+                      // if(widget.startDateFormat.toString().replaceRange(10, 19, '') != (DateTime.now()).toString().replaceRange(10, 26, '') ){
+                      //   seconds = minutes = 0;
+                      //   x = false;
+                      //   hours = widget.hourSelected;
+                      // }
                       final currentContext = context;
                       if (await ParkingRemoteDataSource().putReservationData(
                             id: widget.slotId,
@@ -372,7 +399,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                               userForeignKey: widget.userId,
                               isCash: true, latitude: widget.latitude, longitude: widget.longitude, slotID: widget.slotId)) {
                         print('${widget.hourSelected} oamrommromaf hour selected ');
-
+                    await   ParkingRemoteDataSource().patchPark(parkId: widget.parkId, amount: widget.priceAmount) == true ?print('all done patch amount'):print('error patch amount');
                         Future.delayed(Duration.zero,
                             () => AwesomeDialog(
                                   context: currentContext,

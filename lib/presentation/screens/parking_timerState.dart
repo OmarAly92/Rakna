@@ -59,15 +59,22 @@ class _ParkingTimerStateState extends State<ParkingTimerState>
       FlutterRingtonePlayer.playNotification();
     }
   }
+  bool x = true;
 
   @override
   void initState() {
     super.initState();
     Duration remainingTime = widget.combinedEndDateFormat.difference(now);
     int hours = remainingTime.inHours;
-    int minutes = remainingTime.inMinutes.remainder(60);
+    int minutes = remainingTime.inMinutes.remainder(60) + 10;
     int seconds = remainingTime.inSeconds.remainder(60);
 
+
+    if(widget.startDateFormat.toString().replaceRange(10, 19, '') != (DateTime.now()).toString().replaceRange(10, 26, '') ){
+      seconds = minutes = 0;
+      x = false;
+      hours = widget.hourSelected;
+    }
     if (seconds < 0 || minutes < 0 || hours < 0) {
       ParkingRemoteDataSource().patchParkState(parkStateId:widget.parkStateId ,parkState:'completed' );
       seconds = minutes = hours = 0;
@@ -152,7 +159,7 @@ class _ParkingTimerStateState extends State<ParkingTimerState>
                         child: AnimatedBuilder(
                           animation: controller,
                           builder: (BuildContext context, Widget? child) => Text(
-                            countText,
+                            x == true?  countText:'0${widget.hourSelected}:00:00',
                             style: const TextStyle(
                               fontSize: 60,
                             ),

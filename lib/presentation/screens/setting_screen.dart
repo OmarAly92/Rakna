@@ -304,36 +304,36 @@ class _SettingScreenState extends State<SettingScreen> {
                     //     ),
                     //   ),
                     // ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: SizedBox(
-                        height: 38.w,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Notifications()));
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.notifications_none_outlined,
-                                color: Colors.grey,
-                                size: 27.r,
-                              ),
-                              SizedBox(width: 9.w),
-                              Text(
-                                'Notification',
-                                style: TextStyle(
-                                    fontSize: 16.5.sp,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.only(bottom: 20),
+                    //   child: SizedBox(
+                    //     height: 38.w,
+                    //     child: InkWell(
+                    //       onTap: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => Notifications()));
+                    //       },
+                    //       child: Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.notifications_none_outlined,
+                    //             color: Colors.grey,
+                    //             size: 27.r,
+                    //           ),
+                    //           SizedBox(width: 9.w),
+                    //           Text(
+                    //             'Notification',
+                    //             style: TextStyle(
+                    //                 fontSize: 16.5.sp,
+                    //                 fontWeight: FontWeight.w500),
+                    //           ),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     // Padding(
                     //   padding: EdgeInsets.only(bottom: widget.bottom),
                     //   child: SizedBox(

@@ -332,7 +332,7 @@ class _AddParkState extends State<AddPark> {
                                               dialogType: DialogType.success,
                                               showCloseIcon: true,
                                               title: 'Success',
-                                              desc: 'Payment Success',
+                                              desc: 'Method Success',
                                               btnOkOnPress: () {
                                                 debugPrint('OnClcik');
                                               },

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -134,7 +135,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<ParkingModel>> getParking() async {
     final Response response =
-        await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
+        await Dio().get('http://minagamil123-001-site1.ctempurl.com/Parks');
     print('${response.statusCode}');
     // print('${response.data}');
     if (response.statusCode == 200) {
@@ -148,7 +149,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Stream<List<ParkingModel>> getParking1() async* {
     final Response response =
-        await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
+        await Dio().get('http://minagamil123-001-site1.ctempurl.com/Parks');
     print('${response.statusCode}');
     // print('${response.data}');
     if (response.statusCode == 200) {
@@ -162,7 +163,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<ParkingSlotModel>> getParkingSlot(int parkId) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkId'); //todo put api url here
+        'http://minagamil123-001-site1.ctempurl.com/ParkingSlot/$parkId'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       return List<ParkingSlotModel>.from(
@@ -175,7 +176,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<UserDataModel>> checkUserData() async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/Register'); //todo put api url here
+        'http://minagamil123-001-site1.ctempurl.com/Register'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       print('${response.statusCode}');
@@ -207,7 +208,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.post(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Register'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/Register'),
           body: body,
           headers: {
             "Accept": "application/json",
@@ -261,7 +262,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.put(
-        Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$id'),
+        Uri.parse('http://minagamil123-001-site1.ctempurl.com/ParkingSlot/$id'),
         body: jsonEncode(body),
         headers: {
           'Accept': 'application/json',
@@ -290,7 +291,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<ParkingModel>> getSearchResult(String? query) async {
     final Response response =
-        await Dio().get('http://raknaapi-001-site1.ctempurl.com/Parks');
+        await Dio().get('http://minagamil123-001-site1.ctempurl.com/Parks');
     if (response.statusCode == 200) {
       var result = List<ParkingModel>.from(
           (response.data as List).map((e) => ParkingModel.fromJson(e)));
@@ -312,7 +313,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<GarageOwnerDataModel>> checkGarageOwnerData() async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/GarageOwner'); //todo put api url here
+        'http://minagamil123-001-site1.ctempurl.com/GarageOwner'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       print('${response.statusCode}');
@@ -328,7 +329,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   Future<List<GarageOwnerParkingModel>> getParkingGarageOwner(
       int garageOwnerId) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId');
+        'http://minagamil123-001-site1.ctempurl.com/GarageOwner/$garageOwnerId');
     print('${response.statusCode}');
     print('${response.data}');
     if (response.statusCode == 200) {
@@ -360,7 +361,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.post(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Parks'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/Parks'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -405,7 +406,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.post(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkingSlot'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/ParkingSlot'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -425,7 +426,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     try {
       http.Response response = await http.delete(
           Uri.parse(
-              'http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkSlotId'),
+              'http://minagamil123-001-site1.ctempurl.com/ParkingSlot/$parkSlotId'),
           headers: {
             "Accept": "application/json",
             "content-type": "application/json"
@@ -466,7 +467,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.put(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Parks/$parkId'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/Parks/$parkId'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -497,7 +498,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Stream<List<ParkingSlotModel>> getParkingSlot1(int parkId) async* {
     final Response response = await Dio()
-        .get('http://raknaapi-001-site1.ctempurl.com/ParkingSlot/$parkId');
+        .get('http://minagamil123-001-site1.ctempurl.com/ParkingSlot/$parkId');
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       yield List<ParkingSlotModel>.from(
@@ -510,7 +511,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<BookMarkModel>> getBookMark(int userId) async {
     final Response response = await Dio()
-        .get('http://raknaapi-001-site1.ctempurl.com/BookMark/user/$userId');
+        .get('http://minagamil123-001-site1.ctempurl.com/BookMark/user/$userId');
     print('${response.statusCode} bookmark');
     // print('${response.body}');
     if (response.statusCode == 200) {
@@ -537,7 +538,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.put(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/BookMark/$bookMarkId'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/BookMark/$bookMarkId'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -580,7 +581,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.put(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Register/$userID'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/Register/$userID'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -598,7 +599,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<UserDataModel>> getUserData(int userId) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/Register/$userId'); //todo put api url here
+        'http://minagamil123-001-site1.ctempurl.com/Register/$userId'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       print('${response.statusCode}');
@@ -612,7 +613,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   @override
   Future<List<GarageOwnerDataModel>> garageOwnerData(int garageOwnerId) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId'); //todo put api url here
+        'http://minagamil123-001-site1.ctempurl.com/GarageOwner/$garageOwnerId'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       print('${response.statusCode}');
@@ -628,7 +629,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
     try {
       http.Response response = await http.delete(
           Uri.parse(
-              'http://raknaapi-001-site1.ctempurl.com/BookMark/$bookMarkId'),
+              'http://minagamil123-001-site1.ctempurl.com/BookMark/$bookMarkId'),
           headers: {
             "Accept": "application/json",
             "content-type": "application/json"
@@ -646,7 +647,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
   Future<List<ParkStateModel>> parkSateApis(
       {required int userId, required String state}) async {
     final Response response = await Dio().get(
-        'http://raknaapi-001-site1.ctempurl.com/ParkSateApis/$userId/$state'); //todo put api url here
+        'http://minagamil123-001-site1.ctempurl.com/ParkSateApis/$userId/$state'); //todo put api url here
     print('${response.statusCode}');
     if (response.statusCode == 200) {
       print('${response.statusCode}');
@@ -699,7 +700,65 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.post(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkSateApis'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/ParkSateApis'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
+    } catch (e) {
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
+    }
+  } Future<bool> postPaypalData({
+
+    required String userName,
+    required String userEmail,
+    required String startHour,
+    required String userPhoneNumber,
+    required String parkSlotName,
+    required double parkPrice,
+    required int reservationDuration,
+    required int slotID,
+    required int userForeignKey,
+    required String paymentMethod,
+    required String paymentStatus,
+  }) async {
+    var rng = Random();
+
+    var body = {
+      "phoneNumber": userPhoneNumber,
+      "payPalId": 0,
+      "userName": userName,  ///
+      "email": userEmail,  ///
+      "productName": parkSlotName,  ///
+      "productPrice": parkPrice,
+      "paymentMethod": paymentMethod,  ///
+      "paymentStatus": paymentStatus,  ///
+      "purchaseDate": startHour,  ///
+      "amountPaid": parkPrice,     ///
+      "receiptNumber": rng.nextInt(10000)  ///
+    };
+
+    try {
+      http.Response response = await http.post(
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/api/PayPalAPI'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -736,7 +795,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.patch(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/Register/$userId'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/Register/$userId'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -770,7 +829,7 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.patch(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/GarageOwner/$garageOwnerId'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/GarageOwner/$garageOwnerId'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",
@@ -804,7 +863,41 @@ class ParkingRemoteDataSource extends BaseRemoteDataSource {
 
     try {
       http.Response response = await http.patch(
-          Uri.parse('http://raknaapi-001-site1.ctempurl.com/ParkSateApis/$parkStateId'),
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/ParkSateApis/$parkStateId'),
+          body: jsonEncode(body),
+          headers: {
+            "Accept": "application/json",
+            "content-type": "application/json"
+          }).then((dynamic res) {
+        print(res.toString());
+        return res;
+      });
+      if (response.statusCode == 500) {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode} g500');
+        return false; // Return false to indicate failure
+      } else if (response.statusCode == 200 || response.statusCode == 201) {
+        // Request was successful, no response body expected
+        print('Reservation data updated successfully!');
+        return true; // Return true to indicate success
+      } else {
+        print('Failed to update reservation data!');
+        print('Response status code: ${response.statusCode}');
+        return false; // Return false to indicate failure
+      }
+    } catch (e) {
+      print('Error catch occurred while updating reservation data: $e');
+      return false; // Return false to indicate failure
+    }
+  }
+  Future<bool> patchPark({required int parkId, required double amount}) async {
+    var body = [
+      { "op": "add", "path": "/amount", "value": amount },
+    ];
+
+    try {
+      http.Response response = await http.patch(
+          Uri.parse('http://minagamil123-001-site1.ctempurl.com/Parks/$parkId'),
           body: jsonEncode(body),
           headers: {
             "Accept": "application/json",

@@ -38,6 +38,7 @@ class UsePaypal1 extends StatefulWidget {
   final double priceAmount;
   final String  userName;
   final String  userPhoneNumber;
+  final String  userEmail;
   final int  userId;
   const UsePaypal1({
     Key? key,
@@ -53,7 +54,7 @@ class UsePaypal1 extends StatefulWidget {
     this.note = '',
     required this.parkSlotName,
     required this.slotId,
-    required this.hourSelected, required this.startDateFormat, required this.endDateFormat, required this.finalRandomNumber, required this.parkId, required this.randomNumber, required this.parkName, required this.parkLocation, required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat, required this.priceAmount, required this.userName, required this.userPhoneNumber, required this.userId,
+    required this.hourSelected, required this.startDateFormat, required this.endDateFormat, required this.finalRandomNumber, required this.parkId, required this.randomNumber, required this.parkName, required this.parkLocation, required this.reservationDate, required this.latitude, required this.longitude, required this.combinedEndDateFormat, required this.priceAmount, required this.userName, required this.userPhoneNumber, required this.userId, required this.userEmail,
   }) : super(key: key);
 
   @override
@@ -229,8 +230,10 @@ class UsePaypal1State extends State<UsePaypal1> {
                       reservationDuration: widget.hourSelected,
                       userForeignKey: widget.userId,
                       isCash: false, latitude: widget.latitude, longitude: widget.longitude, slotID: widget.slotId)) {
+                ParkingRemoteDataSource().postPaypalData(userName: widget.userName, userEmail: widget.userEmail, startHour: widget.startDateFormat, userPhoneNumber: widget.userPhoneNumber, parkSlotName: widget.parkSlotName, parkPrice: widget.priceAmount, reservationDuration: widget.hourSelected, slotID: widget.slotId, userForeignKey: widget.userId, paymentMethod: 'Paypal', paymentStatus: 'completed');
 
                 Future.delayed(Duration.zero, () {
+
                   Navigator.pushReplacement(
                     currentContext,
                     MaterialPageRoute(

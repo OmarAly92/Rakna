@@ -12,7 +12,9 @@ String image;
 final int userId;
 final String userName;
 final String  userPhoneNumber;
-SearchUser({ this.image = 'assets/images/garage.png',required this.userPhoneNumber,required this.userName,required this.userId});
+final String  userEmail;
+
+SearchUser( { this.image = 'assets/images/garage.png',required this.userPhoneNumber,required this.userName,required this.userId ,required this.userEmail});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -54,7 +56,7 @@ SearchUser({ this.image = 'assets/images/garage.png',required this.userPhoneNumb
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: snapshot.data![index].parkImage, latitude: snapshot.data![index].latitude, longitude: snapshot.data![index].longitude, userName: userName, userPhoneNumber: userPhoneNumber, userId:userId,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ParkingDetail(parkId: snapshot.data![index].parkId, parkName: snapshot.data![index].parkName, parkLocation: snapshot.data![index].parkLocation, parkPrice: snapshot.data![index].parkPrice, parkImage: snapshot.data![index].parkImage, latitude: snapshot.data![index].latitude, longitude: snapshot.data![index].longitude, userName: userName, userPhoneNumber: userPhoneNumber, userId:userId, userEmail:userEmail,)));
                   },
                   child: ListTile(
                     title: Padding(

@@ -11,8 +11,9 @@ import '../data/model/bookmark_model.dart';
 import '../presentation/screens/parking_detail.dart';
 
 class BookMark extends StatefulWidget {
-  const BookMark({super.key, required this.userId, required this.userName, required this.userPhoneNumber, required this.getBookMark});
+  const BookMark({super.key, required this.userId, required this.userName, required this.userPhoneNumber, required this.getBookMark, required this.userEmail});
   final int userId;
+  final String userEmail;
   final String userName;
   final String  userPhoneNumber;
   final Future<List<BookMarkModel>> getBookMark;
@@ -78,11 +79,11 @@ class _BookMarkState extends State<BookMark>
 
 
                         return SizedBox(
-                          height: 130,
+                          height: 1000,
                           child: ListView.builder(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 3.w, vertical: 3.h),
-                              scrollDirection: Axis.horizontal,
+                              scrollDirection: Axis.vertical,
                               itemCount: snapshot.data!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
@@ -106,7 +107,7 @@ class _BookMarkState extends State<BookMark>
                                                 latitude: snapshot.data![index]
                                                     .park['latitude'],
                                                 longitude: snapshot.data![index]
-                                                    .park['longitude'], userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId:widget.userId,
+                                                    .park['longitude'], userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId:widget.userId, userEmail: widget.userEmail,
                                               )),
                                     );
                                   },
@@ -134,7 +135,8 @@ class _BookMarkState extends State<BookMark>
                                               borderRadius:
                                                   BorderRadius.circular(50),
                                               child: CachedMemoryImage(
-                                                uniqueKey: 'app://image/1',
+                                                uniqueKey: 'app://imageBookMark/${snapshot.data![index].bookMarkId
+                                                }',
                                                 errorWidget:
                                                     const Text('Error'),
                                                 base64:

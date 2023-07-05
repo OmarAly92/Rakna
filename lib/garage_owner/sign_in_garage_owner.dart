@@ -182,24 +182,25 @@ class _SignInOwnerState extends State<SignInOwner> {
                                       },
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 230.w, top: 10.h),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ForgetPassword(),
-                                            ));
-                                      },
-                                      child: Text(
-                                        'Forgot Password?',
-                                        style: TextStyle(
-                                            color: kPrimaryColor, fontSize: 12.5.sp),
-                                      ),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(left: 230.w, top: 10.h),
+                                  //   child: TextButton(
+                                  //     onPressed: () {
+                                  //       Navigator.push(
+                                  //           context,
+                                  //           MaterialPageRoute(
+                                  //             builder: (context) =>
+                                  //                 ForgetPassword(),
+                                  //           ));
+                                  //     },
+                                  //     child: Text(
+                                  //       'Forgot Password?',
+                                  //       style: TextStyle(
+                                  //           color: kPrimaryColor, fontSize: 12.5.sp),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  SizedBox(height: 45.h),
                                   BlocBuilder<SignInGarageOwnerBloc, SignInGarageOwnerState>(
                                     builder: (context, state) {
                                       print('${state.requestState }   omar poamra');
@@ -246,7 +247,7 @@ class _SignInOwnerState extends State<SignInOwner> {
                                                   i++) {
                                                 if (emailDataList[i].contains(
                                                             emailController
-                                                                .text) ==
+                                                                .text.toLowerCase()) ==
                                                         true &&
                                                     passwordDataList[i].contains(
                                                             passwordController

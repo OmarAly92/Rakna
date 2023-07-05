@@ -14,7 +14,7 @@ class ReservationParkingPlace extends StatefulWidget {
       required this.slotId,
       required this.parkSlotName,
       required this.parkPrice,
-      required this.parkForeignKey, required this.randomNumber, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude, required this.userName, required this.userPhoneNumber, required this.userId})
+      required this.parkForeignKey, required this.randomNumber, required this.parkName, required this.parkLocation, required this.latitude, required this.longitude, required this.userName, required this.userPhoneNumber, required this.userId, required this.userEmail})
       : super(key: key);
   final int slotId;
   final int parkForeignKey;
@@ -25,6 +25,7 @@ class ReservationParkingPlace extends StatefulWidget {
   final String parkName;
   final String parkLocation;
   final String userName;
+  final String userEmail;
   final String  userPhoneNumber;
   final int userId;
   int hour = 1;
@@ -426,7 +427,7 @@ class _ReservationParkingPlaceState extends State<ReservationParkingPlace> {
                                       reservationDate: reservationDate.toString(),
                                       latitude: widget.latitude,
                                       longitude: widget.longitude,
-                                      combinedEndDateFormat: combinedEndDateFormat, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId,
+                                      combinedEndDateFormat: combinedEndDateFormat, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId, userEmail: widget.userEmail,
                                     ),
                                   ),
                                 );

@@ -333,7 +333,7 @@ class _SignUpState extends State<SignUp> {
                                       .postSignUp(
                                     userName: userNameController.text,
                                     age: int.parse(ageController.text),
-                                    email: emailController.text,
+                                    email: emailController.text.toLowerCase(),
                                     password: passwordController.text,
                                     confirmPassword:
                                         confirmPasswordController.text,
@@ -348,7 +348,7 @@ class _SignUpState extends State<SignUp> {
                                               dialogType: DialogType.success,
                                               showCloseIcon: true,
                                               title: 'Success',
-                                              desc: 'Payment Success',
+                                              desc: 'Sign Up Success',
                                               btnOkOnPress: () {
                                                 debugPrint('OnClcik');
                                               },
@@ -361,7 +361,7 @@ class _SignUpState extends State<SignUp> {
                                               builder: (context) =>
                                                   NavigationBarScreen(
                                                       userName: userNameController.text,
-                                                      userPhoneNumber: phoneNumberController.text, userEmail:emailController.text),
+                                                      userPhoneNumber: phoneNumberController.text, userEmail:emailController.text.toLowerCase()),
                                               settings: const RouteSettings(
                                                 name: 'NavigationBarScreen',
                                               )

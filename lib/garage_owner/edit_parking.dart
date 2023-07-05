@@ -410,7 +410,7 @@ class _EditParkState extends State<EditPark> {
                                         dialogType: DialogType.success,
                                         showCloseIcon: true,
                                         title: 'Success',
-                                        desc: 'Payment Success',
+                                        desc: 'Method Success',
                                         btnOkOnPress: () {
                                           debugPrint('OnClcik');
                                         },

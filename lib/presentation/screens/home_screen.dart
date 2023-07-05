@@ -33,10 +33,11 @@ import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
 
 class HomeScreen extends StatefulWidget {
-   const HomeScreen({Key? key, required this.userId, required this.userName, required this.userPhoneNumber, required this.getParking}) : super(key: key);
+   const HomeScreen({Key? key, required this.userId, required this.userName, required this.userPhoneNumber, required this.getParking, required this.userEmail}) : super(key: key);
   final int userId;
   final String userName;
   final String  userPhoneNumber;
+  final String  userEmail;
 
 
 
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Column(
             children: [
               AppBarCustom(
-                image: 'assets/images/garage.png', userId: widget.userId, userName:widget.userName, userPhoneNumber: widget.userPhoneNumber,
+                image: 'assets/images/garage.png', userId: widget.userId, userName:widget.userName, userPhoneNumber: widget.userPhoneNumber, userEmail: widget.userEmail,
               ),
               Column(
                 children: [
@@ -129,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ParkingSelection(userId: widget.userId, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber),
+                                      builder: (context) => ParkingSelection(userId: widget.userId, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userEmail:widget.userEmail,),
                                     ));
                               },
                               child: Text(
@@ -283,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   parkLocation:
                                   nearestDistanceList[index].parkLocation,
                                   parkPrice: nearestDistanceList[index].parkPrice,
-                                  parkImage: nearestDistanceList[index].parkImage, latitude: nearestDistanceList[index].latitude, longitude: nearestDistanceList[index].longitude, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId,)),
+                                  parkImage: nearestDistanceList[index].parkImage, latitude: nearestDistanceList[index].latitude, longitude: nearestDistanceList[index].longitude, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId, userEmail: widget.userEmail,)),
                           );
                         }
 
@@ -367,12 +368,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onPressed: () {
                                         setState(() {
                                           ParkingRemoteDataSource().putBookMarks(isFavorite: true, userId: widget.userId, parkId: snapshot.data![index].parkId);
-                                         bookmark = !bookmark;
+
                                         });
                                       },
                                       icon: Icon(
                                         bookmark == true
-                                            ? Icons.bookmark_border
+                                            ? Icons.bookmark
                                             : Icons.bookmark_added,
                                         color: kPrimaryColor,
                                       ),

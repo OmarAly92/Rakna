@@ -9,11 +9,12 @@ import 'circle_button.dart';
 
 
 class AppBarCustom extends StatefulWidget {
-   AppBarCustom({Key? key, required this.image, required this.userId, required this.userName, required this.userPhoneNumber}) : super(key: key);
+   AppBarCustom({Key? key, required this.image, required this.userId, required this.userName, required this.userPhoneNumber, required this.userEmail}) : super(key: key);
 
    final int userId;
    final String userName;
    final String  userPhoneNumber;
+   final String  userEmail;
 String image;
   @override
   State<AppBarCustom> createState() => _AppBarCustomState();
@@ -71,7 +72,7 @@ class _AppBarCustomState extends State<AppBarCustom> {
         height: 20,
       ),
       TextFormField(onTap: () {
-        showSearch(context: context, delegate: SearchUser(image: widget.image, userPhoneNumber: widget.userPhoneNumber, userName:widget.userName, userId: widget.userId));
+        showSearch(context: context, delegate: SearchUser(image: widget.image, userPhoneNumber: widget.userPhoneNumber, userName:widget.userName, userId: widget.userId, userEmail: widget.userEmail));
       },
         style: TextStyle(color: Colors.white),
         cursorColor: Colors.white,

@@ -179,19 +179,20 @@ class _SignInState extends State<SignIn> {
                                       },
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 230.w, top: 10.h),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ForgetPassword(),));
-                                      },
-                                      child: Text(
-                                        'Forgot Password?',
-                                        style: TextStyle(
-                                            color: kPrimaryColor, fontSize: 12.5.sp),
-                                      ),
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: EdgeInsets.only(left: 230.w, top: 10.h),
+                                  //   child: TextButton(
+                                  //     onPressed: () {
+                                  //       Navigator.push(context, MaterialPageRoute(builder: (context) => ForgetPassword(),));
+                                  //     },
+                                  //     child: Text(
+                                  //       'Forgot Password?',
+                                  //       style: TextStyle(
+                                  //           color: kPrimaryColor, fontSize: 12.5.sp),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  SizedBox(height: 45.h),
                                   BlocBuilder<SignInUserBloc, SignInUserState>(
                                     builder: (context, state) {
                                      return Padding(
@@ -240,7 +241,7 @@ class _SignInState extends State<SignIn> {
 
                                            if(state.userData.isNotEmpty) {
                                               for (int i = 0; i < state.userData.length; i++) {
-                                                if (emailDataList[i].contains(emailController.text) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
+                                                if (emailDataList[i].contains(emailController.text.toLowerCase()) == true && passwordDataList[i].contains(passwordController.text) == true && emailController.text.isEmpty == false && passwordController.text.isEmpty == false) {
                                                   print(emailDataList[i]);
                                                   print(passwordDataList[i]);
                                                   Navigator.pushReplacement(

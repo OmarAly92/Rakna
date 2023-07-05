@@ -23,9 +23,10 @@ class ParkingDetail extends StatefulWidget {
     required this.longitude,
     required this.userName,
     required this.userPhoneNumber,
-    required this.userId,
+    required this.userId, required this.userEmail,
   }) : super(key: key);
   final String parkName;
+  final String userEmail;
   final String parkLocation;
   final num parkPrice;
   final String parkImage;
@@ -92,12 +93,12 @@ class _ParkingDetailState extends State<ParkingDetail>
                           height: 40.w,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50.r),
-                            color: Colors.blue,
+                            color: Colors.transparent,
                           ),
                           child: Center(
                             child: Icon(
                               Icons.bookmark_outlined,
-                              color: Colors.white,
+                              color: Colors.transparent,
                               size: 28.r,
                             ),
                           ),
@@ -106,34 +107,34 @@ class _ParkingDetailState extends State<ParkingDetail>
 
                     ],
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.w),
-                        child: RatingBar.builder(
-                          itemSize: 20.r,
-                          initialRating: 3,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber.shade500,
-                          ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          },
-                        ),
-                      ),
-                      Text('(1,098)',
-                          style: TextStyle(color: Colors.grey, fontSize: 11)),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     Padding(
+                  //       padding: EdgeInsets.only(left: 8.w),
+                  //       child: RatingBar.builder(
+                  //         itemSize: 20.r,
+                  //         initialRating: 3,
+                  //         minRating: 1,
+                  //         direction: Axis.horizontal,
+                  //         allowHalfRating: true,
+                  //         itemCount: 5,
+                  //         itemPadding: EdgeInsets.symmetric(horizontal: 4),
+                  //         itemBuilder: (context, _) => Icon(
+                  //           Icons.star,
+                  //           color: Colors.amber.shade500,
+                  //         ),
+                  //         onRatingUpdate: (rating) {
+                  //           print(rating);
+                  //         },
+                  //       ),
+                  //     ),
+                  //     Text('(1,098)',
+                  //         style: TextStyle(color: Colors.grey, fontSize: 11)),
+                  //   ],
+                  // ),
                   Padding(
                       padding:
-                          EdgeInsets.only(left: 15.w, top: 7.h, bottom: 7.h),
+                          EdgeInsets.only(left: 15.w, top: 0.h, bottom: 7.h),
                       child: Row(
                         children: [
                           Text(
@@ -317,7 +318,7 @@ class _ParkingDetailState extends State<ParkingDetail>
                                     longitude: widget.longitude,
                                     userName: widget.userName,
                                     userPhoneNumber: widget.userPhoneNumber,
-                                    userId: widget.userId, getParkingSlot:  ParkingRemoteDataSource().getParkingSlot1(widget.parkId)),
+                                    userId: widget.userId, getParkingSlot:  ParkingRemoteDataSource().getParkingSlot1(widget.parkId), userEmail: widget.userEmail,),
                               ));
                         },
                         borderRadius: BorderRadius.circular(10),

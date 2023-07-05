@@ -25,11 +25,12 @@ import '../controller/get_parking_data_bloc/get_parking_data_bloc.dart';
 import '../controller/get_parking_data_bloc/get_parking_data_state.dart';
 
 class ParkingSelection extends StatefulWidget {
-  ParkingSelection({Key? key, required this.userId, required this.userName, required this.userPhoneNumber}) : super(key: key);
+  ParkingSelection({Key? key, required this.userId, required this.userName, required this.userPhoneNumber, required this.userEmail}) : super(key: key);
   bool bookmark = true;
   final int userId;
   final String userName;
   final String  userPhoneNumber;
+  final String  userEmail;
   @override
   State<ParkingSelection> createState() => _ParkingSelectionState();
 }
@@ -168,7 +169,7 @@ class _ParkingSelectionState extends State<ParkingSelection> {
                                                           .latitude,
                                                   longitude:
                                                       nearestDistanceList[index]
-                                                          .longitude, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId,
+                                                          .longitude, userName: widget.userName, userPhoneNumber: widget.userPhoneNumber, userId: widget.userId, userEmail: widget.userEmail,
                                                 )),
                                       );
                                     },

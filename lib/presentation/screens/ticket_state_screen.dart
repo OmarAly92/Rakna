@@ -237,6 +237,10 @@ class _OngoingState extends State<Ongoing> {
                                     backgroundColor: Colors.white,
                                     textColor: Colors.white,
                                     onPressed: () {
+                                      print('${(snapshot.data![index].startHour).toString().replaceRange(10, 19, '')} omar omar');
+                                      print('${(DateTime.now()).toString().replaceRange(10, 26, '')} omar omar');
+
+
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
